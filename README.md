@@ -13,7 +13,17 @@
 
 ## Introduction
 
-**sanger-tol/variantcomposition** is a bioinformatics pipeline that ...
+**sanger-tol/variantcomposition** is a bioinformatics pipeline that takes the output of variant-calling pipeline (VCF, gVCF, and corresponding index files) as input and perform basic variant component analysis.
+
+
+<img src="https://summerofcode.withgoogle.com/assets/media/logo.svg" height="30"/>
+
+*GSoC 2025 Project*
+
+<img src="https://github.com/user-attachments/assets/1802c4de-aa63-4b6d-8b0c-346b45145ded" height="100"/>
+
+*Under construction*
+
 
 <!-- TODO nf-core:
    Complete this sentence with a 2-3 sentence summary of what types of data the pipeline ingests, a brief overview of the
