@@ -11,23 +11,21 @@
                 "type": "string",
                 "pattern": "^\\S+$",
                 "errorMessage": "Sample name must be provided and cannot contain spaces",
-                "meta": ["id"]
+                "meta": ["sample"]
             },
-            "fastq_1": {
+            "datatype": {
                 "type": "string",
-                "format": "file-path",
-                "exists": true,
-                "pattern": "^\\S+\\.f(ast)?q\\.gz$",
-                "errorMessage": "FastQ file for reads 1 must be provided, cannot contain spaces and must have extension '.fq.gz' or '.fastq.gz'"
+                "pattern": "^\\S+$",
+                "errorMessage": "Data type, and must be one of: 'VCF' or 'gVCF'",
+                "meta": ["datatype"]
             },
-            "fastq_2": {
+            "datafile": {
                 "type": "string",
-                "format": "file-path",
-                "exists": true,
-                "pattern": "^\\S+\\.f(ast)?q\\.gz$",
-                "errorMessage": "FastQ file for reads 2 cannot contain spaces and must have extension '.fq.gz' or '.fastq.gz'"
+                "pattern": "^\\S+\\.(vcf|vcf.gz|g.vcf|g.vcf.gz)$",
+                "errorMessage": "Data file cannot contain spaces and must be VCF/gVCF",
+                "meta": ["datafile"]
             }
         },
-        "required": ["sample", "fastq_1"]
+        "required": ["sample", "datatype", "datafile"]
     }
 }

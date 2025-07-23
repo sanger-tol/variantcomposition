@@ -69,26 +69,35 @@ workflow PIPELINE_INITIALISATION {
 
     Channel
         .fromList(samplesheetToList(params.input, "${projectDir}/assets/schema_input.json"))
-        .map {
-            meta, fastq_1, fastq_2 ->
-                if (!fastq_2) {
-                    return [ meta.id, meta + [ single_end:true ], [ fastq_1 ] ]
-                } else {
-                    return [ meta.id, meta + [ single_end:false ], [ fastq_1, fastq_2 ] ]
-                }
-        }
-        .groupTuple()
-        .map { samplesheet ->
-            validateInputSamplesheet(samplesheet)
-        }
-        .map {
-            meta, fastqs ->
-                return [ meta, fastqs.flatten() ]
+        .map { row -> 
+            println row[0]
+            // Get original file name and strip compound VCF extensions
+            def file_name = file(row[0].datafile).getName()
+            def file_id = file_name.replaceAll(/\.g?\.?vcf(\.gz)?$/, "")
+            // Add clean id to meta
+            def meta = row[0] + [id: file_id]
+            return [meta, file(row[0].datafile, checkIfExists: true)]
         }
         .set { ch_samplesheet }
+    validateInputSamplesheet(ch_samplesheet).view()
+        .set { ch_validated_samplesheet }
+
+
+    // Creat channel for positions
+
+    if ( (params.include_positions) && (params.exclude_positions) ){
+    exit 1, "Only one positions file can be given to include or exclude."
+    } else if (params.include_positions){
+    ch_positions = Channel.fromPath(params.include_positions)
+    } else if (params.exclude_positions){
+    ch_positions = Channel.fromPath(params.exclude_positions)
+    } else {
+    ch_positions = []
+    }
 
     emit:
-    samplesheet = ch_samplesheet
+    samplesheet = ch_validated_samplesheet
+    positions   = ch_positions
     versions    = ch_versions
 }
 
@@ -147,17 +156,52 @@ workflow PIPELINE_COMPLETION {
 //
 // Validate channels from input samplesheet
 //
-def validateInputSamplesheet(input) {
-    def (metas, fastqs) = input[1..2]
 
-    // Check that multiple runs of the same sample are of the same datatype i.e. single-end / paired-end
-    def endedness_ok = metas.collect{ meta -> meta.single_end }.unique().size == 1
-    if (!endedness_ok) {
-        error("Please check input samplesheet -> Multiple runs of a sample must be of the same datatype i.e. single-end or paired-end: ${metas[0].id}")
+def validateInputSamplesheet(channel) {
+    def seen = [:].withDefault { 0 }
+    def validFormats = [".vcf.gz", ".g.vcf.gz", ".vcf", ".g.vcf"]
+
+    return channel.map { sample ->
+        def (meta, file) = sample
+
+        // Replace spaces with underscores in sample names
+        meta.sample = meta.sample.replace(" ", "_")
+
+        // Validate that the file path is non-empty and has a valid format
+        if (!file || !validFormats.any { file.toString().endsWith(it) }) {
+            error( "Data file is required and must have a valid extension: ${file}" )
+        }
+
+        // Allow handling replicates by adding the number of times (T) the sample name been seen
+        seen[meta.sample] += 1
+        meta.sample = "${meta.sample}_T${seen[meta.sample]}"
+
+        return [meta, file]
     }
-
-    return [ metas[0], fastqs ]
 }
+
+//
+// Sanger-ToL logo
+//
+def sangerTolLogo(monochrome_logs=true) {
+    Map colors = logColours(monochrome_logs)
+    String.format(
+        """\n
+        ${dashedLine(monochrome_logs)}
+        ${colors.blue}   _____                               ${colors.green} _______   ${colors.red} _${colors.reset}
+        ${colors.blue}  / ____|                              ${colors.green}|__   __|  ${colors.red}| |${colors.reset}
+        ${colors.blue} | (___   __ _ _ __   __ _  ___ _ __ ${colors.reset} ___ ${colors.green}| |${colors.yellow} ___ ${colors.red}| |${colors.reset}
+        ${colors.blue}  \\___ \\ / _` | '_ \\ / _` |/ _ \\ '__|${colors.reset}|___|${colors.green}| |${colors.yellow}/ _ \\${colors.red}| |${colors.reset}
+        ${colors.blue}  ____) | (_| | | | | (_| |  __/ |        ${colors.green}| |${colors.yellow} (_) ${colors.red}| |____${colors.reset}
+        ${colors.blue} |_____/ \\__,_|_| |_|\\__, |\\___|_|        ${colors.green}|_|${colors.yellow}\\___/${colors.red}|______|${colors.reset}
+        ${colors.blue}                      __/ |${colors.reset}
+        ${colors.blue}                     |___/${colors.reset}
+        ${colors.purple}  ${workflow.manifest.name} ${getWorkflowVersion()}${colors.reset}
+        ${dashedLine(monochrome_logs)}
+        """.stripIndent()
+    )
+}
+
 //
 // Generate methods description for MultiQC
 //

@@ -38,6 +38,22 @@
                 }
             }
         },
+        "reference_genome_options": {
+            "title": "Reference genome options",
+            "type": "object",
+            "description": "Reference genome related files and options required for the workflow.",
+            "default": "",
+            "properties": {
+                "include_positions": {
+                    "type": "string",
+                    "description": "Path to a file with a set of sites on the basis of a list of positions to include, Each line of the input file should contain a (tab-separated) chromosome and position."
+                },
+                "exclude_positions": {
+                    "type": "string",
+                    "description": "Path to a file with a set of sites on the basis of a list of positions to exclude,Each line of the input file should contain a (tab-separated) chromosome and position."
+                }
+            }
+        },
         "institutional_config_options": {
             "title": "Institutional config options",
             "type": "object",
