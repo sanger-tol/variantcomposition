@@ -1,4 +1,4 @@
-// Features to include in this subworkflow: 
+// Features to include in this subworkflow:
 //      Calculation of heterozygosity (existing feature in variant-calling pipeline, using vcftools)
 //      Per-site nucleotide diversity (existing feature in variant-calling pipeline, using vcftools)
 //      Allele frequency

@@ -27,13 +27,13 @@ workflow VARIANTCOMPOSITION {
     take:
     ch_samplesheet // channel: samplesheet read in from --input
     ch_positions
-    
+
     main:
     // Initialize an empty versions channel
     ch_versions = Channel.empty()
 
 
-    //  
+    //
     // SUBWORKFLOW: Read in samplesheet, validate and stage input files
     //
     INPUT_CHECK ( ch_samplesheet ).vcf

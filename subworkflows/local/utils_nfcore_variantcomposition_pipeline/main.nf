@@ -69,7 +69,7 @@ workflow PIPELINE_INITIALISATION {
 
     Channel
         .fromList(samplesheetToList(params.input, "${projectDir}/assets/schema_input.json"))
-        .map { row -> 
+        .map { row ->
             // println row[0]
             // Get original file name and strip compound VCF extensions
             def file_name = file(row[0].datafile).getName()
