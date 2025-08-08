@@ -8,6 +8,8 @@
 
 include { VCFTOOLS    as VCFTOOLS_SITE_PI   }   from '../../modules/nf-core/vcftools/main'
 include { VCFTOOLS    as VCFTOOLS_HET       }   from '../../modules/nf-core/vcftools/main'
+// include { BCFTOOLS    as BCFTOOLS_ROH       }   from '../../modules/nf-core/bcftools/roh/main'
+include { TABIX_TABIX as TABIX              }   from '../../modules/nf-core/tabix/tabix/main'
 include { TABIX_BGZIP as BGZIP              }   from '../../modules/nf-core/tabix/bgzip/main'
 
 workflow FEATURES {
@@ -18,9 +20,11 @@ workflow FEATURES {
     main:
     ch_versions = Channel.empty()
 
-    // place saved for indexing input vcf if needed
+    // index the input vcf
+    ch_vcf_tbi = TABIX (vcf).tbi
+    ch_versions = ch_versions.mix( TABIX.out.versions )
 
-
+    // place saved for transfer vcf to bcf if needed
 
     // call vcftools for per site (base) nucleotide diversity
     VCFTOOLS_SITE_PI( vcf, site_pi_positions, [] )
@@ -35,8 +39,8 @@ workflow FEATURES {
     BGZIP ( VCFTOOLS_SITE_PI.out.sites_pi )
     ch_versions = ch_versions.mix ( BGZIP.out.versions.first() )
 
-
     emit:
+    vcf_tbi             = ch_vcf_tbi                       // channel: [ meta, vcf_tbi        ]
     compressed_sites_pi = BGZIP.out.output                 // channel: [ meta, output         ]
     heterozygosity      = VCFTOOLS_HET.out.heterozygosity  // channel: [ meta, heterozygosity ]
     versions            = ch_versions                      // channel: [ versions.yml         ]
