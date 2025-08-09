@@ -99,10 +99,17 @@ workflow PIPELINE_INITIALISATION {
     ch_positions = []
     }
 
+    // if ( params.snp_density_window ) {
+    //     ch_snp_density_window = Channel.from(params.snp_density_window)
+    // } else {
+    //     ch_snp_density_window = '1000'
+    // }
+
     emit:
-    samplesheet = ch_validated_samplesheet
-    positions   = ch_positions
-    versions    = ch_versions
+    samplesheet        = ch_validated_samplesheet
+    positions          = ch_positions
+    // snp_density_window = ch_snp_density_window
+    versions           = ch_versions
 }
 
 /*

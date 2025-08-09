@@ -25,8 +25,9 @@ include { FEATURES           } from '../subworkflows/local/features'
 workflow VARIANTCOMPOSITION {
 
     take:
-    ch_samplesheet // channel: samplesheet read in from --input
-    ch_positions
+    ch_samplesheet          // channel: samplesheet read in from --input
+    ch_positions            // channel: positions file to include or exclude
+    // ch_snp_density_window   // channel: size of the window for SNP density calculation
 
     main:
     // Initialize an empty versions channel
@@ -47,6 +48,7 @@ workflow VARIANTCOMPOSITION {
     FEATURES (
         ch_vcf,
         ch_positions
+        // ch_snp_density_window
     )
     ch_versions = ch_versions.mix( FEATURES.out.versions )
 
