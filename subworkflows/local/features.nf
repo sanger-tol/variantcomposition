@@ -1,7 +1,3 @@
-
-//      InDel size distribution
-//      Runs of homozygosity
-
 include { VCFTOOLS     as VCFTOOLS_SITE_PI          }   from '../../modules/nf-core/vcftools/main'
 include { VCFTOOLS     as VCFTOOLS_HET              }   from '../../modules/nf-core/vcftools/main'
 include { VCFTOOLS     as VCFTOOLS_SNP_DENSITY      }   from '../../modules/nf-core/vcftools/main'
@@ -47,7 +43,7 @@ workflow FEATURES {
         }
         .set { ch_vcf_tbi }
 
-    ch_vcf_tbi.view()
+    // ch_vcf_tbi.view()
 
     // Place saved for transfer VCF to BCF if needed
 

@@ -33,6 +33,8 @@ _Under construction_
      workflows use the "tube map" design for that. See https://nf-co.re/docs/guidelines/graphic_design/workflow_diagrams#examples for examples.   -->
 <!-- TODO nf-core: Fill in short bullet-pointed list of the default steps in the pipeline -->
 
+<img src="docs/images/variant_composition.png">
+
 ## Usage
 
 > [!NOTE]
