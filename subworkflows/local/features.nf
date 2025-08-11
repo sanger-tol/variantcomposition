@@ -21,29 +21,10 @@ workflow FEATURES {
     ch_versions = ch_versions.mix( TABIX.out.versions )
 
     // Combine the VCF and TBI channels as the input of BCFtools_ROH
-    // vcf
-    //     .join( ch_tbi )
-    //     .map { meta_vcf, vcf_file, meta_tbi, tbi -> [ meta_vcf + meta_tbi, vcf_file, tbi ] }
-    //     .set { ch_vcf_tbi }
-
-    // Key VCF files by filename (without .tbi)
-    vcf_keyed = vcf.map { meta, file -> tuple(file.simpleName, meta, file) }
-
-    // Key TBI files by filename (without .tbi)
-    tbi_keyed = ch_tbi.map { meta, file ->
-        def baseName = file.simpleName.replaceFirst(/\.tbi$/, '')
-        tuple(baseName, meta, file)
-    }
-
-    // Join matching pairs
-    vcf_keyed
-        .join(tbi_keyed)
-        .map { id, meta_vcf, vcf_file, meta_tbi, tbi_file ->
-        [ meta_vcf + meta_tbi, vcf_file, tbi_file ]
-        }
+    vcf.mix( ch_tbi )
+        .groupTuple()
+        .map { meta, files -> [ meta, files [0], files [1] ] }
         .set { ch_vcf_tbi }
-
-    // ch_vcf_tbi.view()
 
     // Place saved for transfer VCF to BCF if needed
 
