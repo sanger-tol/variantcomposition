@@ -37,7 +37,7 @@ workflow FEATURES {
     ch_versions = ch_versions.mix( VCFTOOLS_HET.out.versions )
 
     // Call VCFtools for SNP density
-    // need to define a window size, currently using 1000
+    // need to define a window size, currently using 1 kb
     VCFTOOLS_SNP_DENSITY( vcf, [], [] )
     ch_versions = ch_versions.mix( VCFTOOLS_SNP_DENSITY.out.versions )
 
@@ -49,7 +49,7 @@ workflow FEATURES {
     VCFTOOLS_INDEL_LENGTH( vcf, [], [] )
     ch_versions = ch_versions.mix( VCFTOOLS_INDEL_LENGTH.out.versions )
 
-    // Call BCFtools for runs of homozygosity
+    // Call BCFtools for ROH
     BCFTOOLS_ROH( ch_vcf_tbi, [ [], [] ], [], [], [], [] )
     ch_versions = ch_versions.mix( BCFTOOLS_ROH.out.versions )
 

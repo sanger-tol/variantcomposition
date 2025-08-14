@@ -39,7 +39,7 @@ workflow VARIANTCOMPOSITION {
     //
     INPUT_CHECK ( ch_samplesheet ).vcf
         .set { ch_vcf }
-
+    ch_versions = ch_versions.mix( INPUT_CHECK.out.versions )
 
     //
     // SUBWORKFLOW: FEATURES
