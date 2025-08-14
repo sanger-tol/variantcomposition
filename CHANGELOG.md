@@ -3,10 +3,10 @@
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [[0.1.0](https://github.com/sanger-tol/variantcomposition/releases/tag/0.1.0)] - The Shire - [date]
+## [[0.1.0](https://github.com/sanger-tol/variantcomposition/releases/tag/0.1.0)] - Minas Anor - [date]
 
-<!-- Can we use cities in LOTR to name the releases? The path of Frodo and Sam :)
-The Shire - Bree - Weathertop - Rivendell - ...
+<!-- Can we use cities in LOTR to name the releases? :)
+Minas Anor (meaning: Tower of the Sun) is the old name of Minas Tirith.
 -->
 
 Initial release of sanger-tol/variantcomposition, created with the [nf-core](https://nf-co.re/) template version 3.3.1.
