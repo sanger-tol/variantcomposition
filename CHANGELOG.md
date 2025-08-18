@@ -3,10 +3,11 @@
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [[0.1.0](https://github.com/sanger-tol/variantcomposition/releases/tag/0.1.0)] - Minas Anor - [date]
+## [[0.1.0](https://github.com/sanger-tol/variantcomposition/releases/tag/0.1.0)] - Laurelin - [date]
 
-<!-- Can we use cities in LOTR to name the releases? :)
-Minas Anor (meaning: Tower of the Sun) is the old name of Minas Tirith.
+<!-- Can we use plants' name in Tolkein's world to name the releases? :)
+Laurelin was one of the two trees of Valinor, the other being Telperion.
+These trees, a gold tree and a silver tree respectively, brought light to the lands before the creation of the Sun and Moon.
 -->
 
 Initial release of sanger-tol/variantcomposition, created with the [nf-core](https://nf-co.re/) template version 3.3.1.
@@ -39,7 +40,8 @@ Note, since the pipeline is using Nextflow DSL2, each process will be run with i
 
 | Dependency | Old version | New version |
 | ---------- | ----------- | ----------- |
-| SAMtools   |             | 1.21        |
+| Htslib     |             | 1.21        |
+| BCFtools   |             | 1.21        |
 | VCFtools   |             | 0.1.16      |
 
 <!-- Bgzip and BCFtools are part of SAMtools -->

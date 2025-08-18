@@ -12,7 +12,6 @@ include { methodsDescriptionText } from '../subworkflows/local/utils_nfcore_vari
 // SUBWORKFLOW: Consisting of a mix of local and nf-core/modules
 //
 
-include { INPUT_CHECK        } from '../subworkflows/local/input_check'
 include { FEATURES           } from '../subworkflows/local/features'
 
 
@@ -27,7 +26,6 @@ workflow VARIANTCOMPOSITION {
     take:
     ch_samplesheet          // channel: samplesheet read in from --input
     ch_positions            // channel: positions file to include or exclude
-    // ch_snp_density_window   // channel: size of the window for SNP density calculation
 
     main:
     // Initialize an empty versions channel
@@ -35,20 +33,12 @@ workflow VARIANTCOMPOSITION {
 
 
     //
-    // SUBWORKFLOW: Read in samplesheet, validate and stage input files
-    //
-    INPUT_CHECK ( ch_samplesheet ).vcf
-        .set { ch_vcf }
-    ch_versions = ch_versions.mix( INPUT_CHECK.out.versions )
-
-    //
     // SUBWORKFLOW: FEATURES
     //
 
     FEATURES (
-        ch_vcf,
+        ch_samplesheet,
         ch_positions
-        // ch_snp_density_window
     )
     ch_versions = ch_versions.mix( FEATURES.out.versions )
 

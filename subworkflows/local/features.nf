@@ -33,6 +33,8 @@ workflow FEATURES {
     ch_versions = ch_versions.mix( VCFTOOLS_SITE_PI.out.versions )
 
     // Call VCFtools to calculate heterozygosity (originally in variant-calling pipeline)
+    // This feature work with VCF files, output of gVCF only contains the header
+    // Plan to divide VCF and gVCF input into different channels, and only include VCF channel for this feature
     VCFTOOLS_HET( vcf, [], [] )
     ch_versions = ch_versions.mix( VCFTOOLS_HET.out.versions )
 

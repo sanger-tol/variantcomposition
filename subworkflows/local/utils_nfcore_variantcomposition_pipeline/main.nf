@@ -70,23 +70,12 @@ workflow PIPELINE_INITIALISATION {
     Channel
         .fromList(samplesheetToList(params.input, "${projectDir}/assets/schema_input.json"))
         .map { row ->
-            // Get original file name and strip compound VCF extensions
-            def file_name = file(row[0].datafile).getName()
-            def file_type = file(row[0].datatype).getName()
-            def file_id = file_name.replaceAll(/\.g?\.?vcf(\.gz)?$/, "")
-            // Add clean id to meta
-            def meta = row[0] + [id: file_id]
-            // println(meta)
-            return [meta, file(row[0].datafile, checkIfExists: true)]
+            def meta = row[0] + [id: file(row[0].datafile).baseName]
+            return [meta, file(row[0].datafile)]
         }
         .set { ch_samplesheet }
-    // ch_samplesheet.view()
-    validateInputSamplesheet(ch_samplesheet)
-        .set { ch_validated_samplesheet }
 
-    // ch_validated_samplesheet.view()
-
-    // Creat channel for positions
+    // Creat channel for include/exclude positions
 
     if ( (params.include_positions) && (params.exclude_positions) ){
     exit 1, "Only one positions file can be given to include or exclude."
@@ -98,16 +87,9 @@ workflow PIPELINE_INITIALISATION {
     ch_positions = []
     }
 
-    // if ( params.snp_density_window ) {
-    //     ch_snp_density_window = Channel.from(params.snp_density_window)
-    // } else {
-    //     ch_snp_density_window = '1000'
-    // }
-
     emit:
-    samplesheet        = ch_validated_samplesheet
+    samplesheet        = ch_samplesheet
     positions          = ch_positions
-    // snp_density_window = ch_snp_density_window
     versions           = ch_versions
 }
 
@@ -165,30 +147,26 @@ workflow PIPELINE_COMPLETION {
 
 //
 // Validate channels from input samplesheet
+// place saved for potential future use
 //
 
-def validateInputSamplesheet(channel) {
-    // def seen = [:].withDefault { 0 }
-    def validFormats = [".vcf.gz", ".g.vcf.gz", ".vcf", ".g.vcf"]
+// def validateInputSamplesheet(channel) {
+//     def seen = [:].withDefault { 0 }
+//     def validFormats = [".vcf.gz", ".g.vcf.gz", ".vcf", ".g.vcf"]
 
-    return channel.map { sample ->
-        def (meta, file) = sample
+//     return channel.map { sample ->
+//         def (meta, file) = sample
 
-        // Replace spaces with underscores in sample names
-        meta.sample = meta.sample.replace(" ", "_")
+//         // Replace spaces with underscores in sample names
+//         meta.sample = meta.sample.replace(" ", "_")
 
-        // Validate that the file path is non-empty and has a valid format
-        if (!file || !validFormats.any { file.toString().endsWith(it) }) {
-            error( "Data file is required and must have a valid extension: ${file}" )
-        }
+//         // Allow handling replicates by adding the number of times (T) the sample name been seen
+//         seen[meta.sample] += 1
+//         meta.sample = "${meta.sample}_${seen[meta.sample]}"
 
-        // // Allow handling replicates by adding the number of times (T) the sample name been seen
-        // seen[meta.sample] += 1
-        // meta.sample = "${meta.sample}_${seen[meta.sample]}"
-
-        return [meta, file]
-    }
-}
+//         return [meta, file]
+//     }
+// }
 
 //
 // Sanger-ToL logo

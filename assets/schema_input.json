@@ -21,6 +21,8 @@
             },
             "datafile": {
                 "type": "string",
+                "format": "file-path",
+                "exists": true,
                 "pattern": "^\\S+\\.(vcf|vcf.gz|g.vcf|g.vcf.gz)$",
                 "errorMessage": "Data file cannot contain spaces and must be VCF/gVCF",
                 "meta": ["datafile"]

@@ -30,7 +30,6 @@ workflow SANGERTOL_VARIANTCOMPOSITION {
     take:
     samplesheet // channel: samplesheet read in from --input
     positions
-    // snp_density_window
 
     main:
 
@@ -40,7 +39,6 @@ workflow SANGERTOL_VARIANTCOMPOSITION {
     VARIANTCOMPOSITION (
         samplesheet,
         positions
-        // snp_density_window
     )
 }
 /*
@@ -70,7 +68,6 @@ workflow {
     SANGERTOL_VARIANTCOMPOSITION (
         PIPELINE_INITIALISATION.out.samplesheet,
         PIPELINE_INITIALISATION.out.positions
-        // PIPELINE_INITIALISATION.out.snp_density_window
     )
     //
     // SUBWORKFLOW: Run completion tasks
