@@ -1,13 +1,81 @@
 # sanger-tol/variantcomposition: Usage
 
-So you have found this usage file of Sanger-ToL Variant-composition pipeline. Well done! (already?)
+Welcome! You've found this usage guide for the **Sanger-ToL Variant Composition pipeline**. Well done! :tada:
 
-Yes. Nextflow is a complex workflow system. Being here means you have considered analysing your data in a pipeline, you decided to use Nextflow (nice!), and you have found us (woohoo!). Aren't those such big complishments? :star2:
+Yes. Nextflow is a complex workflow system. Being here means you've considered analysing your data in a pipeline, you've chosen Nextflow (great choice!), and you've found us (woohoo!). That's already a big set of accomplishments. :star2:
+
+Before getting started, let's set a baseline: this documentation assumes your computer runs **Linux** or **macOS**, since we'll be working a lot with the command line interface (CLI). If you on Windows, don't worry - you can still join in by setting up a Linux-like environment. The easiest way is via **PowerShell + WSL**. See [this guide](https://seqera.io/blog/setup-nextflow-on-windows/) for instructions.
+
+This guide will walk you through the **minimum setup** you need for running Nextflow pipelines, and then show you how to launch this variant-composition pipeline step-by-step. If you're already familiar with some parts, feel free to skip ahead :racehorse:. It's even better if you spot errors in this documentation, or you have feedback on the pipeline itself! Please let us know through [this form](https://forms.gle/Rn1bWMXamhdoBBeDA). A real person (yes, me :smile:) will read it.
+
+Ready? Let's get started! :rocket:
+
+
+## Introduction
+
+This guide takes you through:
+1. Setting up the environment, like a stage, for Nextflow to perform on :mirror_ball:
+2. Installing Nextflow - our performer :dancer: - with dependencies as a set of instrument Nextflow perform with :violin:
+3. Running the Variant Composition pipeline, the symphony our performer play :musical_score:
+
+If that's the concert you came for, you're in the right place. :wink:
+
+## Setting up the Environment
+
+### Homebrew :beer:
+
+First stop: `Homebrew`. It’s a package manager that makes installing software simple and consistent across macOS and Linux.
+
+Sanger users: `Homebrew` is already available in the software database. Just search for it and hit the install button.
+
+Installing it yourself: paste the following command into a macOS Terminal or Linux shell:
+
+```bash
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+```
+
+Homebrew will explain what it plans to do and ask for permission before proceeding.
+
+If you’re curious (or just love documentation), check out the [Homebrew website](https://brew.sh/) for more details.
+
+Now you’ve got `Homebrew`. Cheers! :beers: Let's move on to the next step.
+
+
+### Dependencies :toolbox:
+
+Nextflow is writen in `Groovy`, which runs on the **Java Virtual Machine (JVM)**. That means you’ll need a Java Development Kit (JDK). The easiest option is to install `OpenJDK`, the open-source JDK that includes everything you need for `Groovy` and `Nextflow`.
+
+```bash
+brew install openjdk
+```
+That’s it - you’ve got Java installed! :heavy_check_mark:
+
+You might also have heard about `Conda` from other docs. `Conda` is both a package manager and an environment manager. Since we’re already using `Homebrew`, you don’t strictly need `Conda` here. But if you’d like to have it anyway (it’s handy in many bioinformatics workflows), we recommend the lighter-weight, community-driven version `Miniforge`. It’s small, simple, and actively maintained by the conda-forge community :heartbeat:.
+
+```bash
+brew install --cask miniforge
+
+```
+This gives you Conda without the bloat. :fairy:
+
+
+### Containers :passenger_ship:
+
+One of the best parts of running this pipeline is that you don’t need to install all the individual tools yourself - they’re wrapped in containers. Think of a container as a 'ready-made costume' for our performer: it contains all the software the pipeline needs, so your system stays clean and you avoid version conflicts.
+
+To run these containers, you just need to install `Docker` (your 'dock' where the ships come in):
+
+```bash
+brew install docker
+
+```
+And that’s it! :popcorn: You now have everything prepared for our Nextflow performer to take the stage. :dancer:
+
+## Nextflow
 
 
 
-
-
+## Pipeline
 
 
 
@@ -18,7 +86,7 @@ Yes. Nextflow is a complex workflow system. Being here means you have considered
 
 > _Documentation of pipeline parameters is generated automatically from the pipeline schema and can no longer be found in markdown files._
 
-## Introduction
+
 
 The pipeline takes VCF and gVCF files from a samplesheet in CSV format, and analyse variant compositions.
 

@@ -66,7 +66,7 @@ workflow FEATURES {
     heterozygosity      = VCFTOOLS_HET.out.heterozygosity      // channel: [ meta, heterozygosity   ]
     snp_density         = VCFTOOLS_SNP_DENSITY.out.snp_density // channel: [ meta, snp_density      ]
     allele_frequency    = VCFTOOLS_ALLELE_FREQUENCY.out.frq    // channel: [ meta, allele_frequency ]
-    indel_lengths       = VCFTOOLS_INDEL_LENGTH.out.indel_hist // channel: [ meta, indel_lengths   ]
+    indel_lengths       = VCFTOOLS_INDEL_LENGTH.out.indel_hist // channel: [ meta, indel_lengths    ]
     roh                 = BCFTOOLS_ROH.out.roh                 // channel: [ meta, roh              ]
     versions            = ch_versions                          // channel: [ versions.yml           ]
 

@@ -40,7 +40,7 @@ Note, since the pipeline is using Nextflow DSL2, each process will be run with i
 
 | Dependency | Old version | New version |
 | ---------- | ----------- | ----------- |
-| Htslib     |             | 1.21        |
+| HTSlib     |             | 1.21        |
 | BCFtools   |             | 1.21        |
 | VCFtools   |             | 0.1.16      |
 
