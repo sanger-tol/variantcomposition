@@ -1,5 +1,21 @@
 # sanger-tol/variantcomposition: Usage
 
+So you have found this usage file of Sanger-ToL Variant-composition pipeline. Well done! (already?)
+
+Yes. Nextflow is a complex workflow system. Being here means you have considered analysing your data in a pipeline, you decided to use Nextflow (nice!), and you have found us (woohoo!). Aren't those such big complishments? :star2:
+
+
+
+
+
+
+
+
+
+
+
+
+
 > _Documentation of pipeline parameters is generated automatically from the pipeline schema and can no longer be found in markdown files._
 
 ## Introduction
