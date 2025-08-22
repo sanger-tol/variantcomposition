@@ -11,7 +11,6 @@ workflow FEATURES {
     take:
     vcf                // [ val(meta), vcf ]
     site_pi_positions  // path to positions file to include or exclude
-    // snp_density_window // size of the window for SNP density calculation
 
     main:
     ch_versions = Channel.empty()
@@ -21,9 +20,7 @@ workflow FEATURES {
     ch_versions = ch_versions.mix( TABIX.out.versions )
 
     // Combine the VCF and TBI channels as the input of BCFtools_ROH
-    vcf.mix( ch_tbi )
-        .groupTuple()
-        .map { meta, files -> [ meta, files [0], files [1] ] }
+    vcf.join( ch_tbi )
         .set { ch_vcf_tbi }
 
     // Place saved for transfer VCF to BCF if needed
@@ -39,7 +36,7 @@ workflow FEATURES {
     ch_versions = ch_versions.mix( VCFTOOLS_HET.out.versions )
 
     // Call VCFtools for SNP density
-    // need to define a window size, currently using 1 kb
+    // the default window size is 1 kb
     VCFTOOLS_SNP_DENSITY( vcf, [], [] )
     ch_versions = ch_versions.mix( VCFTOOLS_SNP_DENSITY.out.versions )
 

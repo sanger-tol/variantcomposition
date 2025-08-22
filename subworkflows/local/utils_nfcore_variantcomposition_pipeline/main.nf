@@ -32,6 +32,8 @@ workflow PIPELINE_INITIALISATION {
     nextflow_cli_args //   array: List of positional nextflow CLI args
     outdir            //  string: The output directory where the results will be saved
     input             //  string: Path to input samplesheet
+    include_positions
+    exclude_positions
 
     main:
 
@@ -69,22 +71,22 @@ workflow PIPELINE_INITIALISATION {
 
     Channel
         .fromList(samplesheetToList(params.input, "${projectDir}/assets/schema_input.json"))
-        .map { row ->
-            def meta = row[0] + [id: file(row[0].datafile).baseName]
-            return [meta, file(row[0].datafile)]
+        .map { meta, datafile ->
+            def new_meta = meta + [id: datafile.baseName]
+            return [new_meta, datafile]
         }
         .set { ch_samplesheet }
 
     // Creat channel for include/exclude positions
 
-    if ( (params.include_positions) && (params.exclude_positions) ){
-    exit 1, "Only one positions file can be given to include or exclude."
-    } else if (params.include_positions){
-    ch_positions = Channel.fromPath(params.include_positions)
-    } else if (params.exclude_positions){
-    ch_positions = Channel.fromPath(params.exclude_positions)
+    if ( (include_positions) && (exclude_positions) ){
+        exit 1, "Only one positions file can be given to include or exclude."
+    } else if (include_positions){
+        ch_positions = include_positions
+    } else if (exclude_positions){
+        ch_positions = exclude_positions
     } else {
-    ch_positions = []
+        ch_positions = []
     }
 
     emit:
@@ -147,49 +149,18 @@ workflow PIPELINE_COMPLETION {
 
 //
 // Validate channels from input samplesheet
-// place saved for potential future use
 //
+def validateInputSamplesheet(input) {
+    def (metas, fastqs) = input[1..2]
 
-// def validateInputSamplesheet(channel) {
-//     def seen = [:].withDefault { 0 }
-//     def validFormats = [".vcf.gz", ".g.vcf.gz", ".vcf", ".g.vcf"]
+    // Check that multiple runs of the same sample are of the same datatype i.e. single-end / paired-end
+    def endedness_ok = metas.collect{ meta -> meta.single_end }.unique().size == 1
+    if (!endedness_ok) {
+        error("Please check input samplesheet -> Multiple runs of a sample must be of the same datatype i.e. single-end or paired-end: ${metas[0].id}")
+    }
 
-//     return channel.map { sample ->
-//         def (meta, file) = sample
-
-//         // Replace spaces with underscores in sample names
-//         meta.sample = meta.sample.replace(" ", "_")
-
-//         // Allow handling replicates by adding the number of times (T) the sample name been seen
-//         seen[meta.sample] += 1
-//         meta.sample = "${meta.sample}_${seen[meta.sample]}"
-
-//         return [meta, file]
-//     }
-// }
-
-//
-// Sanger-ToL logo
-//
-def sangerTolLogo(monochrome_logs=true) {
-    Map colors = logColours(monochrome_logs)
-    String.format(
-        """\n
-        ${dashedLine(monochrome_logs)}
-        ${colors.blue}   _____                               ${colors.green} _______   ${colors.red} _${colors.reset}
-        ${colors.blue}  / ____|                              ${colors.green}|__   __|  ${colors.red}| |${colors.reset}
-        ${colors.blue} | (___   __ _ _ __   __ _  ___ _ __ ${colors.reset} ___ ${colors.green}| |${colors.yellow} ___ ${colors.red}| |${colors.reset}
-        ${colors.blue}  \\___ \\ / _` | '_ \\ / _` |/ _ \\ '__|${colors.reset}|___|${colors.green}| |${colors.yellow}/ _ \\${colors.red}| |${colors.reset}
-        ${colors.blue}  ____) | (_| | | | | (_| |  __/ |        ${colors.green}| |${colors.yellow} (_) ${colors.red}| |____${colors.reset}
-        ${colors.blue} |_____/ \\__,_|_| |_|\\__, |\\___|_|        ${colors.green}|_|${colors.yellow}\\___/${colors.red}|______|${colors.reset}
-        ${colors.blue}                      __/ |${colors.reset}
-        ${colors.blue}                     |___/${colors.reset}
-        ${colors.purple}  ${workflow.manifest.name} ${getWorkflowVersion()}${colors.reset}
-        ${dashedLine(monochrome_logs)}
-        """.stripIndent()
-    )
+    return [ metas[0], fastqs ]
 }
-
 //
 // Generate methods description for MultiQC
 //

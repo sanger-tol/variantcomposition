@@ -39,19 +39,35 @@
                 }
             }
         },
-        "reference_genome_options": {
-            "title": "Reference genome options",
+        "variant_analysis_options": {
+            "title": "Variant Analysis Options",
             "type": "object",
-            "description": "Reference genome related files and options required for the workflow.",
+            "description": "Parameters for analyzing and filtering genomic variants.",
             "default": "",
             "properties": {
                 "include_positions": {
                     "type": "string",
-                    "description": "Path to a file with a set of sites on the basis of a list of positions to include, Each line of the input file should contain a (tab-separated) chromosome and position."
+                    "description": "Path to a file with a set of sites on the basis of a list of positions to include. Each line of the input file should contain a (tab-separated) chromosome and position.",
+                    "format": "file-path",
+                    "exists": true
                 },
                 "exclude_positions": {
                     "type": "string",
-                    "description": "Path to a file with a set of sites on the basis of a list of positions to exclude,Each line of the input file should contain a (tab-separated) chromosome and position."
+                    "description": "Path to a file with a set of sites on the basis of a list of positions to exclude. Each line of the input file should contain a (tab-separated) chromosome and position.",
+                    "format": "file-path",
+                    "exists": true
+                },
+                "snp_density_window": {
+                    "type": "integer",
+                    "default": 1000,
+                    "description": "The window size (in base pairs) used to calculate SNP density across the genome.",
+                    "help_text": "Defines the size of genomic windows for calculating SNP density. Smaller windows give finer resolution but more noise."
+                },
+                "roh_threshold": {
+                    "type": "number",
+                    "default": 0.4,
+                    "description": "Allele frequency threshold for identifying runs of homozygosity (ROH). Sites with unknown or lower allele frequency will be skipped.",
+                    "help_text": "Used to filter variants when identifying runs of homozygosity. Higher values are more stringent."
                 }
             }
         },
@@ -180,7 +196,7 @@
             "$ref": "#/$defs/input_output_options"
         },
         {
-            "$ref": "#/$defs/reference_genome_options"
+            "$ref": "#/$defs/variant_analysis_options"
         },
         {
             "$ref": "#/$defs/institutional_config_options"
