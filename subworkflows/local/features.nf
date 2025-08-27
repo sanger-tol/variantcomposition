@@ -1,11 +1,12 @@
-include { VCFTOOLS     as VCFTOOLS_SITE_PI          }   from '../../modules/nf-core/vcftools/main'
-include { VCFTOOLS     as VCFTOOLS_HET              }   from '../../modules/nf-core/vcftools/main'
-include { VCFTOOLS     as VCFTOOLS_SNP_DENSITY      }   from '../../modules/nf-core/vcftools/main'
-include { VCFTOOLS     as VCFTOOLS_ALLELE_FREQUENCY }   from '../../modules/nf-core/vcftools/main'
-include { VCFTOOLS     as VCFTOOLS_INDEL_LENGTH     }   from '../../modules/nf-core/vcftools/main'
-include { BCFTOOLS_ROH as BCFTOOLS_ROH              }   from '../../modules/nf-core/bcftools/roh/main'
-include { TABIX_TABIX  as TABIX                     }   from '../../modules/nf-core/tabix/tabix/main'
-include { TABIX_BGZIP  as BGZIP                     }   from '../../modules/nf-core/tabix/bgzip/main'
+include { VCFTOOLS       as VCFTOOLS_SITE_PI          }   from '../../modules/nf-core/vcftools/main'
+include { VCFTOOLS       as VCFTOOLS_HET              }   from '../../modules/nf-core/vcftools/main'
+include { VCFTOOLS       as VCFTOOLS_SNP_DENSITY      }   from '../../modules/nf-core/vcftools/main'
+include { VCFTOOLS       as VCFTOOLS_ALLELE_FREQUENCY }   from '../../modules/nf-core/vcftools/main'
+include { VCFTOOLS       as VCFTOOLS_INDEL_LENGTH     }   from '../../modules/nf-core/vcftools/main'
+include { BCFTOOLS_ROH   as BCFTOOLS_ROH              }   from '../../modules/nf-core/bcftools/roh/main'
+include { BCFTOOLS_STATS as BCFTOOLS_STATS            }   from '../../modules/nf-core/bcftools/stats/main'
+include { TABIX_TABIX    as TABIX                     }   from '../../modules/nf-core/tabix/tabix/main'
+include { TABIX_BGZIP    as BGZIP                     }   from '../../modules/nf-core/tabix/bgzip/main'
 
 workflow FEATURES {
     take:
@@ -52,6 +53,10 @@ workflow FEATURES {
     BCFTOOLS_ROH( ch_vcf_tbi, [ [], [] ], [], [], [], [] )
     ch_versions = ch_versions.mix( BCFTOOLS_ROH.out.versions )
 
+    // Call BCFtools stats for general QC
+    BCFTOOLS_STATS( ch_vcf_tbi, [ [], [] ], [ [], [] ], [ [], [] ], [ [], [] ], [ [], [] ] )
+    ch_versions = ch_versions.mix( BCFTOOLS_STATS.out.versions )
+
     // Compress output files
     // current output to compress: pi
     BGZIP ( VCFTOOLS_SITE_PI.out.sites_pi )
@@ -63,8 +68,9 @@ workflow FEATURES {
     heterozygosity      = VCFTOOLS_HET.out.heterozygosity      // channel: [ meta, heterozygosity   ]
     snp_density         = VCFTOOLS_SNP_DENSITY.out.snp_density // channel: [ meta, snp_density      ]
     allele_frequency    = VCFTOOLS_ALLELE_FREQUENCY.out.frq    // channel: [ meta, allele_frequency ]
-    indel_lengths       = VCFTOOLS_INDEL_LENGTH.out.indel_hist // channel: [ meta, indel_lengths   ]
+    indel_lengths       = VCFTOOLS_INDEL_LENGTH.out.indel_hist // channel: [ meta, indel_lengths    ]
     roh                 = BCFTOOLS_ROH.out.roh                 // channel: [ meta, roh              ]
+    stats               = BCFTOOLS_STATS.out.stats             // channel: [ meta, stats            ]
     versions            = ch_versions                          // channel: [ versions.yml           ]
 
 }
