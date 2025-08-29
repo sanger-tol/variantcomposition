@@ -3,7 +3,7 @@
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [[0.1.0](https://github.com/sanger-tol/variantcomposition/releases/tag/0.1.0)] - Laurelin - [date]
+## [[0.1.0](https://github.com/sanger-tol/variantcomposition/releases/tag/0.1.0)] - Laurelin - [2025-08-29]
 
 <!-- Can we use plants' name in Tolkein's world to name the releases? :)
 Laurelin was one of the two trees of Valinor, the other being Telperion.
