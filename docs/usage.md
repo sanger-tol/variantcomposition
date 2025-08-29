@@ -8,7 +8,7 @@ The pipeline takes VCF and gVCF files from a samplesheet in CSV format, and anal
 
 ## Samplesheet input
 
-You will need to create a samplesheet with information about the samples you would like to analyse before running the pipeline. Use the `input` parameter to specify its location. It has to be a comma-separated file with 3 columns, and a header row as shown in the examples below.
+You will need to create a samplesheet with information about the samples you would like to analyse before running the pipeline. Use this parameter to specify its location. It has to be a comma-separated file with 3 columns, and a header row as shown in the examples below.
 
 ```bash
 --input '[path to samplesheet file]'
@@ -54,7 +54,7 @@ An [example samplesheet](../assets/samplesheet.csv) has been provided with the p
 The typical command for running the pipeline is as follows:
 
 ```bash
-nextflow run sanger-tol/variantcomposition --input ./samplesheet.csv --outdir <OUTDIR> -profile docker
+nextflow run sanger-tol/variantcomposition --input ./samplesheet.csv --outdir ./results  -profile docker
 ```
 
 This will launch the pipeline with the `docker` configuration profile. See below for more information about profiles.
