@@ -32,6 +32,8 @@ workflow PIPELINE_INITIALISATION {
     nextflow_cli_args //   array: List of positional nextflow CLI args
     outdir            //  string: The output directory where the results will be saved
     input             //  string: Path to input samplesheet
+    include_positions
+    exclude_positions
 
     main:
 
@@ -69,27 +71,28 @@ workflow PIPELINE_INITIALISATION {
 
     Channel
         .fromList(samplesheetToList(params.input, "${projectDir}/assets/schema_input.json"))
-        .map {
-            meta, fastq_1, fastq_2 ->
-                if (!fastq_2) {
-                    return [ meta.id, meta + [ single_end:true ], [ fastq_1 ] ]
-                } else {
-                    return [ meta.id, meta + [ single_end:false ], [ fastq_1, fastq_2 ] ]
-                }
-        }
-        .groupTuple()
-        .map { samplesheet ->
-            validateInputSamplesheet(samplesheet)
-        }
-        .map {
-            meta, fastqs ->
-                return [ meta, fastqs.flatten() ]
+        .map { meta, datafile ->
+            def new_meta = meta + [id: datafile.baseName]
+            return [new_meta, datafile]
         }
         .set { ch_samplesheet }
 
+    // Creat channel for include/exclude positions
+
+    if ( (include_positions) && (exclude_positions) ){
+        exit 1, "Only one positions file can be given to include or exclude."
+    } else if (include_positions){
+        ch_positions = include_positions
+    } else if (exclude_positions){
+        ch_positions = exclude_positions
+    } else {
+        ch_positions = []
+    }
+
     emit:
-    samplesheet = ch_samplesheet
-    versions    = ch_versions
+    samplesheet        = ch_samplesheet
+    positions          = ch_positions
+    versions           = ch_versions
 }
 
 /*
