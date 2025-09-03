@@ -109,7 +109,11 @@ nextflow info
 If you see version details appear, congratulations! Your Nextflow performer is ready to shine on stage. :sparkles:
 
 
-## Pipeline 
+# Pipeline :musical_note:
+
+Now let's get the pipeline running and make some music with your data!
+The following sections provide the official usage guidelines. Don't worry if some parts seem unclear or if you encounter issues – we're here to help! Feel free to [send me your questions](https://forms.gle/Rn1bWMXamhdoBBeDA) or open an issue on our repository.
+
 
 > _Documentation of pipeline parameters is generated automatically from the pipeline schema and can no longer be found in markdown files._
 
