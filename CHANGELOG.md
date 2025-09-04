@@ -26,11 +26,13 @@ Initial release of sanger-tol/variantcomposition, created with the [nf-core](htt
 
 This release with the following initial parameters:
 
-| Old parameter | New parameter       |
-| ------------- | ------------------- |
-|               | --input             |
-|               | --include_positions |
-|               | --exclude_positions |
+| Old parameter | New parameter        |
+| ------------- | -------------------- |
+|               | --input              |
+|               | --include_positions  |
+|               | --exclude_positions  |
+|               | --snp_density_window |
+|               | --roh_threshold      |
 
 > **NB:** Parameter has been **updated** if both old and new parameter information is present. </br> **NB:** Parameter has been **added** if just the new parameter information is present. </br> **NB:** Parameter has been **removed** if new parameter information isn't present.
 
