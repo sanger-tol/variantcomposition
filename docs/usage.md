@@ -10,16 +10,15 @@ This documentation will walk you through the **minimum setup** you need for runn
 
 Ready? Let's get started! :rocket:
 
-
 ## Introduction
 
 I will take you through:
+
 1. Setting up the environment, like a stage, for Nextflow to perform on :mirror_ball:
 2. Installing Nextflow, our performer :man_dancing:, with dependencies as a set of instrument Nextflow perform with :violin:
 3. Running the variant-composition pipeline, the symphony our performer play :musical_score:
 
 If that's the concert you came for, you're in the right place. :wink:
-
 
 ## Setting up the Environment
 
@@ -34,12 +33,12 @@ If you install it yourself, please paste the following command into a macOS Term
 ```bash
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 ```
+
 Homebrew will explain what it plans to do and ask for permission before proceeding.
 
 If you’re curious (or just love documentation), check out the [Homebrew website](https://brew.sh/) for more details.
 
 Now you’ve got `Homebrew`. Cheers! :beers: Let's move on to the next step.
-
 
 ### Dependencies :toolbox:
 
@@ -48,6 +47,7 @@ Nextflow is writen in `Groovy`, which runs on the **Java Virtual Machine (JVM)**
 ```bash
 brew install openjdk
 ```
+
 That’s it - you’ve got Java installed! :heavy_check_mark:
 
 You might also have heard about `Conda` from other docs. `Conda` is both a package manager and an environment manager. Since we’re already using `Homebrew`, you don’t strictly need `Conda` here. But if you’d like to have it anyway (it’s handy in many bioinformatics workflows), we recommend the lighter-weight, community-driven version `Miniforge`. It’s small, simple, and actively maintained by the conda-forge community :heartbeat:.
@@ -55,8 +55,8 @@ You might also have heard about `Conda` from other docs. `Conda` is both a packa
 ```bash
 brew install --cask miniforge
 ```
-This gives you Conda without the bloat. :fairy:
 
+This gives you Conda without the bloat. :fairy:
 
 ### Containers :passenger_ship:
 
@@ -67,10 +67,10 @@ There are a few container options listed in the `README` (the front page of this
 ```bash
 brew install docker
 ```
+
 I personally like `Docker` because its logo is an adorable whale :whale: carrying containers on its back. :smile:
 
 And that’s it! :popcorn: You now have everything prepared for our Nextflow performer to take the stage. :dancer:
-
 
 ## Nextflow :rainbow:
 
@@ -99,21 +99,20 @@ Now, we need to let the computer know where the dressing room is. To do this, ed
 
 `export PATH="$PATH:$HOME/.local/bin"`
 
-Save, and close the file. 
+Save, and close the file.
 
 Finally, let's check if the performer is ready. In your Terminal (or Linux shell), run:
 
 ```bash
 nextflow info
 ```
-If you see version details appear, congratulations! Your Nextflow performer is ready to shine on stage. :sparkles:
 
+If you see version details appear, congratulations! Your Nextflow performer is ready to shine on stage. :sparkles:
 
 # Pipeline :musical_note:
 
 Now let's get the pipeline running and make some music with your data!
 The following sections provide the official usage guidelines. Don't worry if some parts seem unclear or if you encounter issues – we're here to help! Feel free to [send me your questions](https://forms.gle/Rn1bWMXamhdoBBeDA) or open an issue on our repository.
-
 
 > _Documentation of pipeline parameters is generated automatically from the pipeline schema and can no longer be found in markdown files._
 
