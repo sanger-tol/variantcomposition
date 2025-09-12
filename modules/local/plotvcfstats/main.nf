@@ -11,8 +11,9 @@ process BCFTOOLS_PLOTVCFSTATS {
     tuple val(meta), path(stats)
 
     output:
-    tuple val(meta), path("*.pdf"), emit: plot_pdf
-    path "versions.yml"           , emit: versions
+    tuple val(meta), path("*plots*")              , emit: plot_dir
+    tuple val(meta), path("*.pdf"), optional: true, emit: plot_pdf
+    path "versions.yml"                           , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -20,10 +21,19 @@ process BCFTOOLS_PLOTVCFSTATS {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
+
+    // plot-vcfstats requires an output directory, so create one with the prefix
+    // The PDF output is also copied to the results directory with a standard name
+
     """
+    mkdir -p ${prefix}_plots
+
     plot-vcfstats \\
+        -p ${prefix}_plots \\
         $args \\
-        $stats > ${prefix}.plot-vcfstats.pdf
+        $stats
+
+    cp ${prefix}_plots/*.pdf ${prefix}.plot-vcfstats.pdf
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

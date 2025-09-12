@@ -75,6 +75,7 @@ workflow FEATURES {
     indel_lengths       = VCFTOOLS_INDEL_LENGTH.out.indel_hist // channel: [ meta, indel_lengths    ]
     roh                 = BCFTOOLS_ROH.out.roh                 // channel: [ meta, roh              ]
     stats               = BCFTOOLS_STATS.out.stats             // channel: [ meta, stats            ]
+    plot_dir            = PLOTVCFSTATS.out.plot_dir            // channel: [ meta, plot_dir         ]
     plot_pdf            = PLOTVCFSTATS.out.plot_pdf            // channel: [ meta, plot_pdf         ]
     versions            = ch_versions                          // channel: [ versions.yml           ]
 
