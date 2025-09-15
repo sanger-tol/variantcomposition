@@ -28,6 +28,12 @@ process BCFTOOLS_PLOTVCFSTATS {
     """
     mkdir -p ${prefix}_plots
 
+    mkdir singularity_cache
+    mkdir nxf_home
+    export SINGULARITY_CACHEDIR=\$PWD/singularity_cache
+    export HOME=\$PWD/nxf_home
+
+
     plot-vcfstats \\
         -p ${prefix}_plots \\
         $args \\
