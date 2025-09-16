@@ -12,7 +12,9 @@ include { methodsDescriptionText } from '../subworkflows/local/utils_nfcore_vari
 // SUBWORKFLOW: Consisting of a mix of local and nf-core/modules
 //
 
-include { FEATURES           } from '../subworkflows/local/features'
+include { FEATURES             } from '../subworkflows/local/features'
+include { BCFTOOLS_STATS_PLOT  } from '../subworkflows/local/bcftools_stats_plot'
+include { TABIX_TABIX as TABIX } from '../modules/nf-core/tabix/tabix/main'
 
 
 /*
@@ -31,6 +33,14 @@ workflow VARIANTCOMPOSITION {
     // Initialize an empty versions channel
     ch_versions = Channel.empty()
 
+    // Index the input VCF
+    ch_tbi = TABIX( ch_samplesheet ).tbi
+    ch_versions = ch_versions.mix( TABIX.out.versions )
+
+    // Combine the VCF and TBI channels
+    ch_samplesheet
+        .join( ch_tbi )
+        .set { ch_vcf_tbi }
 
     //
     // SUBWORKFLOW: FEATURES
@@ -38,9 +48,19 @@ workflow VARIANTCOMPOSITION {
 
     FEATURES (
         ch_samplesheet,
+        ch_vcf_tbi,
         ch_positions
     )
     ch_versions = ch_versions.mix( FEATURES.out.versions )
+
+    //
+    // SUBWORKFLOW: BCFTOOLS_STATS_PLOT
+    //
+
+    BCFTOOLS_STATS_PLOT (
+        ch_vcf_tbi
+    )
+    ch_versions = ch_versions.mix( BCFTOOLS_STATS_PLOT.out.versions )
 
 
     //

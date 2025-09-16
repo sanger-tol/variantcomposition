@@ -4,28 +4,16 @@ include { VCFTOOLS              as VCFTOOLS_SNP_DENSITY      }   from '../../mod
 include { VCFTOOLS              as VCFTOOLS_ALLELE_FREQUENCY }   from '../../modules/nf-core/vcftools/main'
 include { VCFTOOLS              as VCFTOOLS_INDEL_LENGTH     }   from '../../modules/nf-core/vcftools/main'
 include { BCFTOOLS_ROH          as BCFTOOLS_ROH              }   from '../../modules/nf-core/bcftools/roh/main'
-include { BCFTOOLS_STATS        as BCFTOOLS_STATS            }   from '../../modules/nf-core/bcftools/stats/main'
-include { BCFTOOLS_PLOTVCFSTATS as PLOTVCFSTATS              }   from '../../modules/local/plotvcfstats/main'
-include { TABIX_TABIX           as TABIX                     }   from '../../modules/nf-core/tabix/tabix/main'
 include { TABIX_BGZIP           as BGZIP                     }   from '../../modules/nf-core/tabix/bgzip/main'
 
 workflow FEATURES {
     take:
     vcf                // [ val(meta), vcf ]
+    vcf_tbi
     site_pi_positions  // path to positions file to include or exclude
 
     main:
     ch_versions = Channel.empty()
-
-    // Index the input VCF
-    ch_tbi = TABIX( vcf ).tbi
-    ch_versions = ch_versions.mix( TABIX.out.versions )
-
-    // Combine the VCF and TBI channels as the input of BCFtools_ROH
-    vcf.join( ch_tbi )
-        .set { ch_vcf_tbi }
-
-    // Place saved for transfer VCF to BCF if needed
 
     // Call VCFtools for per-site (base) nucleotide diversity (originally in variant-calling pipeline)
     VCFTOOLS_SITE_PI( vcf, site_pi_positions, [] )
@@ -51,15 +39,8 @@ workflow FEATURES {
     ch_versions = ch_versions.mix( VCFTOOLS_INDEL_LENGTH.out.versions )
 
     // Call BCFtools for ROH
-    BCFTOOLS_ROH( ch_vcf_tbi, [ [], [] ], [], [], [], [] )
+    BCFTOOLS_ROH( vcf_tbi, [ [], [] ], [], [], [], [] )
     ch_versions = ch_versions.mix( BCFTOOLS_ROH.out.versions )
-
-    // Call BCFtools stats for general QC
-    BCFTOOLS_STATS( ch_vcf_tbi, [ [:], [] ], [ [:], [] ], [ [:], [] ], [ [:], [] ], [ [:], [] ] )
-    ch_versions = ch_versions.mix( BCFTOOLS_STATS.out.versions )
-    // Plot BCFtools stats in a PDF
-    PLOTVCFSTATS( BCFTOOLS_STATS.out.stats )
-    ch_versions = ch_versions.mix( PLOTVCFSTATS.out.versions )
 
     // Compress output files
     // current output to compress: pi
@@ -67,16 +48,12 @@ workflow FEATURES {
     ch_versions = ch_versions.mix ( BGZIP.out.versions.first() )
 
     emit:
-    tbi                 = ch_tbi                               // channel: [ meta, vcf_tbi          ]
     compressed_sites_pi = BGZIP.out.output                     // channel: [ meta, output           ]
     heterozygosity      = VCFTOOLS_HET.out.heterozygosity      // channel: [ meta, heterozygosity   ]
     snp_density         = VCFTOOLS_SNP_DENSITY.out.snp_density // channel: [ meta, snp_density      ]
     allele_frequency    = VCFTOOLS_ALLELE_FREQUENCY.out.frq    // channel: [ meta, allele_frequency ]
     indel_lengths       = VCFTOOLS_INDEL_LENGTH.out.indel_hist // channel: [ meta, indel_lengths    ]
     roh                 = BCFTOOLS_ROH.out.roh                 // channel: [ meta, roh              ]
-    stats               = BCFTOOLS_STATS.out.stats             // channel: [ meta, stats            ]
-    plot_dir            = PLOTVCFSTATS.out.plot_dir            // channel: [ meta, plot_dir         ]
-    plot_pdf            = PLOTVCFSTATS.out.plot_pdf            // channel: [ meta, plot_pdf         ]
     versions            = ch_versions                          // channel: [ versions.yml           ]
 
 }
