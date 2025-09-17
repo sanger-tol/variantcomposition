@@ -1,10 +1,10 @@
-include { VCFTOOLS              as VCFTOOLS_SITE_PI          }   from '../../modules/nf-core/vcftools/main'
-include { VCFTOOLS              as VCFTOOLS_HET              }   from '../../modules/nf-core/vcftools/main'
-include { VCFTOOLS              as VCFTOOLS_SNP_DENSITY      }   from '../../modules/nf-core/vcftools/main'
-include { VCFTOOLS              as VCFTOOLS_ALLELE_FREQUENCY }   from '../../modules/nf-core/vcftools/main'
-include { VCFTOOLS              as VCFTOOLS_INDEL_LENGTH     }   from '../../modules/nf-core/vcftools/main'
-include { BCFTOOLS_ROH          as BCFTOOLS_ROH              }   from '../../modules/nf-core/bcftools/roh/main'
-include { TABIX_BGZIP           as BGZIP                     }   from '../../modules/nf-core/tabix/bgzip/main'
+include { VCFTOOLS              as VCFTOOLS_SITE_PI          }   from '../../../modules/nf-core/vcftools/main'
+include { VCFTOOLS              as VCFTOOLS_HET              }   from '../../../modules/nf-core/vcftools/main'
+include { VCFTOOLS              as VCFTOOLS_SNP_DENSITY      }   from '../../../modules/nf-core/vcftools/main'
+include { VCFTOOLS              as VCFTOOLS_ALLELE_FREQUENCY }   from '../../../modules/nf-core/vcftools/main'
+include { VCFTOOLS              as VCFTOOLS_INDEL_LENGTH     }   from '../../../modules/nf-core/vcftools/main'
+include { BCFTOOLS_ROH          as BCFTOOLS_ROH              }   from '../../../modules/nf-core/bcftools/roh/main'
+include { TABIX_BGZIP           as BGZIP                     }   from '../../../modules/nf-core/tabix/bgzip/main'
 
 workflow FEATURES {
     take:
