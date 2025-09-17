@@ -34,7 +34,7 @@ On merge to `dev` and `main` branch, automated continuous integration tests run 
 
 The pipeline takes VCF and gVCF files from a samplesheet in CSV format, and analyse variant compositions.
 
-<img src="docs/images/variant_composition.png">
+<img src="docs/images/variant-composition.png">
 
 Steps involved:
 
