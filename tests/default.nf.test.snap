@@ -64,7 +64,7 @@
                 "GCA_947369205.1_OX376310.1_CANBKR010000003.1.pacbio.icCanRufa1_deepvariant.vcf.het:md5,50f65e1312a20e3549d15ad324764998",
                 "GCA_947369205.1_OX376310.1_CANBKR010000003.1.pacbio.icCanRufa1_deepvariant.vcf.indel.hist:md5,91658038280c1c92cefa00a3d7b3f357",
                 "GCA_947369205.1_OX376310.1_CANBKR010000003.1.pacbio.icCanRufa1_deepvariant.vcf.pi.gz:md5,9c35407165ea33601a554eaa7005d26b",
-                "GCA_947369205.1_OX376310.1_CANBKR010000003.1.pacbio.icCanRufa1_deepvariant.vcf.roh:md5,5bce4194740963a7a3a689120ba7b2c8",
+                "GCA_947369205.1_OX376310.1_CANBKR010000003.1.pacbio.icCanRufa1_deepvariant.vcf.roh:md5,df43a86b4551e2d1412ff215a728d66e",
                 "GCA_947369205.1_OX376310.1_CANBKR010000003.1.pacbio.icCanRufa1_deepvariant.vcf.snpden:md5,8b9a5eaba3e0965b04b2db2c7f0674ed",
                 "counts_by_af.indels.dat:md5,44cf9b4a67e1e85167605e3ac90fc0e7",
                 "counts_by_af.snps.dat:md5,6abd3f37e93f0f28ef24bcc3b39fcbcf",
@@ -92,6 +92,6 @@
             "nf-test": "0.9.2",
             "nextflow": "25.04.6"
         },
-        "timestamp": "2025-09-17T09:45:29.799257786"
+        "timestamp": "2025-09-17T15:38:49.110156175"
     }
 }
