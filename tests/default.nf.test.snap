@@ -70,7 +70,6 @@
                 "counts_by_af.snps.dat:md5,6abd3f37e93f0f28ef24bcc3b39fcbcf",
                 "indels.0.dat:md5,c5318f17c7c15640265310d761ebc971",
                 "indels.0.png:md5,d574b8613508ade91625a27da017fa21",
-                "plot-vcfstats.log:md5,96036c0a7198914ca6b5980ac0258480",
                 "plot.py:md5,1e3689f76809d376572f55ace11741f9",
                 "substitutions.0.png:md5,f8a85ea2ece3f8efb1c23390efd57e13",
                 "summary.tex:md5,cfa167a2b4e841502c8a3155dec760bb",
@@ -80,7 +79,6 @@
                 "counts_by_af.snps.dat:md5,6abd3f37e93f0f28ef24bcc3b39fcbcf",
                 "indels.0.dat:md5,c5318f17c7c15640265310d761ebc971",
                 "indels.0.png:md5,d574b8613508ade91625a27da017fa21",
-                "plot-vcfstats.log:md5,fcb5dfa47cc05928821a54d37ad077b7",
                 "plot.py:md5,526be755d26845bbe10f291ca7e8fd60",
                 "substitutions.0.png:md5,f8a85ea2ece3f8efb1c23390efd57e13",
                 "summary.tex:md5,b89ca3cd1bd18d1a1fce2697020b3215",
@@ -92,6 +90,6 @@
             "nf-test": "0.9.2",
             "nextflow": "25.04.6"
         },
-        "timestamp": "2025-09-17T17:26:21.284885443"
+        "timestamp": "2025-09-17T17:55:51.881555819"
     }
 }
