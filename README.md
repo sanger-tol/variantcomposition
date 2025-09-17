@@ -17,7 +17,6 @@
 
 _GSoC 2025 Project_
 
-
 ## Introduction
 
 **sanger-tol/variantcomposition** is a bioinformatics pipeline that takes the output of variant-calling (VCF and gVCF) as input, and perform basic variant component analysis.

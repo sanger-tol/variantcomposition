@@ -12,7 +12,7 @@ The pipeline is built using [Nextflow](https://www.nextflow.io/) and processes d
 
 - [VCF index](#vcf-index) - Create index of input VCF/gVCF files
 - [VCF processing](#vcf-processing) - Process VCF/gVCF files to analyse SNP density, InDel sizes, per-base nucleotide diversity, ROH, heterozygosity, and allele frequency
-- [VCF stats](#vcf-stats) - Parses VCF/gVCF files, produce text file stats and plot in a PDF file 
+- [VCF stats](#vcf-stats) - Parses VCF/gVCF files, produce text file stats and plot in a PDF file
 - [Pipeline information](#pipeline-information) - Report metrics generated during the workflow execution
 
 ### VCF index
