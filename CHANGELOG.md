@@ -21,7 +21,7 @@ Note, since the pipeline is using Nextflow DSL2, each process will be run with i
 
 > **NB:** Dependency has been **updated** if both old and new version information is present. </br> **NB:** Dependency has been **added** if just the new version information is present. </br> **NB:** Dependency has been **removed** if version information isn't present.
 
-## [[0.1.0](https://github.com/sanger-tol/variantcomposition/releases/tag/0.1.0)] - Laurelin - [date]
+## [[0.1.0](https://github.com/sanger-tol/variantcomposition/releases/tag/0.1.0)] - Laurelin - [2025-09-04]
 
 <!-- Can we use plants' name in Tolkein's world to name the releases? :)
 Laurelin was one of the two trees of Valinor, the other being Telperion.
