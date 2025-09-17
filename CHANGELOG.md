@@ -51,6 +51,13 @@ This release with the following initial parameters:
 |               | --exclude_positions  |
 |               | --snp_density_window |
 |               | --roh_threshold      |
+| Old parameter | New parameter        |
+| ------------- | -------------------- |
+|               | --input              |
+|               | --include_positions  |
+|               | --exclude_positions  |
+|               | --snp_density_window |
+|               | --roh_threshold      |
 
 > **NB:** Parameter has been **updated** if both old and new parameter information is present. </br> **NB:** Parameter has been **added** if just the new parameter information is present. </br> **NB:** Parameter has been **removed** if new parameter information isn't present.
 
@@ -60,6 +67,7 @@ Note, since the pipeline is using Nextflow DSL2, each process will be run with i
 
 | Dependency | Old version | New version |
 | ---------- | ----------- | ----------- |
+| HTSlib     |             | 1.21        |
 | HTSlib     |             | 1.21        |
 | BCFtools   |             | 1.21        |
 | VCFtools   |             | 0.1.16      |
