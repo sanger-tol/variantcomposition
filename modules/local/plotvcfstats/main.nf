@@ -24,8 +24,7 @@ process BCFTOOLS_PLOTVCFSTATS {
 
     // plot-vcfstats requires an output directory, so create one with the prefix
     // The PDF output is also copied to the results directory with a standard name
-    // NXF_HOME is set to a writable location because the default $HOME is read-only on the cluster,
-    //   which causes matplotlib and tectonic to fail when creating config/cache files.
+    // NXF_HOME is set to a writable location to avoid matplotlib to fail when creating cache files
 
     """
     mkdir -p ${prefix}_plots
