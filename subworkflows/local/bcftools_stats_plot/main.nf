@@ -1,5 +1,6 @@
 include { BCFTOOLS_STATS        as BCFTOOLS_STATS }   from '../../../modules/nf-core/bcftools/stats/main'
 include { BCFTOOLS_PLOTVCFSTATS as PLOTVCFSTATS   }   from '../../../modules/local/plotvcfstats/main'
+include { TABIX_BGZIP           as BGZIP          }   from '../../../modules/nf-core/tabix/bgzip/main'
 include { TAR                   as TAR            }   from '../../../modules/nf-core/tar/main'
 
 workflow BCFTOOLS_STATS_PLOT {
@@ -12,6 +13,9 @@ workflow BCFTOOLS_STATS_PLOT {
     // Call BCFtools stats for general QC
     BCFTOOLS_STATS( vcf_tbi, [ [:], [] ], [ [:], [] ], [ [:], [] ], [ [:], [] ], [ [:], [] ] )
     ch_versions = ch_versions.mix( BCFTOOLS_STATS.out.versions )
+
+    BGZIP( BCFTOOLS_STATS.out.stats )
+    ch_versions = ch_versions.mix( BGZIP.out.versions )
 
     // Plot BCFtools stats in a PDF
     PLOTVCFSTATS( BCFTOOLS_STATS.out.stats )
