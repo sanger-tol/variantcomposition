@@ -3,11 +3,12 @@
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [[0.2.0](https://github.com/sanger-tol/variantcomposition/releases/tag/0.1.0)] - Telperion - [2025-xx-xx]
+## [[0.2.0](https://github.com/sanger-tol/variantcomposition/releases/tag/0.2.0)] - Telperion - [2025-xx-xx]
 
 ### Enhancements & fixes
 
-- Update BCFtools to version 1.22.0
+- Update BCFtools to version 1.22.1
+- Use `BCFtools` to produce and plot VCF stats
 
 ### Software dependencies
 
@@ -15,8 +16,12 @@ Note, since the pipeline is using Nextflow DSL2, each process will be run with i
 
 | Dependency | Old version | New version |
 | ---------- | ----------- | ----------- |
-| HTSlib     |             | 1.22        |
-| BCFtools   |             | 1.22        |
+| Matplotlib |             | 3.10.6      |
+| Tectonic   |             | 0.15.0      |
+| Pigz       |             | 2.8         |
+| Tar        |             | 1.34        |
+| HTSlib     | 1.21        | 1.22.1      |
+| BCFtools   | 1.21        | 1.22        |
 
 > **NB:** Dependency has been **updated** if both old and new version information is present. </br> **NB:** Dependency has been **added** if just the new version information is present. </br> **NB:** Dependency has been **removed** if version information isn't present.
 
@@ -35,9 +40,9 @@ Initial release of sanger-tol/variantcomposition, created with the [nf-core](htt
 - Use `VCFtools` to calculate SNP density
 - Use `VCFtools` to create InDel-sizes distribution in histogram
 - Use `VCFtools` to calculate per-site (base) nucleotide diversity
-- Use `BCFtools` to generate ROH
 - Use `VCFtools` to calculate heterozygosity
 - Use `VCFtools` to calculate allele frequency
+- Use `BCFtools` to generate ROH
 
 ### Parameters
 
