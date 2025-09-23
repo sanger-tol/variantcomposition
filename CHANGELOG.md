@@ -19,6 +19,7 @@ Note, since the pipeline is using Nextflow DSL2, each process will be run with i
 | Matplotlib |             | 3.10.6      |
 | Tectonic   |             | 0.15.0      |
 | Pigz       |             | 2.8         |
+| Tar        |             | 1.34        |
 | HTSlib     | 1.21        | 1.22.1      |
 | BCFtools   | 1.21        | 1.22        |
 
