@@ -1,6 +1,6 @@
 include { BCFTOOLS_STATS        as BCFTOOLS_STATS }   from '../../../modules/nf-core/bcftools/stats/main'
 include { BCFTOOLS_PLOTVCFSTATS as PLOTVCFSTATS   }   from '../../../modules/local/plotvcfstats/main'
-include { TABIX_BGZIP           as BGZIP          }   from '../../../modules/nf-core/tabix/bgzip/main'
+include { PIGZ_COMPRESS         as PIGZ           }   from '../../../modules/nf-core/pigz/compress/main'
 include { TAR                   as TAR            }   from '../../../modules/nf-core/tar/main'
 
 workflow BCFTOOLS_STATS_PLOT {
@@ -14,8 +14,8 @@ workflow BCFTOOLS_STATS_PLOT {
     BCFTOOLS_STATS( vcf_tbi, [ [:], [] ], [ [:], [] ], [ [:], [] ], [ [:], [] ], [ [:], [] ] )
     ch_versions = ch_versions.mix( BCFTOOLS_STATS.out.versions )
 
-    BGZIP( BCFTOOLS_STATS.out.stats )
-    ch_versions = ch_versions.mix( BGZIP.out.versions )
+    PIGZ( BCFTOOLS_STATS.out.stats )
+    ch_versions = ch_versions.mix( PIGZ.out.versions )
 
     // Plot BCFtools stats in a PDF
     PLOTVCFSTATS( BCFTOOLS_STATS.out.stats )
@@ -27,7 +27,9 @@ workflow BCFTOOLS_STATS_PLOT {
 
     emit:
     stats               = BCFTOOLS_STATS.out.stats    // channel: [ meta, stats    ]
+    compressed_stats    = PIGZ.out.archive            // channel: [ meta, archive  ]
     plot_pdf            = PLOTVCFSTATS.out.plot_pdf   // channel: [ meta, plot_pdf ]
+    plot_dir            = PLOTVCFSTATS.out.plot_dir   // channel: [ meta, plot_dir ]
     compressed_plot_dir = TAR.out.archive             // channel: [ meta, archive  ]
     versions            = ch_versions                 // channel: [ versions.yml   ]
 
