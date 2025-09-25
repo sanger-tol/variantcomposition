@@ -1,12 +1,14 @@
-# sanger-tol/variantcomposition: Usage
+# sanger-tol/pipelines: Usage
 
-Welcome! You've found this usage guide for the **Sanger-ToL Variant Composition pipeline**. Well done! :tada:
+Welcome! You've found this usage guide for the **Sanger-ToL pipelines**. Well done! :tada:
 
-Yes. Nextflow is a complex workflow system. Being here means you've considered analysing your data in a pipeline, you've chosen Nextflow (great choice!), and you've found us (woohoo!). That's already a big set of accomplishments! :star2:
+Yes, Nextflow is a complex workflow system. Being here means you've considered analysing your data in a pipeline, you've chosen Nextflow (great choice!), and you've found us (woohoo!). That's already a big set of accomplishments! :star2:
 
-Before getting started, let's set a baseline: this documentation assumes your computer runs **Linux** or **macOS**, since we'll be working a lot with the command line interface (CLI). If you on Windows, don't worry - you can still join in by setting up a Linux-like environment. The easiest way is via **PowerShell + WSL**. See [this guide](https://seqera.io/blog/setup-nextflow-on-windows/) for instructions.
+Nextflow has [official documentation](https://www.nextflow.io/docs/latest/). This page, however, is meant as a complement for beginners in bioinformatics and Nextflow. We'll walk you through the **minimum setup** you need for running Nextflow, and then show you how to launch the Sanger-ToL pipelines step by step. If you're already familiar with some parts, feel free to skip ahead :racehorse:.
 
-This documentation will walk you through the **minimum setup** you need for running Nextflow pipelines, and then show you how to launch this variant-composition pipeline step-by-step. If you're already familiar with some parts, feel free to skip ahead :racehorse:. It's even better if you spot errors in this documentation, or you have feedback on the pipeline itself! Please let us know through [this form](https://forms.gle/Rn1bWMXamhdoBBeDA). A real person (yes, me :smile:) will read it.
+Before getting started, let's set a baseline: this documentation assumes your computer runs **Linux** or **macOS**, since we'll be working a lot with the command line interface (CLI). If you're on Windows, don't worry - you can still join in by setting up a Linux-like environment. The easiest way is via **PowerShell + WSL**. See [this guide](https://seqera.io/blog/setup-nextflow-on-windows/) for instructions.
+
+If you spot errors or have any feedback, please let us know through GitHub issues! Real people behind the pipelines (yes, us :smile:) will read it.
 
 Ready? Let's get started! :rocket:
 
@@ -16,7 +18,7 @@ I will take you through:
 
 1. Setting up the environment, like a stage, for Nextflow to perform on :mirror_ball:
 2. Installing Nextflow, our performer :man_dancing:, with dependencies as a set of instrument Nextflow perform with :violin:
-3. Running the variant-composition pipeline, the symphony our performer play :musical_score:
+3. Running Sanger-ToL pipelines, the symphonies our performer play :musical_score:
 
 If that's the concert you came for, you're in the right place. :wink:
 
@@ -113,6 +115,13 @@ If you see version details appear, congratulations! Your Nextflow performer is r
 
 Now let's get the pipeline running and make some music with your data!
 The following sections provide the official usage guidelines. Don't worry if some parts seem unclear or if you encounter issues – we're here to help! Feel free to [send me your questions](https://forms.gle/Rn1bWMXamhdoBBeDA) or open an issue on our repository.
+
+
+
+
+
+
+# sanger-tol/variantcomposition: Usage
 
 > _Documentation of pipeline parameters is generated automatically from the pipeline schema and can no longer be found in markdown files._
 
