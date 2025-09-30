@@ -40,7 +40,7 @@ workflow VARIANTCOMPOSITION {
     // Combine the VCF and TBI channels
     ch_samplesheet
         .join( ch_tbi )
-        .set { ch_vcf_tbi }
+        .set { ch_vcfs_tbi }
 
     //
     // SUBWORKFLOW: FEATURES
@@ -48,7 +48,7 @@ workflow VARIANTCOMPOSITION {
 
     FEATURES (
         ch_samplesheet,
-        ch_vcf_tbi,
+        ch_vcfs_tbi,
         ch_positions
     )
     ch_versions = ch_versions.mix( FEATURES.out.versions )
@@ -58,7 +58,7 @@ workflow VARIANTCOMPOSITION {
     //
 
     BCFTOOLS_STATS_PLOT (
-        ch_vcf_tbi
+        ch_vcfs_tbi
     )
     ch_versions = ch_versions.mix( BCFTOOLS_STATS_PLOT.out.versions )
 

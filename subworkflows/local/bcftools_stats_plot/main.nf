@@ -5,13 +5,13 @@ include { TAR                   as TAR            }   from '../../../modules/nf-
 
 workflow BCFTOOLS_STATS_PLOT {
     take:
-    vcf_tbi
+    vcfs_tbi     // channel: [ meta, VCF/gVCF, tbi ]
 
     main:
     ch_versions = Channel.empty()
 
     // Call BCFtools stats for general QC
-    BCFTOOLS_STATS( vcf_tbi, [ [:], [] ], [ [:], [] ], [ [:], [] ], [ [:], [] ], [ [:], [] ] )
+    BCFTOOLS_STATS( vcfs_tbi, [ [:], [] ], [ [:], [] ], [ [:], [] ], [ [:], [] ], [ [:], [] ] )
     ch_versions = ch_versions.mix( BCFTOOLS_STATS.out.versions )
 
     PIGZ( BCFTOOLS_STATS.out.stats )
