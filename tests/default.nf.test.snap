@@ -1,12 +1,11 @@
 {
     "-profile test": {
         "content": [
-            24,
+            23,
             [
                 "GCA_947369205.1_OX376310.1_CANBKR010000003.1.pacbio.icCanRufa1_deepvariant.g.vcf.bcftools_stats.txt.gz",
                 "GCA_947369205.1_OX376310.1_CANBKR010000003.1.pacbio.icCanRufa1_deepvariant.g.vcf.frq",
                 "GCA_947369205.1_OX376310.1_CANBKR010000003.1.pacbio.icCanRufa1_deepvariant.g.vcf.gz.tbi",
-                "GCA_947369205.1_OX376310.1_CANBKR010000003.1.pacbio.icCanRufa1_deepvariant.g.vcf.het",
                 "GCA_947369205.1_OX376310.1_CANBKR010000003.1.pacbio.icCanRufa1_deepvariant.g.vcf.indel.hist",
                 "GCA_947369205.1_OX376310.1_CANBKR010000003.1.pacbio.icCanRufa1_deepvariant.g.vcf.plot-vcfstats.pdf",
                 "GCA_947369205.1_OX376310.1_CANBKR010000003.1.pacbio.icCanRufa1_deepvariant.g.vcf.plot-vcfstats.tar.gz",
@@ -30,7 +29,6 @@
                 "GCA_947369205.1_OX376310.1_CANBKR010000003.1.pacbio.icCanRufa1_deepvariant.g.vcf.bcftools_stats.txt.gz:md5,5243242b2d7159d8fa40bb024e03b006",
                 "GCA_947369205.1_OX376310.1_CANBKR010000003.1.pacbio.icCanRufa1_deepvariant.g.vcf.frq:md5,06e7b4d696872ae1d09f11751cb69ce7",
                 "GCA_947369205.1_OX376310.1_CANBKR010000003.1.pacbio.icCanRufa1_deepvariant.g.vcf.gz.tbi:md5,5a2bc05cea8838489bf6a3e48f61743e",
-                "GCA_947369205.1_OX376310.1_CANBKR010000003.1.pacbio.icCanRufa1_deepvariant.g.vcf.het:md5,e9888822bd247b43aeb55d85c82b95eb",
                 "GCA_947369205.1_OX376310.1_CANBKR010000003.1.pacbio.icCanRufa1_deepvariant.g.vcf.indel.hist:md5,ac900c010dbb67012cd4371f1034ae44",
                 "GCA_947369205.1_OX376310.1_CANBKR010000003.1.pacbio.icCanRufa1_deepvariant.g.vcf.roh:md5,a6d18e59dc9127874e7549f5f6ba8620",
                 "GCA_947369205.1_OX376310.1_CANBKR010000003.1.pacbio.icCanRufa1_deepvariant.g.vcf.sites.pi.gz:md5,2c1cbd686e7b4d16b0e7a13414be65c2",
@@ -49,6 +47,6 @@
             "nf-test": "0.9.2",
             "nextflow": "25.04.6"
         },
-        "timestamp": "2025-09-19T15:40:56.281737134"
+        "timestamp": "2025-09-30T11:53:26.008024513"
     }
 }

@@ -8,38 +8,45 @@ include { TABIX_BGZIP  as BGZIP                     }   from '../../../modules/n
 
 workflow FEATURES {
     take:
-    vcf                // [ val(meta), vcf ]
-    vcf_tbi
+    samplesheet        // channel: [ meta, VCF/gVCF ]
+    vcfs_tbi           // channel: [ meta, VCF/gVCF, tbi ]
     site_pi_positions  // path to positions file to include or exclude
 
     main:
     ch_versions = Channel.empty()
 
+    // Divide input channel into vcf and gvcf branches
+    samplesheet
+        .branch { meta, data ->
+            vcf  : meta.datatype == "vcf"
+            gvcf : meta.datatype == "gvcf"
+        }
+        .set { vcfs }
+
     // Call VCFtools for per-site (base) nucleotide diversity (originally in variant-calling pipeline)
-    VCFTOOLS_SITE_PI( vcf, site_pi_positions, [] )
+    VCFTOOLS_SITE_PI( samplesheet, site_pi_positions, [] )
     ch_versions = ch_versions.mix( VCFTOOLS_SITE_PI.out.versions )
 
     // Call VCFtools to calculate heterozygosity (originally in variant-calling pipeline)
     // This feature work with VCF files, output of gVCF only contains the header
-    // Plan to divide VCF and gVCF input into different channels, and only include VCF channel for this feature
-    VCFTOOLS_HET( vcf, [], [] )
+    VCFTOOLS_HET( vcfs.vcf, [], [] )
     ch_versions = ch_versions.mix( VCFTOOLS_HET.out.versions )
 
     // Call VCFtools for SNP density
     // the default window size is 1 kb
-    VCFTOOLS_SNP_DENSITY( vcf, [], [] )
+    VCFTOOLS_SNP_DENSITY( samplesheet, [], [] )
     ch_versions = ch_versions.mix( VCFTOOLS_SNP_DENSITY.out.versions )
 
     // Call VCFtools for allele frequency
-    VCFTOOLS_ALLELE_FREQUENCY( vcf, [], [] )
+    VCFTOOLS_ALLELE_FREQUENCY( samplesheet, [], [] )
     ch_versions = ch_versions.mix( VCFTOOLS_ALLELE_FREQUENCY.out.versions )
 
     // Call VCFtools for InDel length distribution
-    VCFTOOLS_INDEL_LENGTH( vcf, [], [] )
+    VCFTOOLS_INDEL_LENGTH( samplesheet, [], [] )
     ch_versions = ch_versions.mix( VCFTOOLS_INDEL_LENGTH.out.versions )
 
     // Call BCFtools for ROH
-    BCFTOOLS_ROH( vcf_tbi, [ [], [] ], [], [], [], [] )
+    BCFTOOLS_ROH( vcfs_tbi, [ [], [] ], [], [], [], [] )
     ch_versions = ch_versions.mix( BCFTOOLS_ROH.out.versions )
 
     // Compress output files
