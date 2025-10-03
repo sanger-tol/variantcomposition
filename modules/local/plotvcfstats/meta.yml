@@ -18,7 +18,7 @@ input:
         type: map
         description: |
           Groovy Map containing sample information
-          e.g. [ id:'test', single_end:false ]
+          e.g. [ id:'sample1' ]
     - stats:
         type: file
         description: Text file from BCFtools stats output
@@ -30,7 +30,7 @@ output:
           type: map
           description: |
             Groovy Map containing sample information
-            e.g. [ id:'test', single_end:false ]
+            e.g. [ id:'sample1' ]
       - "*plots*":
           type: folder
           description: Output directory containing plots, raw data, and log files
@@ -41,7 +41,7 @@ output:
           type: map
           description: |
             Groovy Map containing sample information
-            e.g. [ id:'test', single_end:false ]
+            e.g. [ id:'sample1' ]
       - "*.pdf":
           type: file
           description: Copy of the PDF summary output 

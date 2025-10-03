@@ -1,0 +1,84 @@
+nextflow_process {
+
+    name "Test Process BCFTOOLS_PLOTVCFSTATS"
+    script "../main.nf"
+    process "BCFTOOLS_PLOTVCFSTATS"
+
+    tag "modules"
+    tag "modules_sangertol"
+    tag "bcftools"
+    tag "bcftools/plotvcfstats"
+
+    test("Should use process BCFTOOLS_STATS to generate input data") {
+
+        setup {
+
+            run("BCFTOOLS_STATS") {
+                script "../../../nf-core/bcftools/stats/main.nf"
+                process {
+                    """
+                    input[0] = [
+                        [ id:'test' ], // meta map
+                        file(params.modules_testdata_base_path + 'https://tolit.cog.sanger.ac.uk/test-data/Cantharis_rufa/analysis/icCanRufa1/variant_calling/GCA_947369205.1_OX376310.1_CANBKR010000003.1.pacbio.icCanRufa1_deepvariant.vcf.gz', checkIfExists: true),
+                    ]
+                    """
+                }
+            }
+        }
+
+        when {
+            process {
+                """
+                input[0] = BCFTOOLS_STATS.out.stats
+                    .collect{ meta, stats -> stats }
+                    .map{ stats -> [ id: 'test_stats' ], stats }
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+    test("BCFTOOLS - PLOTVCFSTATS - stub") {
+
+        options "-stub"
+
+        setup {
+
+            run("BCFTOOLS_STATS") {
+                script "../../../nf-core/bcftools/stats/main.nf"
+                process {
+                    """
+                    input[0] = [
+                        [ id:'test' ], // meta map
+                        file(params.modules_testdata_base_path + 'https://tolit.cog.sanger.ac.uk/test-data/Cantharis_rufa/analysis/icCanRufa1/variant_calling/GCA_947369205.1_OX376310.1_CANBKR010000003.1.pacbio.icCanRufa1_deepvariant.vcf.gz', checkIfExists: true),
+                    ]
+                    """
+                }
+            }
+        }
+
+        when {
+            process {
+                """
+                input[0] = BCFTOOLS_STATS.out.stats
+                    .collect{ meta, stats -> stats }
+                    .map{ stats -> [ id: 'test_stats' ], stats }
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+}
