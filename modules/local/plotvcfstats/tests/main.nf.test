@@ -24,7 +24,7 @@ nextflow_process {
                     """
                 }
             }
-            
+
             run("BCFTOOLS_STATS") {
                 script "../../../nf-core/bcftools/stats/main.nf"
                 process {

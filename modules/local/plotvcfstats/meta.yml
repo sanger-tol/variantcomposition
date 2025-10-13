@@ -44,7 +44,7 @@ output:
             e.g. [ id:'sample1' ]
       - "*.pdf":
           type: file
-          description: Copy of the PDF summary output 
+          description: Copy of the PDF summary output
           pattern: "*.{pdf}"
           ontologies: []
   versions:
