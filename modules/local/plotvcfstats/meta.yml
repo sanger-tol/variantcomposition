@@ -22,8 +22,8 @@ input:
     - stats:
         type: file
         description: Text file from BCFtools stats output
-        pattern: "*_{stats.txt}"
-        ontologies: []
+        pattern: "*_stats.txt"
+        ontologies: http://edamontology.org/format_2330 # TXT
 output:
   plot_dir:
     - - meta:
@@ -45,8 +45,8 @@ output:
       - "*.pdf":
           type: file
           description: Copy of the PDF summary output
-          pattern: "*.{pdf}"
-          ontologies: []
+          pattern: "*.pdf"
+          ontologies: http://edamontology.org/format_3508 # PDF
   versions:
     - versions.yml:
         type: file
