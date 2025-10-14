@@ -8,41 +8,44 @@ nextflow_process {
     tag "modules_sangertol"
     tag "bcftools"
     tag "bcftools/plotvcfstats"
+    tag "modules/nf-core/bcftools/stats"
+    tag "modules/nf-core/tabix/tabix"
 
-    test("BCFTOOLS - PLOTVCFSTATS") {
+    setup {
 
-        setup {
-
-            run("TABIX_TABIX") {
-                script "../../../nf-core/tabix/tabix/main.nf"
-                process {
-                    """
-                    input[0] = [
-                        [ id:'test' ], // meta map
-                        file(params.modules_testdata_base_path + 'Cantharis_rufa/analysis/icCanRufa1/variant_calling/GCA_947369205.1_OX376310.1_CANBKR010000003.1.pacbio.icCanRufa1_deepvariant.vcf.gz', checkIfExists: true),
-                    ]
-                    """
-                }
-            }
-
-            run("BCFTOOLS_STATS") {
-                script "../../../nf-core/bcftools/stats/main.nf"
-                process {
-                    """
-                    input[0] = TABIX_TABIX.out.tbi
-                        .map{ meta, tbi -> [
-                            meta,
-                            file(params.modules_testdata_base_path + 'Cantharis_rufa/analysis/icCanRufa1/variant_calling/GCA_947369205.1_OX376310.1_CANBKR010000003.1.pacbio.icCanRufa1_deepvariant.vcf.gz'),
-                            tbi ] }
-                    input[1] = [[:],[]]
-			        input[2] = [[:],[]]
-			        input[3] = [[:],[]]
-			        input[4] = [[:],[]]
-			        input[5] = [[:],[]]
-                    """
-                }
+        run("TABIX_TABIX") {
+            script "../../../nf-core/tabix/tabix/main.nf"
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ], // meta map
+                    file(params.modules_testdata_base_path + 'Cantharis_rufa/analysis/icCanRufa1/variant_calling/GCA_947369205.1_OX376310.1_CANBKR010000003.1.pacbio.icCanRufa1_deepvariant.vcf.gz', checkIfExists: true),
+                ]
+                """
             }
         }
+
+        run("BCFTOOLS_STATS") {
+            script "../../../nf-core/bcftools/stats/main.nf"
+            process {
+                """
+                input[0] = TABIX_TABIX.out.tbi
+                    .map{ meta, tbi -> [
+                        meta,
+                        file(params.modules_testdata_base_path + 'Cantharis_rufa/analysis/icCanRufa1/variant_calling/GCA_947369205.1_OX376310.1_CANBKR010000003.1.pacbio.icCanRufa1_deepvariant.vcf.gz'),
+                        tbi ] }
+                input[1] = [[:],[]]
+                input[2] = [[:],[]]
+                input[3] = [[:],[]]
+                input[4] = [[:],[]]
+                input[5] = [[:],[]]
+                """
+            }
+        }
+    }
+
+
+    test("BCFTOOLS - PLOTVCFSTATS") {
 
         when {
             process {
@@ -65,39 +68,6 @@ nextflow_process {
     test("BCFTOOLS - PLOTVCFSTATS - stub") {
 
         options "-stub"
-
-        setup {
-
-            run("TABIX_TABIX") {
-                script "../../../nf-core/tabix/tabix/main.nf"
-                process {
-                    """
-                    input[0] = [
-                        [ id:'test' ], // meta map
-                        file(params.modules_testdata_base_path + 'Cantharis_rufa/analysis/icCanRufa1/variant_calling/GCA_947369205.1_OX376310.1_CANBKR010000003.1.pacbio.icCanRufa1_deepvariant.vcf.gz', checkIfExists: true),
-                    ]
-                    """
-                }
-            }
-
-            run("BCFTOOLS_STATS") {
-                script "../../../nf-core/bcftools/stats/main.nf"
-                process {
-                    """
-                    input[0] = TABIX_TABIX.out.tbi
-                        .map{ meta, tbi -> [
-                            meta,
-                            file(params.modules_testdata_base_path + 'Cantharis_rufa/analysis/icCanRufa1/variant_calling/GCA_947369205.1_OX376310.1_CANBKR010000003.1.pacbio.icCanRufa1_deepvariant.vcf.gz'),
-                            tbi ] }
-                    input[1] = [[:],[]]
-			        input[2] = [[:],[]]
-			        input[3] = [[:],[]]
-			        input[4] = [[:],[]]
-			        input[5] = [[:],[]]
-                    """
-                }
-            }
-        }
 
         when {
             process {
