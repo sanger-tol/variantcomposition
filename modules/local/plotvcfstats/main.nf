@@ -48,6 +48,7 @@ process BCFTOOLS_PLOTVCFSTATS {
     def prefix = task.ext.prefix ?: "${meta.id}"
 
     """
+    mkdir ${prefix}_plots
     touch ${prefix}.plot-vcfstats.pdf
 
     cat <<-END_VERSIONS > versions.yml
