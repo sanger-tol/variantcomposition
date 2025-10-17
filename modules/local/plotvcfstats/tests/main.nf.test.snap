@@ -48,9 +48,9 @@
         ],
         "meta": {
             "nf-test": "0.9.2",
-            "nextflow": "25.04.2"
+            "nextflow": "25.04.6"
         },
-        "timestamp": "2025-10-13T11:33:58.412651"
+        "timestamp": "2025-10-17T08:53:36.412379803"
     },
     "BCFTOOLS - PLOTVCFSTATS": {
         "content": [
@@ -67,8 +67,8 @@
         ],
         "meta": {
             "nf-test": "0.9.2",
-            "nextflow": "25.04.2"
+            "nextflow": "25.04.6"
         },
-        "timestamp": "2025-10-13T11:33:54.262398"
+        "timestamp": "2025-10-17T08:53:29.320908147"
     }
 }

@@ -19,7 +19,7 @@ nextflow_process {
                 input[0] = [
                     [ id: "test" ], // meta map
                     file(params.modules_testdata_base_path + 'Cantharis_rufa/analysis/icCanRufa1/variant_calling/GCA_947369205.1_OX376310.1_CANBKR010000003.1.pacbio.icCanRufa1_deepvariant.vcf.gz'),
-                    file(params.modules_testdata_base_path + 'Cantharis_rufa/analysis/icCanRufa1/variant_calling/GCA_947369205.1_OX376310.1_CANBKR010000003.1.pacbio.icCanRufa1_deepvariant.vcf.gz.tbi') ] }
+                    file(params.modules_testdata_base_path + 'Cantharis_rufa/analysis/icCanRufa1/variant_calling/GCA_947369205.1_OX376310.1_CANBKR010000003.1.pacbio.icCanRufa1_deepvariant.vcf.gz.tbi') ]
                 input[1] = [[:],[]]
                 input[2] = [[:],[]]
                 input[3] = [[:],[]]
