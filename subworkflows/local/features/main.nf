@@ -5,6 +5,7 @@ include { VCFTOOLS     as VCFTOOLS_ALLELE_FREQUENCY }   from '../../../modules/n
 include { VCFTOOLS     as VCFTOOLS_INDEL_LENGTH     }   from '../../../modules/nf-core/vcftools/main'
 include { BCFTOOLS_ROH as BCFTOOLS_ROH              }   from '../../../modules/nf-core/bcftools/roh/main'
 include { TABIX_BGZIP  as BGZIP                     }   from '../../../modules/nf-core/tabix/bgzip/main'
+include { TABIX_TABIX  as TABIX_PI                  }   from '../../../modules/nf-core/tabix/tabix/main'
 
 workflow FEATURES {
     take:
@@ -54,8 +55,13 @@ workflow FEATURES {
     BGZIP ( VCFTOOLS_SITE_PI.out.sites_pi )
     ch_versions = ch_versions.mix ( BGZIP.out.versions.first() )
 
+    // Index the compressed .pi files
+    TABIX_PI ( BGZIP.out.output )
+    ch_versions = ch_versions.mix ( TABIX_PI.out.versions )
+
     emit:
     compressed_sites_pi = BGZIP.out.output                     // channel: [ meta, output           ]
+    sites_pi_tbi        = TABIX_PI.out.tbi                     // channel: [ meta, tbi              ]
     heterozygosity      = VCFTOOLS_HET.out.heterozygosity      // channel: [ meta, heterozygosity   ]
     snp_density         = VCFTOOLS_SNP_DENSITY.out.snp_density // channel: [ meta, snp_density      ]
     allele_frequency    = VCFTOOLS_ALLELE_FREQUENCY.out.frq    // channel: [ meta, allele_frequency ]
