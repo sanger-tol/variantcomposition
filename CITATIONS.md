@@ -10,6 +10,14 @@
 
 ## Pipeline tools
 
+- [SAMtools](https://www.htslib.org)
+
+  > Danecek, Petr, et al. “Twelve Years of SAMtools and BCFtools.” GigaScience, vol. 10, no. 2, Jan. 2021, https://doi.org/10.1093/gigascience/giab008.
+
+- [VCFtools](https://pubmed.ncbi.nlm.nih.gov/21653522/)
+
+  > Danecek P, Auton A, Abecasis G, et al.: The variant call format and VCFtools. Bioinformatics. 2011 Aug 1;27(15):2156-8. doi: 10.1093/bioinformatics/btr330. Epub 2011 Jun 7. PubMed PMID: 21653522; PubMed Central PMCID: PMC3137218.
+
 ## Software packaging/containerisation tools
 
 - [Anaconda](https://anaconda.com)

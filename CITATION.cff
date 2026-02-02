@@ -1,0 +1,15 @@
+authors:
+  - email: naranbjg@gmail.com
+    family-names: Zhang
+    given-names: Yunjia
+    website: https://github.com/
+cff-version: 1.2.0
+date-released: "2025-12-02"
+license: MIT
+message: If you use this software, please cite it using the metadata from this file
+  and all references from CITATIONS.md .
+repository-code: https://github.com/sanger-tol/variantcomposition
+title: sanger-tol/variantcomposition v0.2.0 - Telperion
+type: software
+url: https://pipelines.tol.sanger.ac.uk/variantcomposition
+version: 0.2.0
