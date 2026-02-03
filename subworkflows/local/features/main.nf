@@ -14,11 +14,11 @@ workflow FEATURES {
     site_pi_positions  // path to positions file to include or exclude
 
     main:
-    ch_versions = Channel.empty()
+    ch_versions = channel.empty()
 
     // Divide input channel into vcf and gvcf branches
     samplesheet
-        .branch { meta, data ->
+        .branch { meta, _data ->
             vcf  : meta.datatype == "vcf"
             gvcf : meta.datatype == "gvcf"
         }

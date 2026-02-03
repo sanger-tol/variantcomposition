@@ -8,7 +8,7 @@ workflow BCFTOOLS_STATS_PLOT {
     vcfs_tbi     // channel: [ meta, VCF/gVCF, tbi ]
 
     main:
-    ch_versions = Channel.empty()
+    ch_versions = channel.empty()
 
     // Call BCFtools stats for general QC
     BCFTOOLS_STATS( vcfs_tbi, [ [:], [] ], [ [:], [] ], [ [:], [] ], [ [:], [] ], [ [:], [] ] )

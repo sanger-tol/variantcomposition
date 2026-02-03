@@ -66,7 +66,7 @@ workflow VARIANTCOMPOSITION {
     //
     // Collate and save software versions
     //
-    def topic_versions = Channel.topic("versions")
+    def topic_versions = channel.topic("versions")
         .distinct()
         .branch { entry ->
             versions_file: entry instanceof Path
@@ -90,7 +90,7 @@ workflow VARIANTCOMPOSITION {
             name:  'variantcomposition_software_'  + 'versions.yml',
             sort: true,
             newLine: true
-        ).set { ch_collated_versions }
+        ).set { _ch_collated_versions }
 
 
     emit:
