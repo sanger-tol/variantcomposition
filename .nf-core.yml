@@ -29,6 +29,7 @@ lint:
     - .github/PULL_REQUEST_TEMPLATE.md
     - assets/email_template.txt
     - docs/README.md
+    - .github/workflows/linting.yml
   multiqc_config: false
   nextflow_config:
     - manifest.name
