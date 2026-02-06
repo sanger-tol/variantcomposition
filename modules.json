@@ -37,7 +37,7 @@
                     },
                     "vcftools": {
                         "branch": "master",
-                        "git_sha": "41dfa3f7c0ffabb96a6a813fe321c6d1cc5b6e46",
+                        "git_sha": "c58771f3403b7005f2ae0fd277b378961002b127",
                         "installed_by": ["modules"]
                     }
                 }
