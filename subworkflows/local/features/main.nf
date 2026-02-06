@@ -17,12 +17,11 @@ workflow FEATURES {
     ch_versions = channel.empty()
 
     // Divide input channel into vcf and gvcf branches
-    samplesheet
+    def vcfs = samplesheet
         .branch { meta, _data ->
             vcf  : meta.datatype == "vcf"
             gvcf : meta.datatype == "gvcf"
         }
-        .set { vcfs }
 
     // Call VCFtools for per-site (base) nucleotide diversity (originally in variant-calling pipeline)
     VCFTOOLS_SITE_PI( samplesheet, site_pi_positions, [] )

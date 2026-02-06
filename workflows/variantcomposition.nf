@@ -38,9 +38,8 @@ workflow VARIANTCOMPOSITION {
     ch_versions = ch_versions.mix( TABIX.out.versions )
 
     // Combine the VCF and TBI channels
-    ch_samplesheet
+    def ch_vcfs_tbi = ch_samplesheet
         .join( ch_tbi )
-        .set { ch_vcfs_tbi }
 
     //
     // SUBWORKFLOW: FEATURES
@@ -90,7 +89,7 @@ workflow VARIANTCOMPOSITION {
             name:  'variantcomposition_software_'  + 'versions.yml',
             sort: true,
             newLine: true
-        ).set { _ch_collated_versions }
+        )
 
 
     emit:

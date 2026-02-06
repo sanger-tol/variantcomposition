@@ -102,13 +102,12 @@ workflow PIPELINE_INITIALISATION {
     // Create channel from input file provided through params.input
     //
 
-    channel
+    def ch_samplesheet = channel
         .fromList(samplesheetToList(params.input, "${projectDir}/assets/schema_input.json"))
         .map { meta, datafile ->
             def new_meta = meta + [id: datafile.baseName]
             return [new_meta, datafile]
         }
-        .set { ch_samplesheet }
 
     // Creat channel for include/exclude positions
 
