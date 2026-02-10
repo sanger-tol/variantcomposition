@@ -15,7 +15,13 @@ workflow BCFTOOLS_STATS_PLOT {
     ch_versions = ch_versions.mix( BCFTOOLS_STATS.out.versions )
 
     PIGZ( BCFTOOLS_STATS.out.stats )
-    ch_versions = ch_versions.mix( PIGZ.out.versions )
+    ch_versions = ch_versions.mix(
+        PIGZ.out.versions_pigz
+            .map { process, tool, version ->
+            // convert tuple to YAML string (the current way pigz module handles versions)
+            "${process}:\n  ${tool}: ${version}"
+            }
+    )
 
     // Plot BCFtools stats in a PDF
     PLOTVCFSTATS( BCFTOOLS_STATS.out.stats )
