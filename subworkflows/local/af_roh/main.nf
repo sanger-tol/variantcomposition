@@ -1,5 +1,7 @@
 include { VCFTOOLS     as VCFTOOLS_ALLELE_FREQUENCY }   from '../../../modules/nf-core/vcftools/main'
 include { BCFTOOLS_ROH as BCFTOOLS_ROH              }   from '../../../modules/nf-core/bcftools/roh/main'
+include { TABIX_BGZIP  as BGZIP                     }   from '../../../modules/nf-core/tabix/bgzip/main'
+include { TABIX_TABIX  as TABIX_AF                  }   from '../../../modules/nf-core/tabix/tabix/main'
 
 workflow AF_ROH {
     take:
@@ -13,13 +15,29 @@ workflow AF_ROH {
     VCFTOOLS_ALLELE_FREQUENCY( samplesheet, [], [] )
     ch_versions = ch_versions.mix( VCFTOOLS_ALLELE_FREQUENCY.out.versions )
 
+    // Compress allele frequency output file
+    BGZIP ( VCFTOOLS_ALLELE_FREQUENCY.out.frq )
+    ch_versions = ch_versions.mix ( BGZIP.out.versions.first() )
+
+    // Index the compressed .pi files
+    TABIX_AF ( BGZIP.out.output )
+    ch_versions = ch_versions.mix ( TABIX_AF.out.versions )
+
     // Call BCFtools for ROH
-    BCFTOOLS_ROH( vcfs_tbi, [ [], [] ], [], [], [], [] )
+    // BCFTOOLS_ROH( vcfs_tbi, [ BGZIP.out.output, TABIX_AF.out.tbi ], [], [], [], [] )
+    def af_tbi = BGZIP.out.output
+        .join( TABIX_AF.out.tbi )
+        .map{ _meta, af, af_tbi -> [ af, af_tbi ] }
+
+    af_tbi.view()
+
+    BCFTOOLS_ROH( vcfs_tbi, af_tbi, [], [], [], [] )
     ch_versions = ch_versions.mix( BCFTOOLS_ROH.out.versions )
 
     emit:
-    allele_frequency    = VCFTOOLS_ALLELE_FREQUENCY.out.frq    // channel: [ meta, allele_frequency ]
-    roh                 = BCFTOOLS_ROH.out.roh                 // channel: [ meta, roh              ]
-    versions            = ch_versions                          // channel: [ versions.yml           ]
+    compressed_allele_frequency = BGZIP.out.output         // channel: [ meta, output ]
+    allele_frequency_tbi        = TABIX_AF.out.tbi         // channel: [ meta, tbi    ]
+    roh                         = BCFTOOLS_ROH.out.roh     // channel: [ meta, roh    ]
+    versions                    = ch_versions              // channel: [ versions.yml ]
 
 }

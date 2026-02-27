@@ -60,7 +60,7 @@ workflow VARIANTCOMPOSITION {
         ch_samplesheet,
         ch_vcfs_tbi
     )
-    ch_versions = ch_versions.mix( FEATURES.out.versions )
+    ch_versions = ch_versions.mix( AF_ROH.out.versions )
 
     //
     // SUBWORKFLOW: BCFTOOLS_STATS_PLOT
