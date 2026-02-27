@@ -13,6 +13,7 @@ include { methodsDescriptionText } from '../subworkflows/local/utils_nfcore_vari
 //
 
 include { FEATURES             } from '../subworkflows/local/features'
+include { AF_ROH               } from '../subworkflows/local/af_roh'
 include { BCFTOOLS_STATS_PLOT  } from '../subworkflows/local/bcftools_stats_plot'
 include { TABIX_TABIX as TABIX } from '../modules/nf-core/tabix/tabix/main'
 
@@ -47,8 +48,17 @@ workflow VARIANTCOMPOSITION {
 
     FEATURES (
         ch_samplesheet,
-        ch_vcfs_tbi,
         ch_positions
+    )
+    ch_versions = ch_versions.mix( FEATURES.out.versions )
+
+    //
+    // SUBWORKFLOW: ALLEL FREQUENCY AND RUN OF HOMOZYGOSITY
+    //
+
+    AF_ROH (
+        ch_samplesheet,
+        ch_vcfs_tbi
     )
     ch_versions = ch_versions.mix( FEATURES.out.versions )
 
