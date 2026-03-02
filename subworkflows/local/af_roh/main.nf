@@ -24,13 +24,28 @@ workflow AF_ROH {
     TABIX_AF ( BGZIP.out.output )
     ch_versions = ch_versions.mix ( TABIX_AF.out.versions )
 
-    // Call BCFtools for ROH
-    // BCFTOOLS_ROH( vcfs_tbi, [ BGZIP.out.output, TABIX_AF.out.tbi ], [], [], [], [] )
-    def af_tbi = BGZIP.out.output
-        .join( TABIX_AF.out.tbi )
-        .map{ _meta, af, af_tbi -> [ af, af_tbi ] }
+    // Prepare for input channels of BCFtools RoH
+    // Generate a key (meta.id) to match VCF/gVCF files and allele frequency results
+    def vcfs_tbi_keyed = vcfs_tbi
+        .map { meta, vcfs, tbi -> [ meta.id, meta, vcfs, tbi ] }
 
-    BCFTOOLS_ROH( vcfs_tbi, af_tbi, [], [], [], [] )
+    def af_tbi_keyed = BGZIP.out.output
+        .join( TABIX_AF.out.tbi )
+        .map{ meta, af, aftbi -> [ meta.id, af, aftbi ] }
+
+    // Gather VCF/gVCF files and allele frequency results as matched inputs for BCFtools RoH
+    def ch_vcfs_af_joined = vcfs_tbi_keyed
+        .join(af_tbi_keyed)
+
+    // Call BCFtools for ROH
+    BCFTOOLS_ROH(
+        ch_vcfs_af_joined.map{ _meta_id, meta, vcfs, vcf_tbi, _af, _af_tbi -> [ meta, vcfs, vcf_tbi] },
+        ch_vcfs_af_joined.map{ _meta_id, _meta, _vcfs, _vcf_tbi, af, af_tbi -> [ af, af_tbi] },
+        [],
+        [],
+        [],
+        []
+    )
     ch_versions = ch_versions.mix( BCFTOOLS_ROH.out.versions )
 
     BCFTOOLS_ROHVIZ ( BCFTOOLS_ROH.out.roh, samplesheet, [], [], [] )

@@ -7,8 +7,9 @@ process BCFTOOLS_ROHVIZ {
         ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/96/96d7c1a0398c14115ebf327116392ed32056dc1ac205cd01639d00c6e6bfd775/data'
         : 'community.wave.seqera.io/library/bcftools_less:3f84071dfbb116e4' }"
 
+    // Set TERM=dumb to prevent zless/less from failing in non-interactive container environments
     containerOptions '--env TERM=dumb'
-    
+
     input:
     tuple val(meta), path(roh)
     tuple val(meta1), path(vcf)
