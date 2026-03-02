@@ -2,3 +2,4 @@
 pipeline_info/*.{html,json,txt,yml}
 *plot-vcfstats.tar.gz
 *plot-vcfstats.pdf
+*.roh-viz.html

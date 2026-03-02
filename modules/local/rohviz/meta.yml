@@ -1,0 +1,71 @@
+name: "bcftools_rohviz"
+description: Visualise the output of bcftools roh
+keywords:
+  - visualisation
+  - RoH
+  - VCF
+tools:
+  - "roh-viz":
+      description: |
+        "Visualise the output of bcftools roh. It creates a HTML/JavaScript document which can be interactively viewed in a web browser."
+      homepage: http://samtools.github.io/bcftools/bcftools.html
+      documentation: http://www.htslib.org/doc/bcftools.html
+      doi: 10.1093/bioinformatics/btp352
+      licence: ["MIT"]
+      identifier: biotools:bcftools
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'sample1' ]
+    - "*.roh":
+        type: file
+        description: Output of BCFtools_roh. Contains site-specific and/or per-region runs of homo/autozygosity
+          calls.
+        pattern: "*.{roh}"
+        ontologies: []
+  - - meta1:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'sample1' ]
+    - vcf:
+        type: file
+        description: VCF file
+        pattern: "*.{vcf,.vcf.gz}"
+        ontologies: []
+  - min_length:
+      type: number
+      description: "Mimimum length of ROH"
+      ontologies: []
+  - regions_file:
+      type: file
+      description: "Regions can be specified either on command line or in a VCF, BED,
+        or tab-delimited file (the default)."
+      ontologies: []
+  - samples_file:
+      type: file
+      description: "File of sample names to include or exclude if prefixed with '^'."
+      ontologies: []
+output:
+  html:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'sample1' ]
+      - "*.html":
+          type: file
+          description: RoH visual report file.
+          pattern: "*.{html}"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
+authors:
+  - "@yz533cb"

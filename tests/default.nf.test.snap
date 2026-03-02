@@ -88,7 +88,6 @@
                 "GCA_947369205.1_OX376310.1_CANBKR010000003.1.pacbio.icCanRufa1_deepvariant.g.vcf.gz.tbi:md5,5a2bc05cea8838489bf6a3e48f61743e",
                 "GCA_947369205.1_OX376310.1_CANBKR010000003.1.pacbio.icCanRufa1_deepvariant.g.vcf.indel.hist:md5,ac900c010dbb67012cd4371f1034ae44",
                 "GCA_947369205.1_OX376310.1_CANBKR010000003.1.pacbio.icCanRufa1_deepvariant.g.vcf.roh:md5,85291316c0e9609ed18eae76137b4db1",
-                "GCA_947369205.1_OX376310.1_CANBKR010000003.1.pacbio.icCanRufa1_deepvariant.g.vcf.roh-viz.html:md5,f6f0dbfb00bc231426641666aec90858",
                 "GCA_947369205.1_OX376310.1_CANBKR010000003.1.pacbio.icCanRufa1_deepvariant.g.vcf.sites.pi.gz:md5,2c1cbd686e7b4d16b0e7a13414be65c2",
                 "GCA_947369205.1_OX376310.1_CANBKR010000003.1.pacbio.icCanRufa1_deepvariant.g.vcf.sites.pi.gz.tbi:md5,af2a8f399d4d2e1b2290a465a74a34b3",
                 "GCA_947369205.1_OX376310.1_CANBKR010000003.1.pacbio.icCanRufa1_deepvariant.g.vcf.snpden:md5,3747d7f82078c04707c4bedba39e5e8d",
@@ -99,7 +98,6 @@
                 "GCA_947369205.1_OX376310.1_CANBKR010000003.1.pacbio.icCanRufa1_deepvariant.vcf.het:md5,50f65e1312a20e3549d15ad324764998",
                 "GCA_947369205.1_OX376310.1_CANBKR010000003.1.pacbio.icCanRufa1_deepvariant.vcf.indel.hist:md5,91658038280c1c92cefa00a3d7b3f357",
                 "GCA_947369205.1_OX376310.1_CANBKR010000003.1.pacbio.icCanRufa1_deepvariant.vcf.roh:md5,a377fa98ef50b6a0c77f58b7bbff2f64",
-                "GCA_947369205.1_OX376310.1_CANBKR010000003.1.pacbio.icCanRufa1_deepvariant.vcf.roh-viz.html:md5,08da4388fd70aa5ef7524c4eea2a6d0a",
                 "GCA_947369205.1_OX376310.1_CANBKR010000003.1.pacbio.icCanRufa1_deepvariant.vcf.sites.pi.gz:md5,9c35407165ea33601a554eaa7005d26b",
                 "GCA_947369205.1_OX376310.1_CANBKR010000003.1.pacbio.icCanRufa1_deepvariant.vcf.sites.pi.gz.tbi:md5,d16324760872b1265693ade34954c2b3",
                 "GCA_947369205.1_OX376310.1_CANBKR010000003.1.pacbio.icCanRufa1_deepvariant.vcf.snpden:md5,8b9a5eaba3e0965b04b2db2c7f0674ed"
@@ -109,6 +107,6 @@
             "nf-test": "0.9.3",
             "nextflow": "25.10.2"
         },
-        "timestamp": "2026-02-28T17:02:48.191003247"
+        "timestamp": "2026-03-02T16:52:16.81287092"
     }
 }
