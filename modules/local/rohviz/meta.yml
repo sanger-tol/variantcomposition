@@ -36,7 +36,7 @@ input:
         pattern: "*.{vcf,.vcf.gz}"
         ontologies: []
   - min_length:
-      type: number
+      type: integer
       description: "Mimimum length of ROH"
       ontologies: []
   - regions_file:
@@ -59,7 +59,8 @@ output:
           type: file
           description: RoH visual report file.
           pattern: "*.{html}"
-          ontologies: []
+          ontologies:
+            - edam: http://edamontology.org/format_2331 # HTML
   versions:
     - versions.yml:
         type: file
@@ -67,5 +68,16 @@ output:
         pattern: "versions.yml"
         ontologies:
           - edam: http://edamontology.org/format_3750 # YAML
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - bcftools:
+          type: string
+          description: The name of the tool
+      - bcftools --version | sed '1!d; s/^.*bcftools //':
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@yz533cb"
