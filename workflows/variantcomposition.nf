@@ -53,7 +53,7 @@ workflow VARIANTCOMPOSITION {
     ch_versions = ch_versions.mix( FEATURES.out.versions )
 
     //
-    // SUBWORKFLOW: ALLEL FREQUENCY AND RUN OF HOMOZYGOSITY
+    // SUBWORKFLOW: ALLELE FREQUENCY AND RUN OF HOMOZYGOSITY
     //
 
     AF_ROH (

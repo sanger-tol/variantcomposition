@@ -7,7 +7,7 @@ keywords:
 tools:
   - "roh-viz":
       description: |
-        "Visualise the output of bcftools roh. It creates a HTML/JavaScript document which can be interactively viewed in a web browser."
+        "Visualise the output of bcftools roh. It creates an HTML/JavaScript document which can be interactively viewed in a web browser."
       homepage: http://samtools.github.io/bcftools/bcftools.html
       documentation: http://www.htslib.org/doc/bcftools.html
       doi: 10.1093/bioinformatics/btp352
@@ -23,7 +23,7 @@ input:
         type: file
         description: Output of BCFtools_roh. Contains site-specific and/or per-region runs of homo/autozygosity
           calls.
-        pattern: "*.{roh}"
+        pattern: "*.roh"
         ontologies: []
   - - meta1:
         type: map
@@ -34,11 +34,8 @@ input:
         type: file
         description: VCF file
         pattern: "*.{vcf,.vcf.gz}"
-        ontologies: []
-  - min_length:
-      type: integer
-      description: "Mimimum length of ROH"
-      ontologies: []
+        ontologies:
+          - edam: http://edamontology.org/format_3016 # VCF
   - regions_file:
       type: file
       description: "Regions can be specified either on command line or in a VCF, BED,
@@ -58,16 +55,19 @@ output:
       - "*.html":
           type: file
           description: RoH visual report file.
-          pattern: "*.{html}"
+          pattern: "*.html"
           ontologies:
             - edam: http://edamontology.org/format_2331 # HTML
-  versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+  versions_bcftools:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - bcftools:
+          type: string
+          description: The tool name
+      - "bcftools --version | sed '1!d; s/^.*bcftools //'":
+          type: string
+          description: The command used to generate the version of the tool
 topics:
   versions:
     - - ${task.process}:
