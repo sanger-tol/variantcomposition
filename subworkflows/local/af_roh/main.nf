@@ -1,7 +1,7 @@
-include { BCFTOOLS_QUERY   as BCFTOOLS_QUERY            }   from '../../../modules/nf-core/bcftools/query/main'
-include { BGZIPTABIX       as BGZIPTABIX_AF_FILE        }   from '../../../modules/sanger-tol/bgziptabix/main'
-include { BCFTOOLS_ROH     as BCFTOOLS_ROH              }   from '../../../modules/nf-core/bcftools/roh/main'
-include { BCFTOOLS_ROHVIZ  as BCFTOOLS_ROHVIZ           }   from '../../../modules/nf-core/bcftools/rohviz/main'
+include { BCFTOOLS_QUERY  as BCFTOOLS_QUERY     } from '../../../modules/nf-core/bcftools/query/main'
+include { BGZIPTABIX      as BGZIPTABIX_AF_FILE } from '../../../modules/sanger-tol/bgziptabix/main'
+include { BCFTOOLS_ROH    as BCFTOOLS_ROH       } from '../../../modules/nf-core/bcftools/roh/main'
+include { BCFTOOLS_ROHVIZ as BCFTOOLS_ROHVIZ    } from '../../../modules/nf-core/bcftools/rohviz/main'
 
 workflow AF_ROH {
     take:
@@ -10,41 +10,62 @@ workflow AF_ROH {
     main:
     ch_versions = channel.empty()
 
-    // Prepare for input channels of BCFtools RoH
-    // Create the AF-file input using bcftools query
+    //
+    // MODULE: Extract allele frequency information from VCF files
+    // Uses bcftools query to calculate allele frequencies, which are required for ROH detection
+    //
     BCFTOOLS_QUERY ( vcfs_tbi, [], [], [] )
-    params.max_seq_length = 0
+
+    //
+    // MODULE: Compress and index the allele frequency file
+    // The maximum sequence length is not available in the pipeline so just pass 0 for now
+    //
     BGZIPTABIX_AF_FILE ( BCFTOOLS_QUERY.out.output
-        .map { meta, input -> [ meta, input, params.max_seq_length ]}
+        .map { meta, input -> [ meta, input, 0 ]}
     )
-    // Generate a key (meta.id) to match VCF/gVCF files and allele frequency results
+
+    //
+    // CHANNEL MANIPULATION: Prepare matched inputs for BCFTOOLS_ROH
+    //
+    // BCFtools roh requires [VCF + index] and [AF file + index], both correspond to the same sample
+    // Strategy: Use meta.id as a key to join VCF and AF channels
+    //
+
+    // Key VCF channel by sample ID for joining
     def vcfs_tbi_keyed = vcfs_tbi
         .map { meta, vcfs, tbi -> [ meta.id, meta, vcfs, tbi ] }
-    // BCFtools ROH cannot take .gzi but .tbi
+
+    // Key AF channel by sample ID and combine bgzip output with tabix index
+    //   bcftools roh requires .tbi index, not .gzi
     def af_tbi_keyed = BGZIPTABIX_AF_FILE.out.gz_index
         .join(BGZIPTABIX_AF_FILE.out.tbi)
         .map{ meta, af, _af_gzi, af_tbi -> [ meta.id, af, af_tbi ] }
 
-    // Gather VCF/gVCF files and allele frequency results as matched inputs for BCFtools RoH
+    // Join VCF and AF channels on sample ID
     def ch_vcfs_af_joined = vcfs_tbi_keyed
         .join(af_tbi_keyed)
 
-    // Call BCFtools for ROH
+    //
+    // MODULE: Detect runs of homozygosity
+    //
     BCFTOOLS_ROH(
         ch_vcfs_af_joined.map{ _meta_id, meta, vcfs, vcf_tbi, _af, _af_tbi -> [ meta, vcfs, vcf_tbi] },
         ch_vcfs_af_joined.map{ _meta_id, _meta, _vcfs, _vcf_tbi, af, af_tbi -> [ af, af_tbi] },
-        [],
-        [],
-        [],
-        []
+        [], // genetic_map
+        [], // regions_file
+        [], // samples_file
+        []  // targets_file
     )
     ch_versions = ch_versions.mix( BCFTOOLS_ROH.out.versions )
 
+    //
+    // MODULE: Visualize ROH results as interactive HTML
+    //
     BCFTOOLS_ROHVIZ (
         BCFTOOLS_ROH.out.roh,
         vcfs_tbi.map{ meta, vcfs, _vcf_tbi -> [ meta, vcfs ] },
-        [],
-        []
+        [], // regions_list
+        []  // samples_file
     )
 
     emit:
