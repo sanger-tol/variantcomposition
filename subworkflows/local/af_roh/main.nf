@@ -1,7 +1,7 @@
 include { BCFTOOLS_QUERY   as BCFTOOLS_QUERY            }   from '../../../modules/nf-core/bcftools/query/main'
 include { BGZIPTABIX       as BGZIPTABIX_AF_FILE        }   from '../../../modules/sanger-tol/bgziptabix/main'
 include { BCFTOOLS_ROH     as BCFTOOLS_ROH              }   from '../../../modules/nf-core/bcftools/roh/main'
-include { BCFTOOLS_ROHVIZ  as BCFTOOLS_ROHVIZ           }   from '../../../modules/local/rohviz/main'
+include { BCFTOOLS_ROHVIZ  as BCFTOOLS_ROHVIZ           }   from '../../../modules/nf-core/bcftools/rohviz/main'
 
 workflow AF_ROH {
     take:
@@ -44,8 +44,8 @@ workflow AF_ROH {
     BCFTOOLS_ROHVIZ ( BCFTOOLS_ROH.out.roh, samplesheet, [], [] )
 
     emit:
-    roh          = BCFTOOLS_ROH.out.roh        // channel: [ meta, roh      ]
-    roh_viz      = BCFTOOLS_ROHVIZ.out.output  // channel: [ meta, output   ]
-    versions     = ch_versions                 // channel: [ versions.yml   ]
+    roh          = BCFTOOLS_ROH.out.roh      // channel: [ meta, roh    ]
+    roh_viz      = BCFTOOLS_ROHVIZ.out.html  // channel: [ meta, html   ]
+    versions     = ch_versions               // channel: [ versions.yml ]
 
 }

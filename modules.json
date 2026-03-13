@@ -15,6 +15,11 @@
                         "git_sha": "f17049e03697726ace7499d2fe342f892594f6f3",
                         "installed_by": ["modules"]
                     },
+                    "bcftools/rohviz": {
+                        "branch": "master",
+                        "git_sha": "282f6d0e88aa42c63feeac250c085a9375cb1a6e",
+                        "installed_by": ["modules"]
+                    },
                     "bcftools/stats": {
                         "branch": "master",
                         "git_sha": "f17049e03697726ace7499d2fe342f892594f6f3",
