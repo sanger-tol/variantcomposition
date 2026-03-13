@@ -5,8 +5,7 @@ include { BCFTOOLS_ROHVIZ  as BCFTOOLS_ROHVIZ           }   from '../../../modul
 
 workflow AF_ROH {
     take:
-    samplesheet        // channel: [ meta, VCF/gVCF ]
-    vcfs_tbi           // channel: [ meta, VCF/gVCF, tbi ]
+    vcfs_tbi   // channel: [ meta, VCF/gVCF, tbi ]
 
     main:
     ch_versions = channel.empty()
@@ -41,7 +40,12 @@ workflow AF_ROH {
     )
     ch_versions = ch_versions.mix( BCFTOOLS_ROH.out.versions )
 
-    BCFTOOLS_ROHVIZ ( BCFTOOLS_ROH.out.roh, samplesheet, [], [] )
+    BCFTOOLS_ROHVIZ (
+        BCFTOOLS_ROH.out.roh,
+        vcfs_tbi.map{ meta, vcfs, _vcf_tbi -> [ meta, vcfs ] },
+        [],
+        []
+    )
 
     emit:
     roh          = BCFTOOLS_ROH.out.roh      // channel: [ meta, roh    ]

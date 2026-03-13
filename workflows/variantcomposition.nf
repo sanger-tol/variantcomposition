@@ -57,7 +57,6 @@ workflow VARIANTCOMPOSITION {
     //
 
     AF_ROH (
-        ch_samplesheet,
         ch_vcfs_tbi
     )
     ch_versions = ch_versions.mix( AF_ROH.out.versions )
