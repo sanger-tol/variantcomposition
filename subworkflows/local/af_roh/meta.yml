@@ -1,0 +1,44 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/subworkflows/yaml-schema.json
+name: "af_roh"
+description: Detect runs of homozygosity (ROH) from VCF files and generate interactive visualisations
+keywords:
+  - roh
+  - allele frequency
+  - bcftools
+  - vcf
+components:
+  - bcftools/query
+  - bgziptabix
+  - bcftools/roh
+  - bcftools/rohviz
+input:
+  - vcfs_tbi:
+      type: file
+      description: |
+        The input channel containing VCF/gVCF files with their tabix index files.
+        Structure: [ val(meta), path(vcf), path(tbi) ]
+      pattern: "*.{vcf.gz,g.vcf.gz,vcf.gz.tbi,g.vcf.gz.tbi}"
+output:
+  - roh:
+      type: file
+      description: |
+        Channel containing ROH detection results in text format.
+        Contains genomic regions with runs of homozygosity identified by bcftools roh.
+        Structure: [ val(meta), path(roh) ]
+      pattern: "*.roh"
+  - roh_viz:
+      type: file
+      description: |
+        Channel containing interactive HTML visualisation of ROH results.
+        Structure: [ val(meta), path(html) ]
+      pattern: "*.html"
+  - versions:
+      type: file
+      description: |
+        File containing software versions
+        Structure: [ path(versions.yml) ]
+      pattern: "versions.yml"
+authors:
+  - "@yz533cb"
+maintainers:
+  - "@yz533cb"

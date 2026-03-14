@@ -1,0 +1,26 @@
+{
+    "variantcomposition - af-roh": {
+        "content": [
+            [
+                [
+                    {
+                        "id": "test"
+                    },
+                    "test.roh:md5,8f2f38d5fea9343ce481fad98476c38e"
+                ]
+            ],
+            "test.roh-viz.html",
+            403,
+            {
+                "versions": [
+                    "versions.yml:md5,fcf9aa9e867aebbc2cd83a7b7aea0bf4"
+                ]
+            }
+        ],
+        "timestamp": "2026-03-14T23:28:17.730470925",
+        "meta": {
+            "nf-test": "0.9.4",
+            "nextflow": "25.10.4"
+        }
+    }
+}
