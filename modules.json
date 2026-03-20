@@ -49,6 +49,11 @@
                         "branch": "master",
                         "git_sha": "c58771f3403b7005f2ae0fd277b378961002b127",
                         "installed_by": ["modules"]
+                    },
+                    "multiqc": {
+                        "branch": "master",
+                        "git_sha": "af27af1be706e6a2bb8fe454175b0cdf77f47b49",
+                        "installed_by": ["modules"]
                     }
                 }
             },

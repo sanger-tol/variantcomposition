@@ -40,6 +40,8 @@ workflow SANGERTOL_VARIANTCOMPOSITION {
         samplesheet,
         positions
     )
+    emit:
+    multiqc_report = VARIANTCOMPOSITION.out.multiqc_report // channel: /path/to/multiqc_report.html
 }
 /*
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -84,6 +86,7 @@ workflow {
         params.outdir,
         params.monochrome_logs,
         params.hook_url,
+        SANGERTOL_VARIANTCOMPOSITION.out.multiqc_report
     )
 }
 

@@ -44,6 +44,8 @@ Steps involved:
 6. Allele frequency
 7. VCF stats and plot
 
+- Present QC for raw reads ([`MultiQC`](http://multiqc.info/))
+
 ## Usage
 
 > [!NOTE]

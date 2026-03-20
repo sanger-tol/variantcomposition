@@ -2,10 +2,8 @@ lint:
   files_exist:
     - conf/igenomes.config
     - conf/igenomes_ignored.config
-    - assets/multiqc_config.yml
     - conf/igenomes.config
     - conf/igenomes_ignored.config
-    - assets/multiqc_config.yml
     - CODE_OF_CONDUCT.md
     - assets/nf-core-variantcomposition_logo_light.png
     - docs/images/nf-core-variantcomposition_logo_light.png
@@ -31,7 +29,7 @@ lint:
     - docs/README.md
     - .github/workflows/linting.yml
     - .gitattributes
-  multiqc_config: false
+  multiqc_config: true
   nextflow_config:
     - manifest.name
     - manifest.homePage
@@ -51,7 +49,6 @@ template:
   outdir: .
   skip_features:
     - igenomes
-    - multiqc
     - fastqc
     - adaptivecard
   version: 1.0.0dev
