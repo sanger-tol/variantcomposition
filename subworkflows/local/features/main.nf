@@ -46,9 +46,8 @@ workflow FEATURES {
 
     // Compress and index AF output files
     //   max_seq_length set to 0 for now
-    params.max_seq_length = 0
     BGZIPTABIX ( VCFTOOLS_ALLELE_FREQUENCY.out.frq
-        .map { meta, input -> [ meta, input, params.max_seq_length ] }
+        .map { meta, input -> [ meta, input, 0 ] }
     )
 
     // Compress output files
