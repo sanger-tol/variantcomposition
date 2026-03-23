@@ -25,6 +25,11 @@
                         "git_sha": "f17049e03697726ace7499d2fe342f892594f6f3",
                         "installed_by": ["modules"]
                     },
+                    "multiqc": {
+                        "branch": "master",
+                        "git_sha": "af27af1be706e6a2bb8fe454175b0cdf77f47b49",
+                        "installed_by": ["modules"]
+                    },
                     "pigz/compress": {
                         "branch": "master",
                         "git_sha": "c908ccaf0a5c802b6f8e814d8c5cf85da2364222",

@@ -1,7 +1,7 @@
 {
     "-profile test": {
         "content": [
-            33,
+            34,
             {
                 "BCFTOOLS_QUERY": {
                     "bcftools": 1.22
@@ -91,8 +91,9 @@
                 "GCA_947369205.1_OX376310.1_CANBKR010000003.1.pacbio.icCanRufa1_deepvariant.vcf.sites.pi.gz",
                 "GCA_947369205.1_OX376310.1_CANBKR010000003.1.pacbio.icCanRufa1_deepvariant.vcf.sites.pi.gz.tbi",
                 "GCA_947369205.1_OX376310.1_CANBKR010000003.1.pacbio.icCanRufa1_deepvariant.vcf.snpden",
+                "multiqc_report.html",
                 "pipeline_info",
-                "pipeline_info/variantcomposition_software_versions.yml"
+                "pipeline_info/variantcomposition_software_mqc_versions.yml"
             ],
             [
                 "GCA_947369205.1_OX376310.1_CANBKR010000003.1.pacbio.icCanRufa1_deepvariant.g.vcf.bcftools_stats.txt.gz:md5,5243242b2d7159d8fa40bb024e03b006",
@@ -120,10 +121,10 @@
                 "GCA_947369205.1_OX376310.1_CANBKR010000003.1.pacbio.icCanRufa1_deepvariant.vcf.snpden:md5,8b9a5eaba3e0965b04b2db2c7f0674ed"
             ]
         ],
+        "timestamp": "2026-03-23T13:54:14.573768063",
         "meta": {
-            "nf-test": "0.9.3",
-            "nextflow": "25.10.2"
-        },
-        "timestamp": "2026-03-13T14:50:23.95904801"
+            "nf-test": "0.9.4",
+            "nextflow": "25.10.4"
+        }
     }
 }
