@@ -29,7 +29,8 @@ lint:
     - docs/README.md
     - .github/workflows/linting.yml
     - .gitattributes
-  multiqc_config: true
+  multiqc_config:
+    - report_comment
   nextflow_config:
     - manifest.name
     - manifest.homePage
