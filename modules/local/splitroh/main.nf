@@ -22,8 +22,8 @@ process SPLITROH {
     def prefix = task.ext.prefix ?: "${meta.id}"
 
     """
-    { grep '^#' "$roh" | grep -v '^# ST'; grep '^RG\t' "$roh"; } > ${prefix}.roh.rg
-    { grep '^#' "$roh" | grep -v '^# RG'; grep '^ST\t' "$roh"; } > ${prefix}.roh.st
+    awk '/^#/ && !/^# ST/ || /^RG/' "$roh" > ${prefix}.roh.rg
+    awk '/^#/ && !/^# RG/ || /^ST/' "$roh" > ${prefix}.roh.st
     """
 
     stub:
