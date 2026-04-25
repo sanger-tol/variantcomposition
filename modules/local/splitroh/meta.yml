@@ -1,74 +1,76 @@
-# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
-# # TODO nf-core: Add a description of the module and list keywords
 name: "splitroh"
-description: write your description here
+description: split the output of bcftools roh into ST and RG lists respectively
 keywords:
-  - sort
-  - example
-  - genomics
+  - RoH
+  - gawk
+  - awk
+  - file parsing
 tools:
-  ## TODO nf-core: Add a description and other details for the software below
   - "splitroh":
-      description: ""
-      homepage: ""
-      documentation: ""
-      tool_dev_url: ""
-      doi: ""
-      licence: null
-      identifier: null
-
+      description: |
+        "split the output of bcftools roh into two files containing ST and RG regions respectively"
+  - "gawk":
+      description: "GNU awk"
+      homepage: "https://www.gnu.org/software/gawk/"
+      documentation: "https://www.gnu.org/software/gawk/manual/"
+      tool_dev_url: "https://www.gnu.org/prep/ftp.html"
+      licence:
+        - "GPL v3"
+      identifier: ""
 input:
-  ### TODO nf-core: Add a description of all of the variables used as input
   - - meta:
         type: map
         description: |
           Groovy Map containing sample information
           e.g. `[ id:'sample1' ]`
-    - bam:
+    - roh:
         type: file
-        description: Sorted BAM/CRAM/SAM file
-        pattern: "*.{bam,cram,sam}"
-        ontologies:
-          - edam: "http://edamontology.org/format_2572" # BAM
-          - edam: "http://edamontology.org/format_2573" # CRAM
-          - edam: "http://edamontology.org/format_3462" # SAM
-
+        description: Output of BCFtools_roh. Contains site-specific and/or
+          per-region runs of homo/autozygosity calls.
+        pattern: "*.roh"
+        ontologies: []
 output:
-  ### TODO nf-core: Add a description of all of the variables used as output
-  bam:
+  roh_rg:
     - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1' ]`
-      - "*.bam":
+      - "*.roh.rg":
           type: file
-          description: Sorted BAM/CRAM/SAM file
-          pattern: "*.{bam,cram,sam}"
-          ontologies:
-            - edam: "http://edamontology.org/format_2572" # BAM
-            - edam: "http://edamontology.org/format_2573" # CRAM
-            - edam: "http://edamontology.org/format_3462" # SAM
-  versions_splitroh:
+          description: roh file with RG output
+          pattern: "*.roh.rg"
+          ontologies: []
+  roh_st:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*.roh.st":
+          type: file
+          description: roh file with ST output
+          pattern: "*.roh.st"
+          ontologies: []
+  versions_gawk:
     - - "${task.process}":
           type: string
           description: The name of the process
-      - "splitroh":
+      - "gawk":
           type: string
           description: The name of the tool
-      - "splitroh --version":
+      - "gawk --version":
           type: eval
           description: The expression to obtain the version of the tool
-
 topics:
   versions:
     - - ${task.process}:
           type: string
           description: The name of the process
-      - splitroh:
+      - gawk:
           type: string
           description: The name of the tool
-      - splitroh --version:
+      - gawk --version:
           type: eval
           description: The expression to obtain the version of the tool
 authors:
