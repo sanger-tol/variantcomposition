@@ -34,4 +34,3 @@ process SPLITROH {
     touch ${prefix}.roh.st
     """
 }
-

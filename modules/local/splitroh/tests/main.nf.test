@@ -34,7 +34,7 @@ nextflow_process {
 
         when {
             process {
-                """                
+                """
                 input[0] = BCFTOOLS_ROH.out.roh
                 """
             }
