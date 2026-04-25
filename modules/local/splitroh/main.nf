@@ -35,10 +35,3 @@ process SPLITROH {
     """
 }
 
-workflow {
-    def meta = [id: 'test']
-    def file = "/Users/naran/Coding/sanger-tol/data/variant-composition/results_test_full/GCA_947369205.1.pacbio.icCanRufa1_deepvariant.vcf.roh"
-    def input = [meta, file]
-
-    SPLITROH(input)
-}
