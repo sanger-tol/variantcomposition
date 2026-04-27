@@ -2,6 +2,7 @@ include { BCFTOOLS_QUERY  as BCFTOOLS_QUERY     } from '../../../modules/nf-core
 include { BGZIPTABIX      as BGZIPTABIX_AF_FILE } from '../../../modules/sanger-tol/bgziptabix/main'
 include { BCFTOOLS_ROH    as BCFTOOLS_ROH       } from '../../../modules/nf-core/bcftools/roh/main'
 include { BCFTOOLS_ROHVIZ as BCFTOOLS_ROHVIZ    } from '../../../modules/nf-core/bcftools/rohviz/main'
+include { SPLITROH        as SPLITROH           } from '../../../modules/local/splitroh/main'
 
 workflow AF_ROH {
     take:
@@ -68,9 +69,16 @@ workflow AF_ROH {
         []  // samples_file
     )
 
+    //
+    // MODULE: Split ROH results to two files containing ST and RG regions respectively
+    //
+    SPLITROH(BCFTOOLS_ROH.out.roh)
+
     emit:
-    roh          = BCFTOOLS_ROH.out.roh      // channel: [ meta, roh    ]
-    roh_viz      = BCFTOOLS_ROHVIZ.out.html  // channel: [ meta, html   ]
-    versions     = ch_versions               // channel: [ versions.yml ]
+    roh      = BCFTOOLS_ROH.out.roh      // channel: [ meta, roh    ]
+    roh_viz  = BCFTOOLS_ROHVIZ.out.html  // channel: [ meta, html   ]
+    roh_rg   = SPLITROH.out.roh_rg       // channel: [ meta, roh_rg ]
+    roh_st   = SPLITROH.out.roh_st       // channel: [ meta, roh_st ]
+    versions = ch_versions               // channel: [ versions.yml ]
 
 }

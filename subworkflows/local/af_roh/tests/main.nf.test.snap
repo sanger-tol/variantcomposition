@@ -6,7 +6,23 @@
                     {
                         "id": "test"
                     },
-                    "test.roh:md5,8f2f38d5fea9343ce481fad98476c38e"
+                    "test.roh:md5,cdd2dbf42e3fb72ef4dd4e30ca0e5155"
+                ]
+            ],
+            [
+                [
+                    {
+                        "id": "test"
+                    },
+                    "test.roh.rg:md5,a7eaa571cc83fc7406de3f7f4a3edef0"
+                ]
+            ],
+            [
+                [
+                    {
+                        "id": "test"
+                    },
+                    "test.roh.st:md5,a87e9aa228aeb8df8cff2d53315775da"
                 ]
             ],
             "test.roh-viz.html",
@@ -17,7 +33,7 @@
                 ]
             }
         ],
-        "timestamp": "2026-03-14T23:28:17.730470925",
+        "timestamp": "2026-04-27T10:23:21.497349014",
         "meta": {
             "nf-test": "0.9.4",
             "nextflow": "25.10.4"

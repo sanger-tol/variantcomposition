@@ -11,6 +11,7 @@ components:
   - bgziptabix
   - bcftools/roh
   - bcftools/rohviz
+  - splitroh
 input:
   - vcfs_tbi:
       type: file
@@ -32,6 +33,15 @@ output:
         Channel containing interactive HTML visualisation of ROH results.
         Structure: [ val(meta), path(html) ]
       pattern: "*.html"
+
+  - roh_rg:
+      type: file
+      description: roh file with RG output
+      pattern: "*.roh.rg"
+  - roh_st:
+      type: file
+      description: roh file with ST output
+      pattern: "*.roh.st"
   - versions:
       type: file
       description: |
