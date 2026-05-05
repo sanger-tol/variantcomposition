@@ -1,5 +1,5 @@
 include { BCFTOOLS_STATS        as BCFTOOLS_STATS }   from '../../../modules/nf-core/bcftools/stats/main'
-include { BCFTOOLS_PLOTVCFSTATS as PLOTVCFSTATS   }   from '../../../modules/local/plotvcfstats/main'
+include { BCFTOOLS_PLOTVCFSTATS as PLOTVCFSTATS   }   from '../../../modules/nf-core/bcftools/plotvcfstats/main'
 include { PIGZ_COMPRESS         as PIGZ           }   from '../../../modules/nf-core/pigz/compress/main'
 include { TAR                   as TAR            }   from '../../../modules/nf-core/tar/main'
 
