@@ -67,9 +67,9 @@ workflow FEATURES {
 
     emit:
     compressed_sites_pi_index    = BGZIPTABIX_PI.out.gz_index             // channel: [ meta, gz_index       ]
-    sites_pi_tbi                 = BGZIPTABIX_AF.out.tbi                  // channel: [ meta, tbi            ]
-    compressed_snp_density_index = BGZIPTABIX_AF.out.gz_index             // channel: [ meta, gz_index       ]
-    snp_density_tbi              = BGZIPTABIX_AF.out.tbi                  // channel: [ meta, tbi            ]
+    sites_pi_tbi                 = BGZIPTABIX_PI.out.tbi                  // channel: [ meta, tbi            ]
+    compressed_snp_density_index = BGZIPTABIX_SD.out.gz_index             // channel: [ meta, gz_index       ]
+    snp_density_tbi              = BGZIPTABIX_SD.out.tbi                  // channel: [ meta, tbi            ]
     compressed_af_index          = BGZIPTABIX_AF.out.gz_index             // channel: [ meta, gz_index       ]
     af_tbi                       = BGZIPTABIX_AF.out.tbi                  // channel: [ meta, tbi            ]
     heterozygosity               = VCFTOOLS_HET.out.heterozygosity        // channel: [ meta, heterozygosity ]

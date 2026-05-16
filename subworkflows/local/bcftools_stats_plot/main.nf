@@ -18,7 +18,6 @@ workflow BCFTOOLS_STATS_PLOT {
 
     // Plot BCFtools stats in a PDF
     PLOTVCFSTATS( BCFTOOLS_STATS.out.stats )
-    ch_versions = ch_versions.mix( PLOTVCFSTATS.out.versions )
 
     // Compress plot-stats raw data folder
     TAR ( PLOTVCFSTATS.out.plot_dir, '.gz' )

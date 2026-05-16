@@ -2,7 +2,8 @@ include { BCFTOOLS_QUERY  as BCFTOOLS_QUERY     } from '../../../modules/nf-core
 include { BGZIPTABIX      as BGZIPTABIX_AF_FILE } from '../../../modules/sanger-tol/bgziptabix/main'
 include { BCFTOOLS_ROH    as BCFTOOLS_ROH       } from '../../../modules/nf-core/bcftools/roh/main'
 include { BCFTOOLS_ROHVIZ as BCFTOOLS_ROHVIZ    } from '../../../modules/nf-core/bcftools/rohviz/main'
-include { SPLITROH        as SPLITROH           } from '../../../modules/local/splitroh/main'
+include { GAWK            as GAWK_SPLIT_RG      } from '../../../modules/nf-core/gawk/main'
+include { GAWK            as GAWK_SPLIT_ST      } from '../../../modules/nf-core/gawk/main'
 include { TABIX_BGZIP     as BGZIP_ROH          } from '../../../modules/nf-core/tabix/bgzip/main'
 include { BGZIPTABIX      as BGZIPTABIX_ST      } from '../../../modules/sanger-tol/bgziptabix/main'
 include { BGZIPTABIX      as BGZIPTABIX_RG      } from '../../../modules/sanger-tol/bgziptabix/main'
@@ -81,7 +82,31 @@ workflow AF_ROH {
     // MODULE: Split ROH results to two files containing ST and RG regions respectively
     //
 
-    SPLITROH(BCFTOOLS_ROH.out.roh)
+    ch_extract_rg_awk = channel.of('''\
+        /^#/ && !/^# ST/ || /^RG/ {
+            print
+        }'''.stripIndent())
+        .collectFile(name: "extract_rg.awk", cache: true)
+        .collect()
+
+    ch_extract_st_awk = channel.of('''\
+        /^#/ && !/^# RG/ || /^ST/ {
+            print
+        }'''.stripIndent())
+        .collectFile(name: "extract_st.awk", cache: true)
+        .collect()
+
+    GAWK_SPLIT_RG(
+        BCFTOOLS_ROH.out.roh,
+        ch_extract_rg_awk,
+        false
+    )
+
+    GAWK_SPLIT_ST(
+        BCFTOOLS_ROH.out.roh,
+        ch_extract_st_awk,
+        false
+    )
 
 
     //
@@ -90,11 +115,11 @@ workflow AF_ROH {
 
     BGZIP_ROH(BCFTOOLS_ROH.out.roh)
 
-    BGZIPTABIX_RG ( SPLITROH.out.roh_rg
+    BGZIPTABIX_RG ( GAWK_SPLIT_RG.out.output
         .map { meta, input -> [ meta, input, 0 ] }   // Max_seq_length set to 0 for now
     )
 
-    BGZIPTABIX_ST ( SPLITROH.out.roh_st
+    BGZIPTABIX_ST ( GAWK_SPLIT_ST.out.output
         .map { meta, input -> [ meta, input, 0 ] }   // Max_seq_length set to 0 for now
     )
 
