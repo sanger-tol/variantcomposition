@@ -6,7 +6,7 @@
                     {
                         "id": "test"
                     },
-                    "test.roh:md5,cdd2dbf42e3fb72ef4dd4e30ca0e5155"
+                    "test.roh.gz:md5,cdd2dbf42e3fb72ef4dd4e30ca0e5155"
                 ]
             ],
             [
@@ -14,7 +14,8 @@
                     {
                         "id": "test"
                     },
-                    "test.roh.rg:md5,a7eaa571cc83fc7406de3f7f4a3edef0"
+                    "test.rg.gz:md5,a7eaa571cc83fc7406de3f7f4a3edef0",
+                    "test.rg.gz.gzi:md5,7dea362b3fac8e00956a4952a3d4f474"
                 ]
             ],
             [
@@ -22,7 +23,24 @@
                     {
                         "id": "test"
                     },
-                    "test.roh.st:md5,a87e9aa228aeb8df8cff2d53315775da"
+                    "test.rg.gz.tbi:md5,d441479edc1a403b083fb265db2c775e"
+                ]
+            ],
+            [
+                [
+                    {
+                        "id": "test"
+                    },
+                    "test.st.gz:md5,a87e9aa228aeb8df8cff2d53315775da",
+                    "test.st.gz.gzi:md5,7dea362b3fac8e00956a4952a3d4f474"
+                ]
+            ],
+            [
+                [
+                    {
+                        "id": "test"
+                    },
+                    "test.st.gz.tbi:md5,d441479edc1a403b083fb265db2c775e"
                 ]
             ],
             "test.roh-viz.html",
@@ -33,7 +51,7 @@
                 ]
             }
         ],
-        "timestamp": "2026-04-27T10:23:21.497349014",
+        "timestamp": "2026-05-16T23:27:19.723549932",
         "meta": {
             "nf-test": "0.9.4",
             "nextflow": "25.10.4"

@@ -31,9 +31,11 @@ nextflow_workflow {
             assertAll(
                 { assert workflow.success },
                 { assert snapshot(
-                    workflow.out.roh,
-                    workflow.out.roh_rg,
-                    workflow.out.roh_st,
+                    workflow.out.compressed_roh,
+                    workflow.out.compressed_roh_rg_index,
+                    workflow.out.roh_rg_tbi,
+                    workflow.out.compressed_roh_st_index,
+                    workflow.out.roh_st_tbi,
                     file(workflow.out.roh_viz[0][1]).name,
                     path(workflow.out.roh_viz[0][1]).readLines().size(),
                     workflow.out.findAll { key, val -> key.startsWith("versions") }
