@@ -25,7 +25,8 @@ workflow AF_ROH {
     // The maximum sequence length is not available in the pipeline so just pass 0 for now
     //
     BGZIPTABIX_AF_FILE ( BCFTOOLS_QUERY.out.output
-        .map { meta, input -> [ meta, input, 0 ]}
+        .map { meta, input -> [ meta, input, 0 ]},
+        [ [], [], [] ]
     )
 
     //
@@ -113,11 +114,13 @@ workflow AF_ROH {
     //
 
     BGZIPTABIX_RG ( GAWK_SPLIT_RG.out.output
-        .map { meta, input -> [ meta, input, 0 ] }   // Max_seq_length set to 0 for now
+        .map { meta, input -> [ meta, input, 0 ] },   // Max_seq_length set to 0 for now
+        [ [], [], 'roh.rg' ]
     )
 
     BGZIPTABIX_ST ( GAWK_SPLIT_ST.out.output
-        .map { meta, input -> [ meta, input, 0 ] }   // Max_seq_length set to 0 for now
+        .map { meta, input -> [ meta, input, 0 ] },   // Max_seq_length set to 0 for now
+        [ [], [], 'roh.st' ]
     )
 
 

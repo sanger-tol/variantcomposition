@@ -54,15 +54,18 @@ workflow FEATURES {
     //
 
     BGZIPTABIX_PI ( VCFTOOLS_SITE_PI.out.sites_pi
-        .map { meta, input -> [ meta, input, 0 ] }   // Max_seq_length set to 0 for now
+        .map { meta, input -> [ meta, input, 0 ] },   // Max_seq_length set to 0 for now
+        [ [], [], [] ]
     )
 
     BGZIPTABIX_SD ( VCFTOOLS_SNP_DENSITY.out.snp_density
-        .map { meta, input -> [ meta, input, 0 ] }   // Max_seq_length set to 0 for now
+        .map { meta, input -> [ meta, input, 0 ] },   // Max_seq_length set to 0 for now
+        [ [], [], [] ]
     )
 
     BGZIPTABIX_AF ( VCFTOOLS_ALLELE_FREQUENCY.out.frq
-        .map { meta, input -> [ meta, input, 0 ] }   // Max_seq_length set to 0 for now
+        .map { meta, input -> [ meta, input, 0 ] },   // Max_seq_length set to 0 for now
+        [ [], [], [] ]
     )
 
     emit:
