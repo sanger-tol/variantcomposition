@@ -21,21 +21,23 @@ process BGZIPTABIX {
     task.ext.when == null || task.ext.when
 
     script:
-    def args = task.ext.args ?: ''
-    def args2 = task.ext.args2 ?: ''
+    def args   = task.ext.args ?: ''
+    def args2  = task.ext.args2 ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
+    def suffix = task.ext.suffix ?: "${input.collect{ file -> file.getExtension()}.get(0)}" // use the first extension of the input files
     """
-    bgzip --threads ${task.cpus} --index ${args} ${input} --output ${prefix}.${input.extension}.gz
-    [[ ${max_seq_length} -lt \$(( 2 ** 29 )) ]] && tabix --threads ${task.cpus} ${args2} ${prefix}.${input.extension}.gz
-    [[ ${max_seq_length} -lt \$(( 2 ** 32 )) ]] && tabix --threads ${task.cpus} --csi ${args2} ${prefix}.${input.extension}.gz
+    bgzip --threads ${task.cpus} --index ${args} ${input} --output ${prefix}.${suffix}.gz
+    [[ ${max_seq_length} -lt \$(( 2 ** 29 )) ]] && tabix --threads ${task.cpus} ${args2} ${prefix}.${suffix}.gz
+    [[ ${max_seq_length} -lt \$(( 2 ** 32 )) ]] && tabix --threads ${task.cpus} --csi ${args2} ${prefix}.${suffix}.gz
     """
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
+    def suffix = task.ext.suffix ?: "${input.collect{ file -> file.getExtension()}.get(0)}"
     """
-    echo "" | gzip > ${prefix}.${input.extension}.gz
-    touch ${prefix}.${input.extension}.gz.gzi
-    touch ${prefix}.${input.extension}.gz.tbi
-    touch ${prefix}.${input.extension}.gz.csi
+    echo "" | gzip > ${prefix}.${suffix}.gz
+    touch ${prefix}.${suffix}.gz.gzi
+    touch ${prefix}.${suffix}.gz.tbi
+    touch ${prefix}.${suffix}.gz.csi
     """
 }

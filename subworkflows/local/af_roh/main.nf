@@ -4,7 +4,6 @@ include { BCFTOOLS_ROH    as BCFTOOLS_ROH       } from '../../../modules/nf-core
 include { BCFTOOLS_ROHVIZ as BCFTOOLS_ROHVIZ    } from '../../../modules/nf-core/bcftools/rohviz/main'
 include { GAWK            as GAWK_SPLIT_RG      } from '../../../modules/nf-core/gawk/main'
 include { GAWK            as GAWK_SPLIT_ST      } from '../../../modules/nf-core/gawk/main'
-include { TABIX_BGZIP     as BGZIP_ROH          } from '../../../modules/nf-core/tabix/bgzip/main'
 include { BGZIPTABIX      as BGZIPTABIX_ST      } from '../../../modules/sanger-tol/bgziptabix/main'
 include { BGZIPTABIX      as BGZIPTABIX_RG      } from '../../../modules/sanger-tol/bgziptabix/main'
 
@@ -113,8 +112,6 @@ workflow AF_ROH {
     // Compress and index output files
     //
 
-    BGZIP_ROH(BCFTOOLS_ROH.out.roh)
-
     BGZIPTABIX_RG ( GAWK_SPLIT_RG.out.output
         .map { meta, input -> [ meta, input, 0 ] }   // Max_seq_length set to 0 for now
     )
@@ -125,11 +122,12 @@ workflow AF_ROH {
 
 
     emit:
-    compressed_roh          = BGZIP_ROH.out.output         // channel: [ meta, output   ]
     compressed_roh_rg_index = BGZIPTABIX_RG.out.gz_index   // channel: [ meta, gz_index ]
     roh_rg_tbi              = BGZIPTABIX_RG.out.tbi        // channel: [ meta, tbi      ]
+    roh_rg_csi              = BGZIPTABIX_RG.out.csi        // channel: [ meta, csi      ]
     compressed_roh_st_index = BGZIPTABIX_ST.out.gz_index   // channel: [ meta, gz_index ]
     roh_st_tbi              = BGZIPTABIX_ST.out.tbi        // channel: [ meta, tbi      ]
+    roh_st_csi              = BGZIPTABIX_ST.out.csi        // channel: [ meta, csi      ]
     roh_viz                 = BCFTOOLS_ROHVIZ.out.html     // channel: [ meta, html     ]
     versions                = ch_versions                  // channel: [ versions.yml   ]
 
