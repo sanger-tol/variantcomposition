@@ -1,12 +1,39 @@
 {
     "variantcomposition - af-roh": {
         "content": [
+            null,
             [
                 [
                     {
                         "id": "test"
                     },
-                    "test.roh:md5,8f2f38d5fea9343ce481fad98476c38e"
+                    "test.roh.rg.gz:md5,a7eaa571cc83fc7406de3f7f4a3edef0",
+                    "test.roh.rg.gz.gzi:md5,7dea362b3fac8e00956a4952a3d4f474"
+                ]
+            ],
+            [
+                [
+                    {
+                        "id": "test"
+                    },
+                    "test.roh.rg.gz.tbi:md5,e097f35d4b99fe77566986ad787c0b24"
+                ]
+            ],
+            [
+                [
+                    {
+                        "id": "test"
+                    },
+                    "test.roh.st.gz:md5,a87e9aa228aeb8df8cff2d53315775da",
+                    "test.roh.st.gz.gzi:md5,7dea362b3fac8e00956a4952a3d4f474"
+                ]
+            ],
+            [
+                [
+                    {
+                        "id": "test"
+                    },
+                    "test.roh.st.gz.tbi:md5,26f510e533a20623782eceaca05330f1"
                 ]
             ],
             "test.roh-viz.html",
@@ -17,10 +44,10 @@
                 ]
             }
         ],
-        "timestamp": "2026-03-14T23:28:17.730470925",
+        "timestamp": "2026-05-22T14:30:05.522289",
         "meta": {
             "nf-test": "0.9.4",
-            "nextflow": "25.10.4"
+            "nextflow": "25.10.3"
         }
     }
 }

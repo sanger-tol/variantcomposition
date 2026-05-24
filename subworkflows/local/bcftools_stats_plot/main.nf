@@ -1,5 +1,5 @@
 include { BCFTOOLS_STATS        as BCFTOOLS_STATS }   from '../../../modules/nf-core/bcftools/stats/main'
-include { BCFTOOLS_PLOTVCFSTATS as PLOTVCFSTATS   }   from '../../../modules/local/plotvcfstats/main'
+include { BCFTOOLS_PLOTVCFSTATS as PLOTVCFSTATS   }   from '../../../modules/nf-core/bcftools/plotvcfstats/main'
 include { PIGZ_COMPRESS         as PIGZ           }   from '../../../modules/nf-core/pigz/compress/main'
 include { TAR                   as TAR            }   from '../../../modules/nf-core/tar/main'
 
@@ -18,7 +18,6 @@ workflow BCFTOOLS_STATS_PLOT {
 
     // Plot BCFtools stats in a PDF
     PLOTVCFSTATS( BCFTOOLS_STATS.out.stats )
-    ch_versions = ch_versions.mix( PLOTVCFSTATS.out.versions )
 
     // Compress plot-stats raw data folder
     TAR ( PLOTVCFSTATS.out.plot_dir, '.gz' )

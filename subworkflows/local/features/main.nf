@@ -3,9 +3,10 @@ include { VCFTOOLS     as VCFTOOLS_HET              }   from '../../../modules/n
 include { VCFTOOLS     as VCFTOOLS_SNP_DENSITY      }   from '../../../modules/nf-core/vcftools/main'
 include { VCFTOOLS     as VCFTOOLS_INDEL_LENGTH     }   from '../../../modules/nf-core/vcftools/main'
 include { VCFTOOLS     as VCFTOOLS_ALLELE_FREQUENCY }   from '../../../modules/nf-core/vcftools/main'
-include { BGZIPTABIX   as BGZIPTABIX                }   from '../../../modules/sanger-tol/bgziptabix/main'
-include { TABIX_BGZIP  as BGZIP                     }   from '../../../modules/nf-core/tabix/bgzip/main'
-include { TABIX_TABIX  as TABIX_PI                  }   from '../../../modules/nf-core/tabix/tabix/main'
+include { BGZIPTABIX   as BGZIPTABIX_PI             }   from '../../../modules/sanger-tol/bgziptabix/main'
+include { BGZIPTABIX   as BGZIPTABIX_SD             }   from '../../../modules/sanger-tol/bgziptabix/main'
+include { BGZIPTABIX   as BGZIPTABIX_AF             }   from '../../../modules/sanger-tol/bgziptabix/main'
+
 
 workflow FEATURES {
     take:
@@ -22,51 +23,60 @@ workflow FEATURES {
             gvcf : meta.datatype == "gvcf"
         }
 
-    // Call VCFtools for per-site (base) nucleotide diversity (originally in variant-calling pipeline)
+    //
+    // Call VCFtools for VCF analysis
+    //
+
+    // Per-site (base) nucleotide diversity (originally in variant-calling pipeline)
     VCFTOOLS_SITE_PI( samplesheet, site_pi_positions, [] )
     ch_versions = ch_versions.mix( VCFTOOLS_SITE_PI.out.versions )
 
-    // Call VCFtools to calculate heterozygosity (originally in variant-calling pipeline)
-    // This feature work with VCF files, output of gVCF only contains the header
-    VCFTOOLS_HET( vcfs.vcf, [], [] )
-    ch_versions = ch_versions.mix( VCFTOOLS_HET.out.versions )
-
-    // Call VCFtools for SNP density
-    // the default window size is 1 kb
+    // SNP density
+    //   The default window size is 1 kb
     VCFTOOLS_SNP_DENSITY( samplesheet, [], [] )
     ch_versions = ch_versions.mix( VCFTOOLS_SNP_DENSITY.out.versions )
 
-    // Call VCFtools for InDel length distribution
-    VCFTOOLS_INDEL_LENGTH( samplesheet, [], [] )
-    ch_versions = ch_versions.mix( VCFTOOLS_INDEL_LENGTH.out.versions )
-
-    // Call VCFtools for allele frequency
+    // Allele frequency
     VCFTOOLS_ALLELE_FREQUENCY( samplesheet, [], [] )
     ch_versions = ch_versions.mix( VCFTOOLS_ALLELE_FREQUENCY.out.versions )
 
-    // Compress and index AF output files
-    //   max_seq_length set to 0 for now
-    BGZIPTABIX ( VCFTOOLS_ALLELE_FREQUENCY.out.frq
-        .map { meta, input -> [ meta, input, 0 ] }
+    // Heterozygosity (originally in variant-calling pipeline)
+    //   This feature only work with VCF files
+    VCFTOOLS_HET( vcfs.vcf, [], [] )
+    ch_versions = ch_versions.mix( VCFTOOLS_HET.out.versions )
+
+    // InDel length distribution
+    VCFTOOLS_INDEL_LENGTH( samplesheet, [], [] )
+    ch_versions = ch_versions.mix( VCFTOOLS_INDEL_LENGTH.out.versions )
+
+    //
+    // Compress and index output files that contain chromosomal- and position- based analyses
+    //
+
+    BGZIPTABIX_PI ( VCFTOOLS_SITE_PI.out.sites_pi
+        .map { meta, input -> [ meta, input, 0 ] },   // Max_seq_length set to 0 for now
+        [ [], [], [] ]
     )
 
-    // Compress output files
-    // current output to compress: pi
-    BGZIP ( VCFTOOLS_SITE_PI.out.sites_pi )
-    ch_versions = ch_versions.mix ( BGZIP.out.versions.first() )
+    BGZIPTABIX_SD ( VCFTOOLS_SNP_DENSITY.out.snp_density
+        .map { meta, input -> [ meta, input, 0 ] },   // Max_seq_length set to 0 for now
+        [ [], [], [] ]
+    )
 
-    // Index the compressed .pi files
-    TABIX_PI ( BGZIP.out.output )
-    ch_versions = ch_versions.mix ( TABIX_PI.out.versions )
+    BGZIPTABIX_AF ( VCFTOOLS_ALLELE_FREQUENCY.out.frq
+        .map { meta, input -> [ meta, input, 0 ] },   // Max_seq_length set to 0 for now
+        [ [], [], [] ]
+    )
 
     emit:
-    af_and_index        = BGZIPTABIX.out.gz_index              // channel: [ meta, gz_index       ]
-    af_tbi              = BGZIPTABIX.out.tbi                   // channel: [ meta, tbi            ]
-    compressed_sites_pi = BGZIP.out.output                     // channel: [ meta, output         ]
-    sites_pi_tbi        = TABIX_PI.out.tbi                     // channel: [ meta, tbi            ]
-    heterozygosity      = VCFTOOLS_HET.out.heterozygosity      // channel: [ meta, heterozygosity ]
-    snp_density         = VCFTOOLS_SNP_DENSITY.out.snp_density // channel: [ meta, snp_density    ]
-    indel_lengths       = VCFTOOLS_INDEL_LENGTH.out.indel_hist // channel: [ meta, indel_lengths  ]
-    versions            = ch_versions                          // channel: [ versions.yml         ]
+    compressed_sites_pi_index    = BGZIPTABIX_PI.out.gz_index             // channel: [ meta, gz_index       ]
+    sites_pi_tbi                 = BGZIPTABIX_PI.out.tbi                  // channel: [ meta, tbi            ]
+    compressed_snp_density_index = BGZIPTABIX_SD.out.gz_index             // channel: [ meta, gz_index       ]
+    snp_density_tbi              = BGZIPTABIX_SD.out.tbi                  // channel: [ meta, tbi            ]
+    compressed_af_index          = BGZIPTABIX_AF.out.gz_index             // channel: [ meta, gz_index       ]
+    af_tbi                       = BGZIPTABIX_AF.out.tbi                  // channel: [ meta, tbi            ]
+    heterozygosity               = VCFTOOLS_HET.out.heterozygosity        // channel: [ meta, heterozygosity ]
+    indel_lengths                = VCFTOOLS_INDEL_LENGTH.out.indel_hist   // channel: [ meta, indel_lengths  ]
+    versions                     = ch_versions                            // channel: [ versions.yml         ]
 
 }

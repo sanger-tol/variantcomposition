@@ -5,6 +5,11 @@
         "https://github.com/nf-core/modules.git": {
             "modules": {
                 "nf-core": {
+                    "bcftools/plotvcfstats": {
+                        "branch": "master",
+                        "git_sha": "6d46786420b4d7bc88eba026eb389c0c5535d120",
+                        "installed_by": ["modules"]
+                    },
                     "bcftools/query": {
                         "branch": "master",
                         "git_sha": "6383d8fe58f9498eecd5aa303e71a4a932d1e9f6",
@@ -23,6 +28,11 @@
                     "bcftools/stats": {
                         "branch": "master",
                         "git_sha": "f17049e03697726ace7499d2fe342f892594f6f3",
+                        "installed_by": ["modules"]
+                    },
+                    "gawk": {
+                        "branch": "master",
+                        "git_sha": "6d46786420b4d7bc88eba026eb389c0c5535d120",
                         "installed_by": ["modules"]
                     },
                     "multiqc": {
@@ -82,7 +92,7 @@
                 "sanger-tol": {
                     "bgziptabix": {
                         "branch": "main",
-                        "git_sha": "2e28234fb0e2970767dab28310c7eb553ad40081",
+                        "git_sha": "d87a6e1f034a64bfec4befec1d5d9f398c4239ec",
                         "installed_by": ["modules"]
                     }
                 }

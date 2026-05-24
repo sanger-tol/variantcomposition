@@ -11,6 +11,7 @@ components:
   - bgziptabix
   - bcftools/roh
   - bcftools/rohviz
+  - splitroh
 input:
   - vcfs_tbi:
       type: file
@@ -19,13 +20,36 @@ input:
         Structure: [ val(meta), path(vcf), path(tbi) ]
       pattern: "*.{vcf.gz,g.vcf.gz,vcf.gz.tbi,g.vcf.gz.tbi}"
 output:
-  - roh:
+  - compressed_roh_rg_index:
       type: file
       description: |
-        Channel containing ROH detection results in text format.
-        Contains genomic regions with runs of homozygosity identified by bcftools roh.
-        Structure: [ val(meta), path(roh) ]
-      pattern: "*.roh"
+        Per bgzip/tabixed roh file with RG output.
+        Structure: [ val(meta), path(*.gz), path(*.gzi) ]
+  - roh_rg_tbi:
+      type: file
+      description: |
+        Tabix index of bgzipped roh file with RG output.
+        Structure: [ val(meta), path(*.tbi) ]
+  - roh_rg_csi:
+      type: file
+      description: |
+        Tabix index of bgzipped roh file with RG output.
+        Structure: [ val(meta), path(*.csi) ]
+  - compressed_roh_st_index:
+      type: file
+      description: |
+        Per bgzip/tabixed roh file with ST output.
+        Structure: [ val(meta), path(*.gz), path(*.gzi) ]
+  - roh_st_tbi:
+      type: file
+      description: |
+        Tabix index of bgzipped roh file with ST output.
+        Structure: [ val(meta), path(*.tbi) ]
+  - roh_st_csi:
+      type: file
+      description: |
+        Tabix index of bgzipped roh file with ST output.
+        Structure: [ val(meta), path(*.csi) ]
   - roh_viz:
       type: file
       description: |
