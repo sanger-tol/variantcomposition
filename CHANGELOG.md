@@ -9,6 +9,27 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Update BCFtools to version 1.22.1
 - Use `BCFtools` to produce and plot VCF stats
+- Added options to pass parameters to VCFtools and BCFtools
+
+### Parameters
+
+This release with the following initial parameters:
+
+| Old parameter        | New parameter        |
+| -------------------- | -------------------- |
+| --input              |                      |
+| --include_positions  |                      |
+| --exclude_positions  |                      |
+| --snp_density_window |                      |
+| --roh_threshold      |                      |
+|                      | --site_pi_filter     |
+|                      | --het_filter         |
+|                      | --snp_density_filter |
+|                      | --af_filter          |
+|                      | --indel_len_filter   |
+|                      | --roh_filter         |
+
+> **NB:** Parameter has been **updated** if both old and new parameter information is present. </br> **NB:** Parameter has been **added** if just the new parameter information is present. </br> **NB:** Parameter has been **removed** if new parameter information isn't present.
 
 ### Software dependencies
 
