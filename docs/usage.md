@@ -53,6 +53,7 @@ An [example samplesheet](../assets/samplesheet.csv) has been provided with the p
 
 Parameters and filters can be passed straight to VCFtools or BCFtools:
 
+- To all the VCFtools analyse via the `--vcftools_filter` option
 - To VCFtools per-base nucleotide diversity via the `--site_pi_filter` option
 - To VCFtools heterozygosity via the `--het_filter` option
 - To VCFtools SNP density via the `--snp_density_filter` option
@@ -63,10 +64,14 @@ Parameters and filters can be passed straight to VCFtools or BCFtools:
 Note that you will need to add a leading whitespace in front of `--`,
 otherwise the pipeline's own parameter validation will consider it a sanger-tol/variantcomposition option.
 
-Filtering and parameter options can be found in VCFtools [manual](https://vcftools.github.io/man_latest.html#SITE%20FILTERING%20OPTIONS) and BCFtools [manual](https://samtools.github.io/bcftools/bcftools.html)
+Filtering and parameter options can be found in VCFtools [manual](https://vcftools.github.io/man_latest.html#SITE%20FILTERING%20OPTIONS) and BCFtools [manual](https://samtools.github.io/bcftools/bcftools.html). Multiple arguments may be provided as a single quoted string.
 
 ```
 nextflow run ... --site_pi_filter " --chr chromosome1"
+```
+
+```
+nextflow run ... --vcftools_filter "--minQ 20 --max-missing 0.8"
 ```
 
 ## Running the pipeline

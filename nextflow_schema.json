@@ -50,12 +50,17 @@
             "description": "Parameters for analyzing and filtering genomic variants.",
             "default": "",
             "properties": {
+                "vcftools_filter": {
+                    "type": "string",
+                    "pattern": "(^$)|(^--.*$)",
+                    "description": "VCFtools site/genotype filtering arguments applied to all VCFtools analyses.",
+                    "fa_icon": "fas fa-scroll"
+                },
                 "site_pi_filter": {
                     "type": "string",
-                    "pattern": "-.*$",
+                    "pattern": "(^$)|(^--.*$)",
                     "description": "Command-line parameters to pass to VCFtools per-base nucleotide diversity function.",
-                    "fa_icon": "fas fa-scroll",
-                    "default": ""
+                    "fa_icon": "fas fa-scroll"
                 },
                 "include_positions": {
                     "type": "string",
@@ -71,17 +76,15 @@
                 },
                 "het_filter": {
                     "type": "string",
-                    "pattern": "-.*$",
+                    "pattern": "(^$)|(^--.*$)",
                     "description": "Command-line parameters to pass to VCFtools heterozygosity function.",
-                    "fa_icon": "fas fa-scroll",
-                    "default": ""
+                    "fa_icon": "fas fa-scroll"
                 },
                 "snp_density_filter": {
                     "type": "string",
-                    "pattern": "-.*$",
+                    "pattern": "(^$)|(^--.*$)",
                     "description": "Command-line parameters to pass to VCFtools SNP density function.",
-                    "fa_icon": "fas fa-scroll",
-                    "default": ""
+                    "fa_icon": "fas fa-scroll"
                 },
                 "snp_density_window": {
                     "type": "integer",
@@ -91,24 +94,21 @@
                 },
                 "af_filter": {
                     "type": "string",
-                    "pattern": "-.*$",
+                    "pattern": "(^$)|(^--.*$)",
                     "description": "Command-line parameters to pass to VCFtools allele frequency function.",
-                    "fa_icon": "fas fa-scroll",
-                    "default": ""
+                    "fa_icon": "fas fa-scroll"
                 },
                 "indel_len_filter": {
                     "type": "string",
-                    "pattern": "-.*$",
+                    "pattern": "(^$)|(^--.*$)",
                     "description": "Command-line parameters to pass to VCFtools InDel size distribution function.",
-                    "fa_icon": "fas fa-scroll",
-                    "default": ""
+                    "fa_icon": "fas fa-scroll"
                 },
                 "roh_filter": {
                     "type": "string",
-                    "pattern": "-.*$",
+                    "pattern": "(^$)|(^-.*$)",
                     "description": "Command-line parameters to pass to BCFtools RoH function.",
-                    "fa_icon": "fas fa-scroll",
-                    "default": ""
+                    "fa_icon": "fas fa-scroll"
                 },
                 "roh_threshold": {
                     "type": "number",
