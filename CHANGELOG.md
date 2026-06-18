@@ -17,11 +17,6 @@ This release with the following initial parameters:
 
 | Old parameter        | New parameter        |
 | -------------------- | -------------------- |
-| --input              |                      |
-| --include_positions  |                      |
-| --exclude_positions  |                      |
-| --snp_density_window |                      |
-| --roh_threshold      |                      |
 |                      | --site_pi_filter     |
 |                      | --het_filter         |
 |                      | --snp_density_filter |

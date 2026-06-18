@@ -61,7 +61,7 @@ Parameters and filters can be passed straight to VCFtools or BCFtools:
 - To BCFtools RoH via the `--roh_filter` option
 
 Note that you will need to add a leading whitespace in front of `--`,
-otherwise the pipeline's own parameter validation will consider it a sanger-tol/variantcalling option.
+otherwise the pipeline's own parameter validation will consider it a sanger-tol/variantcomposition option.
 
 Filtering and parameter options can be found in VCFtools [manual](https://vcftools.github.io/man_latest.html#SITE%20FILTERING%20OPTIONS) and BCFtools [manual](https://samtools.github.io/bcftools/bcftools.html)
 

@@ -54,7 +54,8 @@
                     "type": "string",
                     "pattern": "-.*$",
                     "description": "Command-line parameters to pass to VCFtools per-base nucleotide diversity function.",
-                    "fa_icon": "fas fa-scroll"
+                    "fa_icon": "fas fa-scroll",
+                    "default": ""
                 },
                 "include_positions": {
                     "type": "string",
@@ -72,13 +73,15 @@
                     "type": "string",
                     "pattern": "-.*$",
                     "description": "Command-line parameters to pass to VCFtools heterozygosity function.",
-                    "fa_icon": "fas fa-scroll"
+                    "fa_icon": "fas fa-scroll",
+                    "default": ""
                 },
                 "snp_density_filter": {
                     "type": "string",
                     "pattern": "-.*$",
                     "description": "Command-line parameters to pass to VCFtools SNP density function.",
-                    "fa_icon": "fas fa-scroll"
+                    "fa_icon": "fas fa-scroll",
+                    "default": ""
                 },
                 "snp_density_window": {
                     "type": "integer",
@@ -90,19 +93,22 @@
                     "type": "string",
                     "pattern": "-.*$",
                     "description": "Command-line parameters to pass to VCFtools allele frequency function.",
-                    "fa_icon": "fas fa-scroll"
+                    "fa_icon": "fas fa-scroll",
+                    "default": ""
                 },
                 "indel_len_filter": {
                     "type": "string",
                     "pattern": "-.*$",
                     "description": "Command-line parameters to pass to VCFtools InDel size distribution function.",
-                    "fa_icon": "fas fa-scroll"
+                    "fa_icon": "fas fa-scroll",
+                    "default": ""
                 },
                 "roh_filter": {
                     "type": "string",
                     "pattern": "-.*$",
                     "description": "Command-line parameters to pass to BCFtools RoH function.",
-                    "fa_icon": "fas fa-scroll"
+                    "fa_icon": "fas fa-scroll",
+                    "default": ""
                 },
                 "roh_threshold": {
                     "type": "number",
