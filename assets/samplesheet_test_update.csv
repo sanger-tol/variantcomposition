@@ -1,3 +1,3 @@
 sample,datatype,datafile
-pacbio/SAMEA7521030/ERR10224927_03,vcf,https://tolit.cog.sanger.ac.uk/test-data/Cantharis_rufa/analysis/icCanRufa1/variant_analysis/pacbio/SAMEA7521030/merge/GCA_947369205.1.unmasked.pacbio.icCanRufa1_0_3.deepvariant.vcf.gz
-pacbio/SAMEA7521030/ERR10224927_03,gvcf,https://tolit.cog.sanger.ac.uk/test-data/Cantharis_rufa/analysis/icCanRufa1/variant_analysis/pacbio/SAMEA7521030/merge/GCA_947369205.1.unmasked.pacbio.icCanRufa1_0_3.deepvariant.g.vcf.gz
+pacbio/SAMEA7521030/merge,vcf,https://tolit.cog.sanger.ac.uk/test-data/Cantharis_rufa/analysis/icCanRufa1/variant_analysis/pacbio/SAMEA7521030/merge/GCA_947369205.1.unmasked.pacbio.icCanRufa1_0_3.deepvariant.vcf.gz
+pacbio/SAMEA7521030/merge,gvcf,https://tolit.cog.sanger.ac.uk/test-data/Cantharis_rufa/analysis/icCanRufa1/variant_analysis/pacbio/SAMEA7521030/merge/GCA_947369205.1.unmasked.pacbio.icCanRufa1_0_3.deepvariant.g.vcf.gz
