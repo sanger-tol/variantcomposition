@@ -10,9 +10,9 @@ The directories listed below will be created in the results directory after the 
 
 The pipeline is built using [Nextflow](https://www.nextflow.io/) and processes data using the following steps:
 
-- [VCF index](#vcf-index) - Create index of input VCF/gVCF files
-- [VCF processing](#vcf-processing) - Process VCF/gVCF files to analyse SNP density, InDel sizes, per-base nucleotide diversity, ROH, heterozygosity, and allele frequency
-- [VCF stats](#vcf-stats) - Parses VCF/gVCF files, produce text file stats and plot in a PDF file
+- [VCF index](#vcf-index) - Create index of input variant files
+- [VCF processing](#vcf-processing) - Process variant files to analyse SNP density, InDel sizes, per-base nucleotide diversity, ROH, heterozygosity, and allele frequency
+- [VCF stats](#vcf-stats) - Parses variant files, produce text file stats and plot in a PDF file
 - [MultiQC](#multiqc) - Aggregate report describing results and QC from the whole pipeline
 - [Pipeline information](#pipeline-information) - Report metrics generated during the workflow execution
 

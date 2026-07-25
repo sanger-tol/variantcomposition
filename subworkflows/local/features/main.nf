@@ -19,8 +19,8 @@ workflow FEATURES {
     // Divide input channel into vcf and gvcf branches
     def vcfs = samplesheet
         .branch { meta, _data ->
-            vcf  : meta.datatype == "vcf"
-            gvcf : meta.datatype == "gvcf"
+            vcf  : meta.datatype == "vcf" || meta.datatype == "bcf"
+            gvcf : meta.datatype == "gvcf" || meta.datatype == "gbcf"
         }
 
     //
