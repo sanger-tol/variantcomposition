@@ -19,6 +19,12 @@ input:
         The input channel containing VCF/gVCF files with their tabix index files.
         Structure: [ val(meta), path(vcf), path(tbi) ]
       pattern: "*.{vcf.gz,g.vcf.gz,vcf.gz.tbi,g.vcf.gz.tbi}"
+  - af_file:
+      type: file
+      description: |
+        The input channel containing an allele frequency file.
+        Structure: [ val(meta), path(af) ]
+      pattern: "*.af"
 output:
   - compressed_roh_rg_index:
       type: file

@@ -46,13 +46,21 @@ workflow VARIANTCOMPOSITION {
     def ch_versions = channel.empty()
     def ch_multiqc_files = channel.empty()
 
+    // Split out af files
+    def samplesheet_split = ch_samplesheet
+        .branch { meta, _data ->
+            af  : meta.datatype == "af"
+            vcf  : true  // *all flavours* of VCF
+        }
+
+
     // Index the input VCF
-    TABIX( ch_samplesheet )
+    TABIX( samplesheet_split.vcf )
     ch_index = TABIX.out.tbi.mix( TABIX.out.csi )
     ch_versions = ch_versions.mix( TABIX.out.versions )
 
     // Combine the VCF and TBI channels
-    def ch_vcfs_tbi = ch_samplesheet
+    def ch_vcfs_tbi = samplesheet_split.vcf
         .join( ch_index )
 
 
@@ -60,8 +68,9 @@ workflow VARIANTCOMPOSITION {
     // SUBWORKFLOW: FEATURES
     //
 
+    // Analyses in this sub-workflow don't need the VCF to be indexed
     FEATURES (
-        ch_samplesheet,
+        samplesheet_split.vcf,
         ch_positions
     )
     ch_versions = ch_versions.mix( FEATURES.out.versions )
@@ -71,7 +80,8 @@ workflow VARIANTCOMPOSITION {
     //
 
     AF_ROH (
-        ch_vcfs_tbi
+        ch_vcfs_tbi,
+        samplesheet_split.af,
     )
     ch_versions = ch_versions.mix( AF_ROH.out.versions )
 

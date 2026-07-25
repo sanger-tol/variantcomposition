@@ -11,6 +11,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Use `BCFtools` to produce and plot VCF stats
 - Added options to pass parameters to VCFtools and BCFtools
 - Support BCF files
+- Multiple options to define allele frequencies when computing ROH
 
 ### Parameters
 
@@ -25,6 +26,8 @@ This release with the following initial parameters:
 |               | --af_filter          |
 |               | --indel_len_filter   |
 |               | --roh_filter         |
+|               | --af_tag             |
+|               | --af_default_value   |
 
 > **NB:** Parameter has been **updated** if both old and new parameter information is present. </br> **NB:** Parameter has been **added** if just the new parameter information is present. </br> **NB:** Parameter has been **removed** if new parameter information isn't present.
 

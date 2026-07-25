@@ -16,15 +16,15 @@
             "datatype": {
                 "type": "string",
                 "pattern": "^\\S+$",
-                "errorMessage": "Data type, and must be one of: 'vcf', 'gvcf', 'bcf', 'gbcf'",
-                "enum": ["vcf", "gvcf", "bcf", "gbcf"],
+                "errorMessage": "Data type, and must be one of: 'vcf', 'gvcf', 'bcf', 'gbcf', 'af'",
+                "enum": ["vcf", "gvcf", "bcf", "gbcf", "af"],
                 "meta": ["datatype"]
             },
             "datafile": {
                 "type": "string",
                 "format": "file-path",
                 "exists": true,
-                "pattern": "^\\S+\\.(bcf|vcf|vcf.gz|gvcf|gvcf.gz)$",
+                "pattern": "^\\S+\\.(af|bcf|vcf|vcf.gz|gvcf|gvcf.gz)$",
                 "errorMessage": "Data file cannot contain spaces and must be VCF/BCF"
             }
         },

@@ -1,5 +1,5 @@
 {
-    "variantcomposition - af-roh": {
+    "variantcomposition - af-roh with af_file": {
         "content": [
             null,
             [
@@ -7,7 +7,7 @@
                     {
                         "id": "test"
                     },
-                    "test.roh.rg.gz:md5,a7eaa571cc83fc7406de3f7f4a3edef0",
+                    "test.roh.rg.gz:md5,510e1b308245eb924a458a3e29edb737",
                     "test.roh.rg.gz.gzi:md5,7dea362b3fac8e00956a4952a3d4f474"
                 ]
             ],
@@ -24,7 +24,7 @@
                     {
                         "id": "test"
                     },
-                    "test.roh.st.gz:md5,a87e9aa228aeb8df8cff2d53315775da",
+                    "test.roh.st.gz:md5,b9d296ac5cf51b46f7a16425c531a66f",
                     "test.roh.st.gz.gzi:md5,7dea362b3fac8e00956a4952a3d4f474"
                 ]
             ],
@@ -44,10 +44,116 @@
                 ]
             }
         ],
-        "timestamp": "2026-05-22T14:30:05.522289",
+        "timestamp": "2026-07-25T18:31:35.776427809",
         "meta": {
-            "nf-test": "0.9.4",
-            "nextflow": "25.10.3"
+            "nf-test": "0.9.5",
+            "nextflow": "25.10.4"
+        }
+    },
+    "variantcomposition - af-roh": {
+        "content": [
+            null,
+            [
+                [
+                    {
+                        "id": "test"
+                    },
+                    "test.roh.rg.gz:md5,a223938d1a9f782030554f9889fde054",
+                    "test.roh.rg.gz.gzi:md5,7dea362b3fac8e00956a4952a3d4f474"
+                ]
+            ],
+            [
+                [
+                    {
+                        "id": "test"
+                    },
+                    "test.roh.rg.gz.tbi:md5,e097f35d4b99fe77566986ad787c0b24"
+                ]
+            ],
+            [
+                [
+                    {
+                        "id": "test"
+                    },
+                    "test.roh.st.gz:md5,86e5fed9d79ccea18056079cf97e754a",
+                    "test.roh.st.gz.gzi:md5,63bbfee723bc9aa15d6d89df12a7e8d5"
+                ]
+            ],
+            [
+                [
+                    {
+                        "id": "test"
+                    },
+                    "test.roh.st.gz.tbi:md5,5587454c0c189ed4ff640ef95efd6e18"
+                ]
+            ],
+            "test.roh-viz.html",
+            403,
+            {
+                "versions": [
+                    "versions.yml:md5,fcf9aa9e867aebbc2cd83a7b7aea0bf4"
+                ]
+            }
+        ],
+        "timestamp": "2026-07-25T17:47:38.758580008",
+        "meta": {
+            "nf-test": "0.9.5",
+            "nextflow": "25.10.4"
+        }
+    },
+    "variantcomposition - af-roh with embedded af": {
+        "content": [
+            null,
+            [
+                [
+                    {
+                        "id": "test",
+                        "multi_sample": false
+                    },
+                    "test.roh.rg.gz:md5,70abea4ce6bfe579b6e482d5c9edaef6",
+                    "test.roh.rg.gz.gzi:md5,7dea362b3fac8e00956a4952a3d4f474"
+                ]
+            ],
+            [
+                [
+                    {
+                        "id": "test",
+                        "multi_sample": false
+                    },
+                    "test.roh.rg.gz.tbi:md5,e097f35d4b99fe77566986ad787c0b24"
+                ]
+            ],
+            [
+                [
+                    {
+                        "id": "test",
+                        "multi_sample": false
+                    },
+                    "test.roh.st.gz:md5,04177f92e04790055d8bd11ce1172ddd",
+                    "test.roh.st.gz.gzi:md5,7dea362b3fac8e00956a4952a3d4f474"
+                ]
+            ],
+            [
+                [
+                    {
+                        "id": "test",
+                        "multi_sample": false
+                    },
+                    "test.roh.st.gz.tbi:md5,26f510e533a20623782eceaca05330f1"
+                ]
+            ],
+            "test.roh-viz.html",
+            403,
+            {
+                "versions": [
+                    "versions.yml:md5,fcf9aa9e867aebbc2cd83a7b7aea0bf4"
+                ]
+            }
+        ],
+        "timestamp": "2026-07-26T20:44:44.700574352",
+        "meta": {
+            "nf-test": "0.9.5",
+            "nextflow": "25.10.4"
         }
     }
 }

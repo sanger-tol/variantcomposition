@@ -10,21 +10,16 @@ include { BGZIPTABIX      as BGZIPTABIX_RG      } from '../../../modules/sanger-
 workflow AF_ROH {
     take:
     vcfs_tbi   // channel: [ meta, VCF/gVCF, tbi ]
+    af_file    // channel: [ meta, AF file ]
 
     main:
     ch_versions = channel.empty()
 
     //
-    // MODULE: Extract allele frequency information from VCF files
-    // Uses bcftools query to calculate allele frequencies, which are required for ROH detection
-    //
-    BCFTOOLS_QUERY ( vcfs_tbi, [], [], [] )
-
-    //
     // MODULE: Compress and index the allele frequency file
     // The maximum sequence length is not available in the pipeline so just pass 0 for now
     //
-    BGZIPTABIX_AF_FILE ( BCFTOOLS_QUERY.out.output
+    BGZIPTABIX_AF_FILE ( af_file
         .map { meta, input -> [ meta, input, 0 ]},
         [ [], [], [] ]
     )
@@ -33,7 +28,7 @@ workflow AF_ROH {
     // CHANNEL MANIPULATION: Prepare matched inputs for BCFTOOLS_ROH
     //
 
-    // BCFtools roh requires [VCF + index] and [AF file + index], both correspond to the same sample
+    // BCFtools roh requires [VCF + index] and [AF file + index] to correspond to the same sample
     // Strategy: Use meta.id as a key to join VCF and AF channels
 
     // Key VCF channel by sample ID for joining
@@ -46,9 +41,27 @@ workflow AF_ROH {
         .join(BGZIPTABIX_AF_FILE.out.tbi)
         .map{ meta, af, _af_gzi, af_tbi -> [ meta.id, af, af_tbi ] }
 
-    // Join VCF and AF channels on sample ID
-    def ch_vcfs_af_joined = vcfs_tbi_keyed
-        .join(af_tbi_keyed)
+    // Let's compare both
+    def ch = vcfs_tbi_keyed
+        .join(af_tbi_keyed, remainder: true)
+        .branch {
+            no_vcf:  it[1] == null
+            no_af:   it[4] == null
+            matched: true
+        }
+
+    // AF file with no VCF: raise an error
+    ch.no_vcf.map { id, _null, af, af_tbi ->
+        error("${id} AF file (${af.baseName}) has not matching variant file")
+    }
+
+    // VCF files with no matching AF file. Pad with [] to fit BCFTOOLS_ROH
+    ch_vcfs_no_af_file = ch.no_af
+         .map { id, meta, vcfs, tbi, _null -> [id, meta, vcfs, tbi, [], []] }
+
+    // All VCF inputs for BCFTOOLS_ROH
+    def ch_vcfs_af_joined = ch.matched
+        .mix( ch_vcfs_no_af_file )
 
 
     //
