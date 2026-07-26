@@ -19,7 +19,7 @@ _GSoC 2025 Project_
 
 ## Introduction
 
-**sanger-tol/variantcomposition** is a bioinformatics pipeline that takes the output of variant-calling (VCF, gVCF, BCF, gBCF) as input, and perform basic variant component analysis.
+**sanger-tol/variantcomposition** is a bioinformatics pipeline that takes variant-calling output (VCF, gVCF, BCF, gBCF files) and performs basic variant composition analysis.
 
 The pipeline is built using [Nextflow](https://www.nextflow.io), a workflow tool to run tasks across multiple compute infrastructures in a very portable manner. It uses Docker/Singularity containers making installation trivial and results highly reproducible. The [Nextflow DSL2](https://www.nextflow.io/docs/latest/dsl2.html) implementation of this pipeline uses one container per process which makes it much easier to maintain and update software dependencies. Where possible, these processes have been submitted to and installed from [nf-core/modules](https://github.com/nf-core/modules) in order to make them available to all nf-core pipelines, and to everyone within the Nextflow community!
 
@@ -27,13 +27,13 @@ On merge to `dev` and `main` branch, automated continuous integration tests run 
 
 ## Pipeline summary
 
-The pipeline takes VCF files (and other accepted formats) from a samplesheet in CSV format, and analyse variant compositions.
+The pipeline takes VCF, gVCF, BCF, or gBCF data from a CSV samplesheet and analyses variant composition.
 
 <img src="docs/images/variant-composition.png">
 
 Steps involved:
 
-- Index the input variant files
+- Index the input variant files with Tabix
 - Process variant files to analyse:
 
 1. Single nucleotide polymorphisms (SNP) density
@@ -44,7 +44,10 @@ Steps involved:
 6. Allele frequency
 7. VCF stats and plot
 
-- Present QC for raw reads ([`MultiQC`](http://multiqc.info/))
+- Generate an interactive ROH visualisation
+- Summarise workflow outputs with [`MultiQC`](http://multiqc.info/)
+
+See [docs/usage.md](docs/usage.md) for detailed input and parameter documentation and [docs/output.md](docs/output.md) for the exact published outputs.
 
 ## Usage
 
