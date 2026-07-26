@@ -113,4 +113,36 @@ nextflow_workflow {
             )
         }
     }
+
+    test("variantcomposition - af-roh - multi-sample") {
+
+        when {
+            workflow {
+                """
+                input[0] = channel.of([
+                    [ id:'test' ], // meta map
+                    file(params.modules_testdata_base_path + 'Sepia_officinalis/analysis/xcSepOffi3/variant_calling/xcSepOffi3.OZ199141.1_6395000-6400000.bcf', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'Sepia_officinalis/analysis/xcSepOffi3/variant_calling/xcSepOffi3.OZ199141.1_6395000-6400000.bcf.csi', checkIfExists: true),
+                ])
+                input[1] = channel.empty()
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert workflow.success },
+                { assert snapshot(
+                    workflow.out.compressed_roh,
+                    workflow.out.compressed_roh_rg_index,
+                    workflow.out.roh_rg_tbi,
+                    workflow.out.compressed_roh_st_index,
+                    workflow.out.roh_st_tbi,
+                    file(workflow.out.roh_viz[0][1]).name,
+                    path(workflow.out.roh_viz[0][1]).readLines().size(),
+                    workflow.out.findAll { key, val -> key.startsWith("versions") }
+                ).match() }
+            )
+        }
+    }
 }

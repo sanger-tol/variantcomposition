@@ -12,6 +12,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Added options to pass parameters to VCFtools and BCFtools
 - Support BCF files
 - Multiple options to define allele frequencies when computing ROH
+- Support multi-sample VCF file
 
 ### Parameters
 

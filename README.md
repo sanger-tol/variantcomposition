@@ -44,8 +44,8 @@ Steps involved:
 6. Allele frequency
 7. VCF stats and plot
 
-- Generate an interactive ROH visualisation
-- Support multiple ROH allele-frequency strategies: external AF files, VCF INFO tag (`--af_tag`), or simply a constant default allele frequency.
+- Generate an interactive ROH visualisation (including support for multi-sample VCFs)
+- Support multiple ROH allele-frequency strategies: external AF files, VCF INFO tag (`--af_tag`), and on-the-fly AF estimation for multi-sample VCFs
 - Summarise workflow outputs with [`MultiQC`](http://multiqc.info/)
 
 See [docs/usage.md](docs/usage.md) for detailed input and parameter documentation and [docs/output.md](docs/output.md) for the exact published outputs.

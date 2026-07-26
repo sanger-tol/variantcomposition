@@ -16,6 +16,16 @@ workflow AF_ROH {
     ch_versions = channel.empty()
 
     //
+    // MODULE: Extract sample names to identify multi-sample VCFs
+    //
+    BCFTOOLS_QUERY ( vcfs_tbi, [], [], [] )
+
+    // Join output and input, read the text file to count the number of sample,
+    def ch_vcfs_multi_sample_info = BCFTOOLS_QUERY.out.output
+        .join( vcfs_tbi )
+        .map { meta, txt, vcfs, tbi -> [ meta + [multi_sample: file(txt).readLines().size > 1], vcfs, tbi ] }
+
+    //
     // MODULE: Compress and index the allele frequency file
     // The maximum sequence length is not available in the pipeline so just pass 0 for now
     //
@@ -32,7 +42,7 @@ workflow AF_ROH {
     // Strategy: Use meta.id as a key to join VCF and AF channels
 
     // Key VCF channel by sample ID for joining
-    def vcfs_tbi_keyed = vcfs_tbi
+    def vcfs_tbi_keyed = ch_vcfs_multi_sample_info
         .map { meta, vcfs, tbi -> [ meta.id, meta, vcfs, tbi ] }
 
     // Key AF channel by sample ID and combine bgzip output with tabix index
@@ -97,32 +107,22 @@ workflow AF_ROH {
 
     //
     // MODULE: Split ROH results to two files containing ST and RG regions respectively
+    //         Do it by sample if the VCF has multiple samples
     //
 
-    ch_extract_rg_awk = channel.of('''\
-        /^#/ && !/^# ST/ || /^RG/ {
-            print
-        }'''.stripIndent())
-        .collectFile(name: "extract_rg.awk", cache: true)
-        .collect()
-
-    ch_extract_st_awk = channel.of('''\
-        /^#/ && !/^# RG/ || /^ST/ {
-            print
-        }'''.stripIndent())
-        .collectFile(name: "extract_st.awk", cache: true)
-        .collect()
+    // Channel 2: select the split_sample_??.awk script for multi-sample VCFs, split_all_??.awk otherwise
+    // Channel 3: the former creates its own files, while the latter prints to stdout
 
     GAWK_SPLIT_RG(
         BCFTOOLS_ROH.out.roh,
-        ch_extract_rg_awk,
-        false
+        BCFTOOLS_ROH.out.roh.map { meta, _roh -> file("$projectDir/assets/split_${meta.multi_sample ? "sample" : "all"}_rg.awk", checkIfExists: true) },
+        BCFTOOLS_ROH.out.roh.map{ meta, _roh -> meta.multi_sample },
     )
 
     GAWK_SPLIT_ST(
         BCFTOOLS_ROH.out.roh,
-        ch_extract_st_awk,
-        false
+        BCFTOOLS_ROH.out.roh.map { meta, _roh -> file("$projectDir/assets/split_${meta.multi_sample ? "sample" : "all"}_st.awk", checkIfExists: true) },
+        BCFTOOLS_ROH.out.roh.map{ meta, _roh -> meta.multi_sample },
     )
 
 
@@ -130,12 +130,20 @@ workflow AF_ROH {
     // Compress and index output files
     //
 
-    BGZIPTABIX_RG ( GAWK_SPLIT_RG.out.output
+    // GAWK sends either 1 file, or 1 list of files. When a list, flatten it and add the sample name (which is the file base name) to the id
+
+    ch_rg_files = GAWK_SPLIT_RG.out.output
+        .flatMap { meta, rg_files -> (rg_files instanceof List ? rg_files.collect { rg -> tuple(meta + [id: "${meta.id}.${rg.baseName}" ], rg) } : [tuple(meta, rg_files)]) }
+
+    BGZIPTABIX_RG ( ch_rg_files
         .map { meta, input -> [ meta, input, 0 ] },   // Max_seq_length set to 0 for now
         [ [], [], 'roh.rg' ]
     )
 
-    BGZIPTABIX_ST ( GAWK_SPLIT_ST.out.output
+    ch_st_files = GAWK_SPLIT_ST.out.output
+        .flatMap { meta, st_files -> (st_files instanceof List ? st_files.collect { rg -> tuple(meta + [id: "${meta.id}.${rg.baseName}" ], rg) } : [tuple(meta, st_files)]) }
+
+    BGZIPTABIX_ST ( ch_st_files
         .map { meta, input -> [ meta, input, 0 ] },   // Max_seq_length set to 0 for now
         [ [], [], 'roh.st' ]
     )

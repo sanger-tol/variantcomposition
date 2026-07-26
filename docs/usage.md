@@ -64,7 +64,10 @@ ROH supports three allele-frequency modes, with this precedence:
 
 1. External AF file from the samplesheet (`datatype=af`)
 2. INFO-tag frequencies via `--af_tag`
-3. If neither of the above is provided: use `--af_default_value` as the fallback AF
+3. If neither of the above is provided:
+
+- multi-sample VCF/gVCF/BCF/gBCF: estimate AF directly from the input (`bcftools roh --estimate-AF -`)
+- single-sample input: use `--af_default_value` as the fallback AF
 
 If you provide external AF files in the samplesheet:
 
@@ -76,6 +79,7 @@ Important behavior by datatype:
 
 - The heterozygosity step runs only for `vcf` and `bcf` entries in the samplesheet.
 - Other analyses run for all supported datatypes.
+- Multi-sample VCF inputs are supported in ROH and result in per-sample ROH split outputs.
 
 Filtering and parameter options can be found in VCFtools [manual](https://vcftools.github.io/man_latest.html#SITE%20FILTERING%20OPTIONS) and BCFtools [manual](https://samtools.github.io/bcftools/bcftools.html). Multiple arguments may be provided as a single quoted string.
 

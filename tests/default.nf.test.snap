@@ -1,8 +1,11 @@
 {
     "-profile test": {
         "content": [
-            75,
+            79,
             {
+                "BCFTOOLS_QUERY": {
+                    "bcftools": 1.22
+                },
                 "BCFTOOLS_ROH": {
                     "bcftools": 1.22
                 },
@@ -285,7 +288,7 @@
                 "GCA_947369205.1_OX376310.1_CANBKR010000003.1.pacbio.icCanRufa1b_deepvariant.g.bcftools_stats.txt.gz:md5,335e54af442efb6bb7c59814bf3173a9"
             ]
         ],
-        "timestamp": "2026-08-14T23:16:37.790788717",
+        "timestamp": "2026-08-14T23:18:56.569258022",
         "meta": {
             "nf-test": "0.9.5",
             "nextflow": "26.04.0"

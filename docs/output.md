@@ -22,7 +22,7 @@ The pipeline is built using [Nextflow](https://www.nextflow.io/) and processes d
 
 - [VCF index](#vcf-index) - Create index of input variant files
 - [VCF processing](#vcf-processing) - Process files to analyse SNP density, InDel sizes, per-base nucleotide diversity, heterozygosity, and allele frequency
-- [ROH analysis](#roh-analysis) - Detect and visualise runs of homozygosity
+- [ROH analysis](#roh-analysis) - Detect and visualise runs of homozygosity, including multi-sample split outputs
 - [VCF stats](#vcf-stats) - Parse input files, produce text stats, and generate plots
 - [MultiQC](#multiqc) - Aggregate report describing results and QC from the whole pipeline
 - [Pipeline information](#pipeline-information) - Report metrics generated during the workflow execution
@@ -62,6 +62,8 @@ Depending on sequence length and input type, one or both index types may be prod
 - Interactive ROH visualisation: `<filename>.roh-viz.html`.
 - RG (region group) subset of ROH output: `<filename>.roh.rg.gz` (indexed).
 - ST (site-specific) subset of ROH output: `<filename>.roh.st.gz` (indexed).
+
+For multi-sample VCF inputs, RG and ST outputs are split per sample, with sample-specific filenames `<filename>.<sample-name>.roh.*` (sample names from the VCF file itself).
 
 </details>
 
