@@ -9,7 +9,7 @@
         "properties": {
             "sample": {
                 "type": "string",
-                "pattern": "^[a-zA-Z][^\\s/]*(?:/[a-zA-Z][^\\s/]*)?$",
+                "pattern": "^[a-zA-Z][^\\s/]*(?:/[a-zA-Z][^\\s/]*)*$",
                 "errorMessage": "Sample name must be provided, cannot contain spaces, and uses '/' to separate the levels of the output directory hierarchy (e.g. 'specimen', 'specimen/run' or 'pacbio/specimen/run')",
                 "meta": ["sample"]
             },
