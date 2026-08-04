@@ -29,7 +29,8 @@ lint:
     - docs/README.md
     - .github/workflows/linting.yml
     - .gitattributes
-  multiqc_config: true
+  multiqc_config:
+    - report_comment
   nextflow_config:
     - manifest.name
     - manifest.homePage
@@ -37,7 +38,7 @@ lint:
     - validation.help.afterText
     - validation.summary.beforeText
     - validation.summary.afterText
-nf_core_version: 3.5.2
+nf_core_version: 4.1.0
 repository_type: pipeline
 template:
   author: Yunjia Zhang
