@@ -62,7 +62,7 @@ workflow AF_ROH {
 
     // AF file with no VCF: raise an error
     ch.no_vcf.map { id, _null, af, af_tbi ->
-        error("${id} AF file (${af.baseName}) has not matching variant file")
+        error("${id} AF file (${af.baseName}) has no matching variant file")
     }
 
     // VCF files with no matching AF file. Pad with [] to fit BCFTOOLS_ROH
