@@ -18,17 +18,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 This release with the following initial parameters:
 
-| Old parameter | New parameter        |
-| ------------- | -------------------- |
-|               | --vcftools_filter    |
-|               | --site_pi_filter     |
-|               | --het_filter         |
-|               | --snp_density_filter |
-|               | --af_filter          |
-|               | --indel_len_filter   |
-|               | --roh_filter         |
-|               | --af_tag             |
-|               | --af_default_value   |
+| Old parameter   | New parameter        |
+| --------------- | -------------------- |
+|                 | --vcftools_filter    |
+|                 | --site_pi_filter     |
+|                 | --het_filter         |
+|                 | --snp_density_filter |
+|                 | --af_filter          |
+|                 | --indel_len_filter   |
+|                 | --roh_filter         |
+|                 | --af_tag             |
+|                 | --af_default_value   |
+| --roh_threshold |                      |
 
 > **NB:** Parameter has been **updated** if both old and new parameter information is present. </br> **NB:** Parameter has been **added** if just the new parameter information is present. </br> **NB:** Parameter has been **removed** if new parameter information isn't present.
 
