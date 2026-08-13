@@ -50,18 +50,28 @@ workflow VARIANTCOMPOSITION {
     def samplesheet_split = ch_samplesheet
         .branch { meta, _data ->
             af  : meta.datatype == "af"
-            vcf  : true  // *all flavours* of VCF
+            vcf : true  // *all flavours* of VCF
         }
 
+    def index_split = samplesheet_split.vcf
+        .branch { meta, data ->
+            tbi : data.resolveSibling(data.name + ".tbi").exists()
+                  return tuple(meta, data, data.resolveSibling(data.name + ".tbi"))
+            csi : data.resolveSibling(data.name + ".csi").exists()
+                  return tuple(meta, data, data.resolveSibling(data.name + ".csi"))
+            no  : true
+        }
 
     // Index the input VCF
-    TABIX( samplesheet_split.vcf )
+    TABIX( index_split.no )
     ch_index = TABIX.out.tbi.mix( TABIX.out.csi )
     ch_versions = ch_versions.mix( TABIX.out.versions )
 
     // Combine the VCF and TBI channels
-    def ch_vcfs_tbi = samplesheet_split.vcf
+    def ch_vcfs_tbi = index_split.no
         .join( ch_index )
+        .mix( index_split.tbi )
+        .mix( index_split.csi )
 
 
     //
