@@ -52,4 +52,4 @@ template:
     - igenomes
     - fastqc
     - adaptivecard
-  version: 1.0.0dev
+  version: 0.2.0
