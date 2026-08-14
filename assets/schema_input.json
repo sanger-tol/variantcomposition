@@ -9,14 +9,14 @@
         "properties": {
             "sample": {
                 "type": "string",
-                "pattern": "^\\S+$",
-                "errorMessage": "Sample name must be provided and cannot contain spaces",
+                "pattern": "^[a-zA-Z][^\\s/]*(?:/[a-zA-Z][^\\s/]*)*$",
+                "errorMessage": "Sample name must be provided, cannot contain spaces, and uses '/' to separate the levels of the output directory hierarchy (e.g. 'specimen', 'specimen/run' or 'pacbio/specimen/run')",
                 "meta": ["sample"]
             },
             "datatype": {
                 "type": "string",
                 "pattern": "^\\S+$",
-                "errorMessage": "Data type, and must be one of: 'VCF' or 'gVCF'",
+                "errorMessage": "Data type, and must be one of: 'vcf' or 'gvcf'",
                 "meta": ["datatype"]
             },
             "datafile": {
