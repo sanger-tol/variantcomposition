@@ -38,6 +38,10 @@ workflow SANGERTOL_VARIANTCOMPOSITION {
     //
     VARIANTCOMPOSITION (
         samplesheet,
+        params.multiqc_config,
+        params.multiqc_logo,
+        params.multiqc_methods_description,
+        params.outdir,
         positions
     )
     emit:
@@ -85,7 +89,6 @@ workflow {
         params.plaintext_email,
         params.outdir,
         params.monochrome_logs,
-        params.hook_url,
         SANGERTOL_VARIANTCOMPOSITION.out.multiqc_report
     )
 }

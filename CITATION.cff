@@ -32,7 +32,7 @@ cff-version: 1.2.0
 date-released: "2026-02-02"
 license: MIT
 message: If you use this software, please cite it using the metadata from this file
-  and all references from CITATIONS.md .
+  and all references from CITATIONS.md.
 repository-code: https://github.com/sanger-tol/variantcomposition
 title: sanger-tol/variantcomposition v0.2.0 - Telperion
 type: software
