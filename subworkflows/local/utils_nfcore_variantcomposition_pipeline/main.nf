@@ -35,6 +35,8 @@ workflow PIPELINE_INITIALISATION {
     help              // boolean: Display help message and exit
     help_full         // boolean: Show the full help message
     show_hidden       // boolean: Show hidden parameters in the help message
+    include_positions
+    exclude_positions
 
     main:
 
@@ -54,8 +56,26 @@ workflow PIPELINE_INITIALISATION {
     // Validate parameters and generate parameter summary to stdout
     //
 
-    def before_text = ""
-    def after_text = ""
+    def before_text = """
+-\033[2m----------------------------------------------------\033[0m-
+\033[0;34m   _____                               \033[0;32m _______   \033[0;31m _\033[0m
+\033[0;34m  / ____|                              \033[0;32m|__   __|  \033[0;31m| |\033[0m
+\033[0;34m | (___   __ _ _ __   __ _  ___ _ __ \033[0m ___ \033[0;32m| |\033[0;33m ___ \033[0;31m| |\033[0m
+\033[0;34m  \\___ \\ / _` | '_ \\ / _` |/ _ \\ '__|\033[0m|___|\033[0;32m| |\033[0;33m/ _ \\\033[0;31m| |\033[0m
+\033[0;34m  ____) | (_| | | | | (_| |  __/ |        \033[0;32m| |\033[0;33m (_) \033[0;31m| |____\033[0m
+\033[0;34m |_____/ \\__,_|_| |_|\\__, |\\___|_|        \033[0;32m|_|\033[0;33m\\___/\033[0;31m|______|\033[0m
+\033[0;34m                      __/ |\033[0m
+\033[0;34m                     |___/\033[0m
+\033[0;35m  ${workflow.manifest.name} ${workflow.manifest.version}\033[0m
+-\033[2m----------------------------------------------------\033[0m-
+        """
+    def after_text = """${workflow.manifest.doi ? "\n* The pipeline\n" : ""}${workflow.manifest.doi.tokenize(",").collect { doi -> "    https://doi.org/${doi.trim().replace('https://doi.org/', '')}" }.join("\n")}${workflow.manifest.doi ? "\n" : ""}
+* The nf-core framework
+    https://doi.org/10.1038/s41587-020-0439-x
+
+* Software dependencies
+    https://github.com/sanger-tol/variantcomposition/blob/main/CITATIONS.md
+"""
     if (monochrome_logs) {
         before_text = before_text.replaceAll(/\033\[[0-9;]*m/, '')
     }
@@ -86,29 +106,29 @@ workflow PIPELINE_INITIALISATION {
     // Create channel from input file provided through params.input
     //
 
-    channel
+    def ch_samplesheet = channel
         .fromList(samplesheetToList(input, "${projectDir}/assets/schema_input.json"))
-        .map {
-            meta, fastq_1, fastq_2 ->
-                if (!fastq_2) {
-                    return [ meta.id, meta + [ single_end:true ], [ fastq_1 ] ]
-                } else {
-                    return [ meta.id, meta + [ single_end:false ], [ fastq_1, fastq_2 ] ]
-                }
+        .map { meta, datafile ->
+            def new_meta = meta + [id: datafile.baseName]
+            return [new_meta, datafile]
         }
-        .groupTuple()
-        .map { samplesheet ->
-            validateInputSamplesheet(samplesheet)
-        }
-        .map {
-            meta, fastqs ->
-                return [ meta, fastqs.flatten() ]
-        }
-        .set { ch_samplesheet }
+
+    // Creat channel for include/exclude positions
+
+    if ( (include_positions) && (exclude_positions) ){
+        exit 1, "Only one positions file can be given to include or exclude."
+    } else if (include_positions){
+        ch_positions = include_positions
+    } else if (exclude_positions){
+        ch_positions = exclude_positions
+    } else {
+        ch_positions = []
+    }
 
     emit:
-    samplesheet = ch_samplesheet
-    versions    = ch_versions
+    samplesheet        = ch_samplesheet
+    positions          = ch_positions
+    versions           = ch_versions
 }
 
 /*
@@ -180,7 +200,7 @@ def validateInputSamplesheet(input) {
 // Generate methods description for MultiQC
 //
 def toolCitationText() {
-    // TODO nf-core: Optionally add in-text citation tools to this list.
+    // TODO: Optionally add in-text citation tools to this list.
     // Can use ternary operators to dynamically construct based conditions, e.g. params["run_xyz"] ? "Tool (Foo et al. 2023)" : "",
     // Uncomment function in methodsDescriptionText to render in MultiQC report
     def citation_text = [
@@ -193,7 +213,7 @@ def toolCitationText() {
 }
 
 def toolBibliographyText() {
-    // TODO nf-core: Optionally add bibliographic entries to this list.
+    // TODO: Optionally add bibliographic entries to this list.
     // Can use ternary operators to dynamically construct based conditions, e.g. params["run_xyz"] ? "<li>Author (2023) Pub name, Journal, DOI</li>" : "",
     // Uncomment function in methodsDescriptionText to render in MultiQC report
     def reference_text = [
@@ -227,7 +247,7 @@ def methodsDescriptionText(mqc_methods_yaml) {
     meta["tool_citations"] = ""
     meta["tool_bibliography"] = ""
 
-    // TODO nf-core: Only uncomment below if logic in toolCitationText/toolBibliographyText has been filled!
+    // TODO: Only uncomment below if logic in toolCitationText/toolBibliographyText has been filled!
     // meta["tool_citations"] = toolCitationText().replaceAll(", \\.", ".").replaceAll("\\. \\.", ".").replaceAll(", \\.", ".")
     // meta["tool_bibliography"] = toolBibliographyText()
 

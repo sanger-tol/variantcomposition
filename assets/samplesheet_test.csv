@@ -1,0 +1,3 @@
+sample,datatype,datafile
+icCanRufa1,vcf,https://tolit.cog.sanger.ac.uk/test-data/Cantharis_rufa/analysis/icCanRufa1/variant_calling/GCA_947369205.1_OX376310.1_CANBKR010000003.1.pacbio.icCanRufa1_deepvariant.vcf.gz
+icCanRufa1,gvcf,https://tolit.cog.sanger.ac.uk/test-data/Cantharis_rufa/analysis/icCanRufa1/variant_calling/GCA_947369205.1_OX376310.1_CANBKR010000003.1.pacbio.icCanRufa1_deepvariant.g.vcf.gz

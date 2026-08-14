@@ -27,7 +27,8 @@
                     "type": "string",
                     "format": "directory-path",
                     "description": "The output directory where the results will be saved. You have to use absolute paths to storage on Cloud infrastructure.",
-                    "fa_icon": "fas fa-folder-open"
+                    "fa_icon": "fas fa-folder-open",
+                    "default": "results"
                 },
                 "email": {
                     "type": "string",
@@ -40,6 +41,80 @@
                     "type": "string",
                     "description": "MultiQC report title. Printed as page header, used for filename if not otherwise specified.",
                     "fa_icon": "fas fa-file-signature"
+                }
+            }
+        },
+        "variant_analysis_options": {
+            "title": "Variant Analysis Options",
+            "type": "object",
+            "description": "Parameters for analyzing and filtering genomic variants.",
+            "default": "",
+            "properties": {
+                "vcftools_filter": {
+                    "type": "string",
+                    "pattern": "(^$)|(^ --.*$)",
+                    "description": "VCFtools site/genotype filtering arguments applied to all VCFtools analyses.",
+                    "fa_icon": "fas fa-scroll"
+                },
+                "site_pi_filter": {
+                    "type": "string",
+                    "pattern": "(^$)|(^ --.*$)",
+                    "description": "Command-line parameters to pass to VCFtools per-base nucleotide diversity function.",
+                    "fa_icon": "fas fa-scroll"
+                },
+                "include_positions": {
+                    "type": "string",
+                    "description": "Path to a file with a set of sites on the basis of a list of positions to include. Each line of the input file should contain a (tab-separated) chromosome and position.",
+                    "format": "file-path",
+                    "exists": true
+                },
+                "exclude_positions": {
+                    "type": "string",
+                    "description": "Path to a file with a set of sites on the basis of a list of positions to exclude. Each line of the input file should contain a (tab-separated) chromosome and position.",
+                    "format": "file-path",
+                    "exists": true
+                },
+                "het_filter": {
+                    "type": "string",
+                    "pattern": "(^$)|(^ --.*$)",
+                    "description": "Command-line parameters to pass to VCFtools heterozygosity function.",
+                    "fa_icon": "fas fa-scroll"
+                },
+                "snp_density_filter": {
+                    "type": "string",
+                    "pattern": "(^$)|(^ --.*$)",
+                    "description": "Command-line parameters to pass to VCFtools SNP density function.",
+                    "fa_icon": "fas fa-scroll"
+                },
+                "snp_density_window": {
+                    "type": "integer",
+                    "default": 1000,
+                    "description": "The window size (in base pairs) used to calculate SNP density across the genome.",
+                    "help_text": "Defines the size of genomic windows for calculating SNP density. Smaller windows give finer resolution but more noise."
+                },
+                "af_filter": {
+                    "type": "string",
+                    "pattern": "(^$)|(^ --.*$)",
+                    "description": "Command-line parameters to pass to VCFtools allele frequency function.",
+                    "fa_icon": "fas fa-scroll"
+                },
+                "indel_len_filter": {
+                    "type": "string",
+                    "pattern": "(^$)|(^ --.*$)",
+                    "description": "Command-line parameters to pass to VCFtools InDel size distribution function.",
+                    "fa_icon": "fas fa-scroll"
+                },
+                "roh_filter": {
+                    "type": "string",
+                    "pattern": "(^$)|(^ -.*$)",
+                    "description": "Command-line parameters to pass to BCFtools RoH function.",
+                    "fa_icon": "fas fa-scroll"
+                },
+                "roh_threshold": {
+                    "type": "number",
+                    "default": 0.4,
+                    "description": "Allele frequency threshold for identifying runs of homozygosity (ROH). Sites with unknown or lower allele frequency will be skipped.",
+                    "help_text": "Used to filter variants when identifying runs of homozygosity. Higher values are more stringent."
                 }
             }
         },
@@ -197,6 +272,9 @@
     "allOf": [
         {
             "$ref": "#/$defs/input_output_options"
+        },
+        {
+            "$ref": "#/$defs/variant_analysis_options"
         },
         {
             "$ref": "#/$defs/institutional_config_options"

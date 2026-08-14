@@ -1,8 +1,24 @@
 /*
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    IMPORT MODULES / SUBWORKFLOWS / FUNCTIONS
+    IMPORT LOCAL MODULES/SUBWORKFLOWS
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 */
+
+//
+// SUBWORKFLOW: Consisting of a mix of local and nf-core/modules
+//
+
+include { TABIX_TABIX as TABIX } from '../modules/nf-core/tabix/tabix/main'
+include { FEATURES             } from '../subworkflows/local/features'
+include { AF_ROH               } from '../subworkflows/local/af_roh'
+include { BCFTOOLS_STATS_PLOT  } from '../subworkflows/local/bcftools_stats_plot'
+
+/*
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    IMPORT NF-CORE MODULES/SUBWORKFLOWS
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+*/
+
 include { MULTIQC                } from '../modules/nf-core/multiqc/main'
 include { paramsSummaryMap       } from 'plugin/nf-schema'
 include { paramsSummaryMultiqc   } from '../subworkflows/nf-core/utils_nfcore_pipeline'
@@ -23,11 +39,49 @@ workflow VARIANTCOMPOSITION {
     multiqc_logo
     multiqc_methods_description
     outdir
+    ch_positions            // channel: positions file to include or exclude
 
     main:
 
     def ch_versions = channel.empty()
     def ch_multiqc_files = channel.empty()
+
+    // Index the input VCF
+    ch_tbi = TABIX( ch_samplesheet ).tbi
+    ch_versions = ch_versions.mix( TABIX.out.versions )
+
+    // Combine the VCF and TBI channels
+    def ch_vcfs_tbi = ch_samplesheet
+        .join( ch_tbi )
+
+
+    //
+    // SUBWORKFLOW: FEATURES
+    //
+
+    FEATURES (
+        ch_samplesheet,
+        ch_positions
+    )
+    ch_versions = ch_versions.mix( FEATURES.out.versions )
+
+    //
+    // SUBWORKFLOW: RUN OF HOMOZYGOSITY
+    //
+
+    AF_ROH (
+        ch_vcfs_tbi
+    )
+    ch_versions = ch_versions.mix( AF_ROH.out.versions )
+
+    //
+    // SUBWORKFLOW: BCFTOOLS_STATS_PLOT
+    //
+
+    BCFTOOLS_STATS_PLOT (
+        ch_vcfs_tbi
+    )
+    ch_versions = ch_versions.mix( BCFTOOLS_STATS_PLOT.out.versions )
 
     //
     // Collate and save software versions
@@ -84,7 +138,9 @@ workflow VARIANTCOMPOSITION {
             ]
         }
     )
-    emit:multiqc_report = MULTIQC.out.report.map { _meta, report -> [report] }.toList() // channel: /path/to/multiqc_report.html
+
+    emit:
+    multiqc_report = MULTIQC.out.report.map { _meta, report -> [report] }.toList() // channel: /path/to/multiqc_report.html
     versions       = ch_versions                 // channel: [ path(versions.yml) ]
 }
 

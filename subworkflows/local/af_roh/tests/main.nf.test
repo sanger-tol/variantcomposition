@@ -1,0 +1,46 @@
+nextflow_workflow {
+
+    name "Test Subworkflow AF_ROH"
+    script "../main.nf"
+    config "./nextflow.config"
+    workflow "AF_ROH"
+
+    tag "subworkflows"
+    tag "subworkflows/af_roh"
+    tag "subworkflows/../../modules/nf-core/bcftools/query"
+    tag "subworkflows/../../modules/nf-core/bcftools/roh"
+    tag "subworkflows/../../modules/nf-core/bcftools/rohviz"
+    tag "subworkflows/../../modules/sanger-tol/bgziptabix"
+
+
+    test("variantcomposition - af-roh") {
+
+        when {
+            workflow {
+                """
+                input[0] = channel.of([
+                    [ id:'test' ], // meta map
+				    file(params.modules_testdata_base_path + 'Cantharis_rufa/analysis/icCanRufa1/variant_calling/GCA_947369205.1_OX376310.1_CANBKR010000003.1.pacbio.icCanRufa1_deepvariant.vcf.gz', checkIfExists: true),
+				    file(params.modules_testdata_base_path + 'Cantharis_rufa/analysis/icCanRufa1/variant_calling/GCA_947369205.1_OX376310.1_CANBKR010000003.1.pacbio.icCanRufa1_deepvariant.vcf.gz.tbi', checkIfExists: true)
+                ])
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert workflow.success },
+                { assert snapshot(
+                    workflow.out.compressed_roh,
+                    workflow.out.compressed_roh_rg_index,
+                    workflow.out.roh_rg_tbi,
+                    workflow.out.compressed_roh_st_index,
+                    workflow.out.roh_st_tbi,
+                    file(workflow.out.roh_viz[0][1]).name,
+                    path(workflow.out.roh_viz[0][1]).readLines().size(),
+                    workflow.out.findAll { key, val -> key.startsWith("versions") }
+                ).match() }
+            )
+        }
+    }
+}
