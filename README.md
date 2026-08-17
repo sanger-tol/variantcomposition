@@ -19,7 +19,7 @@ _GSoC 2025 Project_
 
 ## Introduction
 
-**sanger-tol/variantcomposition** is a bioinformatics pipeline that takes the output of variant-calling (VCF and gVCF) as input, and perform basic variant component analysis.
+**sanger-tol/variantcomposition** is a bioinformatics pipeline that takes the output of variant-calling (VCF, gVCF, BCF, gBCF) as input, and perform basic variant component analysis.
 
 The pipeline is built using [Nextflow](https://www.nextflow.io), a workflow tool to run tasks across multiple compute infrastructures in a very portable manner. It uses Docker/Singularity containers making installation trivial and results highly reproducible. The [Nextflow DSL2](https://www.nextflow.io/docs/latest/dsl2.html) implementation of this pipeline uses one container per process which makes it much easier to maintain and update software dependencies. Where possible, these processes have been submitted to and installed from [nf-core/modules](https://github.com/nf-core/modules) in order to make them available to all nf-core pipelines, and to everyone within the Nextflow community!
 
@@ -27,14 +27,14 @@ On merge to `dev` and `main` branch, automated continuous integration tests run 
 
 ## Pipeline summary
 
-The pipeline takes VCF and gVCF files from a samplesheet in CSV format, and analyse variant compositions.
+The pipeline takes VCF files (and other accepted formats) from a samplesheet in CSV format, and analyse variant compositions.
 
 <img src="docs/images/variant-composition.png">
 
 Steps involved:
 
-- Index the VCF/gVCF files
-- Process VCF/gVCF files to analyse:
+- Index the input variant files
+- Process variant files to analyse:
 
 1. Single nucleotide polymorphisms (SNP) density
 2. Insertion or deletion (InDel) sizes

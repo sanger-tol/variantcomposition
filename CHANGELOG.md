@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Update BCFtools to version 1.22.1
 - Use `BCFtools` to produce and plot VCF stats
 - Added options to pass parameters to VCFtools and BCFtools
+- Support BCF files
 
 ### Parameters
 

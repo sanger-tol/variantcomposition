@@ -47,12 +47,13 @@ workflow VARIANTCOMPOSITION {
     def ch_multiqc_files = channel.empty()
 
     // Index the input VCF
-    ch_tbi = TABIX( ch_samplesheet ).tbi
+    TABIX( ch_samplesheet )
+    ch_index = TABIX.out.tbi.mix( TABIX.out.csi )
     ch_versions = ch_versions.mix( TABIX.out.versions )
 
     // Combine the VCF and TBI channels
     def ch_vcfs_tbi = ch_samplesheet
-        .join( ch_tbi )
+        .join( ch_index )
 
 
     //
