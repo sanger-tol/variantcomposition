@@ -29,7 +29,9 @@ The pipeline is built using [Nextflow](https://www.nextflow.io/) and processes d
 
 ### VCF index
 
-Use `tabix` to generate index files for input variants.
+The pipeline first looks for existing TBI or CSI index next to the input variant file
+(same name, with an extra `.tbi` or `.csi`).
+If there isn't, use `tabix` to generate index files for input variants.
 
 <details markdown="1">
 <summary>Output files</summary>

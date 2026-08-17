@@ -33,7 +33,7 @@ The pipeline takes VCF, gVCF, BCF, or gBCF data from a CSV samplesheet and analy
 
 Steps involved:
 
-- Index the input variant files with Tabix
+- Index the input variant files with Tabix if needed
 - Process variant files to analyse:
 
 1. Single nucleotide polymorphisms (SNP) density

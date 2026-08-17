@@ -13,6 +13,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Support BCF files
 - Multiple options to define allele frequencies when computing ROH
 - Support multi-sample VCF file
+- Can use pre-existing `Tabix` index of the input VCF files
 
 ### Parameters
 
@@ -59,7 +60,7 @@ Initial release of sanger-tol/variantcomposition, created with the [nf-core](htt
 
 ### Enhancements & fixes
 
-- Use `Bgzip` to index the VCF files
+- Use `Tabix` to index the VCF files
 - Use `VCFtools` to calculate SNP density
 - Use `VCFtools` to create InDel-sizes distribution in histogram
 - Use `VCFtools` to calculate per-site (base) nucleotide diversity
