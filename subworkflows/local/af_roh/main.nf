@@ -70,9 +70,13 @@ workflow AF_ROH {
     // MODULE: Visualize ROH results as interactive HTML
     //
 
+    ch_vcfs_roh = ch_vcfs_af_joined
+        .map { _meta_id, meta, vcf, _vcf_tbi, _af, _af_tbi -> [ meta, vcf ] }
+        .join( BCFTOOLS_ROH.out.roh )
+
     BCFTOOLS_ROHVIZ (
-        BCFTOOLS_ROH.out.roh,
-        vcfs_tbi.map{ meta, vcfs, _vcf_tbi -> [ meta, vcfs ] },
+        ch_vcfs_roh.map { meta, _vcf, roh -> [meta, roh] },
+        ch_vcfs_roh.map { meta, vcf, _roh -> [meta, vcf] },
         [], // regions_list
         []  // samples_file
     )

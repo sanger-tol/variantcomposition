@@ -4,7 +4,7 @@
 
 ## Introduction
 
-The pipeline takes VCF, gVCF, BCF, and gBCF, files from a samplesheet in CSV format, and analyse variant compositions.
+The pipeline takes VCF, gVCF, BCF, and gBCF, files from a samplesheet in CSV format and analyses variant composition.
 
 ## Samplesheet input
 
@@ -14,31 +14,14 @@ You will need to create a samplesheet with information about the samples you wou
 --input '[path to samplesheet file]'
 ```
 
-<!-- Place saved for future use - e.g. multiple specimen in the same species
-
-### Multiple runs of the same sample
-
-The `sample` identifiers have to be the same when you have re-sequenced the same sample more than once e.g. to increase sequencing depth. The pipeline will concatenate the raw reads before performing any downstream analysis. Below is an example for the same sample sequenced across 3 lanes:
-
-```csv title="samplesheet.csv"
-sample,fastq_1,fastq_2
-CONTROL_REP1,AEG588A1_S1_L002_R1_001.fastq.gz,AEG588A1_S1_L002_R2_001.fastq.gz
-CONTROL_REP1,AEG588A1_S1_L003_R1_001.fastq.gz,AEG588A1_S1_L003_R2_001.fastq.gz
-CONTROL_REP1,AEG588A1_S1_L004_R1_001.fastq.gz,AEG588A1_S1_L004_R2_001.fastq.gz
-``` -->
-
 ### Full samplesheet
 
-<!-- The pipeline will auto-detect whether a sample is single- or paired-end using the information provided in the samplesheet. The samplesheet can have as many columns as you desire, however, there is a strict requirement for the first 3 columns to match those defined in the table below. -->
-
 A final samplesheet file can contain any mix of `vcf`, `gvcf`, `bcf`, and `gbcf` datatypes.
-
-<!-- This is for 6 samples, where `TREATMENT_REP3` has been sequenced twice. -->
 
 ```csv title="samplesheet.csv"
 sample,datatype,datafile
 sample1,vcf,file1.vcf.gz
-sample1,vcf,file1.g.vcf.gz
+sample1,gvcf,file1.g.vcf.gz
 ```
 
 | Column     | Description                                                                                                                                                                           |
@@ -49,9 +32,9 @@ sample1,vcf,file1.g.vcf.gz
 
 An [example samplesheet](../assets/samplesheet.csv) has been provided with the pipeline.
 
-## Parameters and Filters for VCFtools and BCFtools
+## Parameters and filters for variant analyses
 
-Parameters and filters can be passed straight to VCFtools or BCFtools:
+Parameters and filters can be passed directly to VCFtools or BCFtools.
 
 - To all the VCFtools analyse via the `--vcftools_filter` option
 - Additionally:
@@ -64,6 +47,19 @@ Parameters and filters can be passed straight to VCFtools or BCFtools:
 
 Note that you will need to add a leading whitespace in front of `--`,
 otherwise the pipeline's own parameter validation will consider it a sanger-tol/variantcomposition option.
+
+Additional analysis parameters:
+
+- `--snp_density_window` sets the SNP density window size in base pairs (default: `1000`).
+- `--roh_threshold` sets the default allele-frequency threshold passed to `bcftools roh` as `--AF-dflt` (default: `0.4`).
+- `--include_positions` provides a positions file (tab-separated chromosome and position per line) used with VCFtools `--positions`.
+- `--exclude_positions` provides a positions file used with VCFtools `--exclude-positions`.
+- `--include_positions` and `--exclude_positions` are mutually exclusive.
+
+Important behavior by datatype:
+
+- The heterozygosity step runs only for `vcf` and `bcf` entries in the samplesheet.
+- Other analyses run for all supported datatypes.
 
 Filtering and parameter options can be found in VCFtools [manual](https://vcftools.github.io/man_latest.html#SITE%20FILTERING%20OPTIONS) and BCFtools [manual](https://samtools.github.io/bcftools/bcftools.html). Multiple arguments may be provided as a single quoted string.
 
