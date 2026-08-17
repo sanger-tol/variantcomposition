@@ -110,11 +110,18 @@
                     "description": "Command-line parameters to pass to BCFtools RoH function.",
                     "fa_icon": "fas fa-scroll"
                 },
-                "roh_threshold": {
+                "af_tag": {
+                    "type": "string",
+                    "pattern": "^\\S*$",
+                    "description": "Name of the INFO tag in the input VCF that contains allele frequencies.",
+                    "help_text": "Used when identifying runs of homozygosity (ROH).",
+                    "fa_icon": "fas fa-scroll"
+                },
+                "af_default_value": {
                     "type": "number",
                     "default": 0.4,
-                    "description": "Allele frequency threshold for identifying runs of homozygosity (ROH). Sites with unknown or lower allele frequency will be skipped.",
-                    "help_text": "Used to filter variants when identifying runs of homozygosity. Higher values are more stringent."
+                    "description": "Default allele frequency when no value could be found in the allele-frequency file or in the VCF file itself.",
+                    "help_text": "Used when identifying runs of homozygosity (ROH)."
                 }
             }
         },

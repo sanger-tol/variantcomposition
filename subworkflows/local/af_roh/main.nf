@@ -1,7 +1,7 @@
-include { BCFTOOLS_QUERY  as BCFTOOLS_QUERY     } from '../../../modules/nf-core/bcftools/query/main'
+include { BCFTOOLS_QUERY                        } from '../../../modules/nf-core/bcftools/query/main'
 include { BGZIPTABIX      as BGZIPTABIX_AF_FILE } from '../../../modules/sanger-tol/bgziptabix/main'
-include { BCFTOOLS_ROH    as BCFTOOLS_ROH       } from '../../../modules/nf-core/bcftools/roh/main'
-include { BCFTOOLS_ROHVIZ as BCFTOOLS_ROHVIZ    } from '../../../modules/nf-core/bcftools/rohviz/main'
+include { BCFTOOLS_ROH                          } from '../../../modules/nf-core/bcftools/roh/main'
+include { BCFTOOLS_ROHVIZ                       } from '../../../modules/nf-core/bcftools/rohviz/main'
 include { GAWK            as GAWK_SPLIT_RG      } from '../../../modules/nf-core/gawk/main'
 include { GAWK            as GAWK_SPLIT_ST      } from '../../../modules/nf-core/gawk/main'
 include { BGZIPTABIX      as BGZIPTABIX_ST      } from '../../../modules/sanger-tol/bgziptabix/main'
@@ -10,21 +10,26 @@ include { BGZIPTABIX      as BGZIPTABIX_RG      } from '../../../modules/sanger-
 workflow AF_ROH {
     take:
     vcfs_tbi   // channel: [ meta, VCF/gVCF, tbi ]
+    af_file    // channel: [ meta, AF file ]
 
     main:
     ch_versions = channel.empty()
 
     //
-    // MODULE: Extract allele frequency information from VCF files
-    // Uses bcftools query to calculate allele frequencies, which are required for ROH detection
+    // MODULE: Extract sample names to identify multi-sample VCFs
     //
     BCFTOOLS_QUERY ( vcfs_tbi, [], [], [] )
+
+    // Join output and input, read the text file to count the number of sample,
+    def ch_vcfs_multi_sample_info = BCFTOOLS_QUERY.out.output
+        .join( vcfs_tbi )
+        .map { meta, txt, vcfs, tbi -> [ meta + [multi_sample: file(txt).readLines().size > 1], vcfs, tbi ] }
 
     //
     // MODULE: Compress and index the allele frequency file
     // The maximum sequence length is not available in the pipeline so just pass 0 for now
     //
-    BGZIPTABIX_AF_FILE ( BCFTOOLS_QUERY.out.output
+    BGZIPTABIX_AF_FILE ( af_file
         .map { meta, input -> [ meta, input, 0 ]},
         [ [], [], [] ]
     )
@@ -33,11 +38,11 @@ workflow AF_ROH {
     // CHANNEL MANIPULATION: Prepare matched inputs for BCFTOOLS_ROH
     //
 
-    // BCFtools roh requires [VCF + index] and [AF file + index], both correspond to the same sample
+    // BCFtools roh requires [VCF + index] and [AF file + index] to correspond to the same sample
     // Strategy: Use meta.id as a key to join VCF and AF channels
 
     // Key VCF channel by sample ID for joining
-    def vcfs_tbi_keyed = vcfs_tbi
+    def vcfs_tbi_keyed = ch_vcfs_multi_sample_info
         .map { meta, vcfs, tbi -> [ meta.id, meta, vcfs, tbi ] }
 
     // Key AF channel by sample ID and combine bgzip output with tabix index
@@ -46,9 +51,27 @@ workflow AF_ROH {
         .join(BGZIPTABIX_AF_FILE.out.tbi)
         .map{ meta, af, _af_gzi, af_tbi -> [ meta.id, af, af_tbi ] }
 
-    // Join VCF and AF channels on sample ID
-    def ch_vcfs_af_joined = vcfs_tbi_keyed
-        .join(af_tbi_keyed)
+    // Let's compare both
+    def ch = vcfs_tbi_keyed
+        .join(af_tbi_keyed, remainder: true)
+        .branch {
+            no_vcf:  it[1] == null
+            no_af:   it[4] == null
+            matched: true
+        }
+
+    // AF file with no VCF: raise an error
+    ch.no_vcf.map { id, _null, af, af_tbi ->
+        error("${id} AF file (${af.baseName}) has no matching variant file")
+    }
+
+    // VCF files with no matching AF file. Pad with [] to fit BCFTOOLS_ROH
+    ch_vcfs_no_af_file = ch.no_af
+         .map { id, meta, vcfs, tbi, _null -> [id, meta, vcfs, tbi, [], []] }
+
+    // All VCF inputs for BCFTOOLS_ROH
+    def ch_vcfs_af_joined = ch.matched
+        .mix( ch_vcfs_no_af_file )
 
 
     //
@@ -84,32 +107,22 @@ workflow AF_ROH {
 
     //
     // MODULE: Split ROH results to two files containing ST and RG regions respectively
+    //         Do it by sample if the VCF has multiple samples
     //
 
-    ch_extract_rg_awk = channel.of('''\
-        /^#/ && !/^# ST/ || /^RG/ {
-            print
-        }'''.stripIndent())
-        .collectFile(name: "extract_rg.awk", cache: true)
-        .collect()
-
-    ch_extract_st_awk = channel.of('''\
-        /^#/ && !/^# RG/ || /^ST/ {
-            print
-        }'''.stripIndent())
-        .collectFile(name: "extract_st.awk", cache: true)
-        .collect()
+    // Channel 2: select the split_sample_??.awk script for multi-sample VCFs, split_all_??.awk otherwise
+    // Channel 3: the former creates its own files, while the latter prints to stdout
 
     GAWK_SPLIT_RG(
         BCFTOOLS_ROH.out.roh,
-        ch_extract_rg_awk,
-        false
+        BCFTOOLS_ROH.out.roh.map { meta, _roh -> file("$projectDir/assets/split_${meta.multi_sample ? "sample" : "all"}_rg.awk", checkIfExists: true) },
+        BCFTOOLS_ROH.out.roh.map{ meta, _roh -> meta.multi_sample },
     )
 
     GAWK_SPLIT_ST(
         BCFTOOLS_ROH.out.roh,
-        ch_extract_st_awk,
-        false
+        BCFTOOLS_ROH.out.roh.map { meta, _roh -> file("$projectDir/assets/split_${meta.multi_sample ? "sample" : "all"}_st.awk", checkIfExists: true) },
+        BCFTOOLS_ROH.out.roh.map{ meta, _roh -> meta.multi_sample },
     )
 
 
@@ -117,12 +130,20 @@ workflow AF_ROH {
     // Compress and index output files
     //
 
-    BGZIPTABIX_RG ( GAWK_SPLIT_RG.out.output
+    // GAWK sends either 1 file, or 1 list of files. When a list, flatten it and add the sample name (which is the file base name) to the id
+
+    ch_rg_files = GAWK_SPLIT_RG.out.output
+        .flatMap { meta, rg_files -> (rg_files instanceof List ? rg_files.collect { rg -> tuple(meta + [id: "${meta.id}.${rg.baseName}" ], rg) } : [tuple(meta, rg_files)]) }
+
+    BGZIPTABIX_RG ( ch_rg_files
         .map { meta, input -> [ meta, input, 0 ] },   // Max_seq_length set to 0 for now
         [ [], [], 'roh.rg' ]
     )
 
-    BGZIPTABIX_ST ( GAWK_SPLIT_ST.out.output
+    ch_st_files = GAWK_SPLIT_ST.out.output
+        .flatMap { meta, st_files -> (st_files instanceof List ? st_files.collect { rg -> tuple(meta + [id: "${meta.id}.${rg.baseName}" ], rg) } : [tuple(meta, st_files)]) }
+
+    BGZIPTABIX_ST ( ch_st_files
         .map { meta, input -> [ meta, input, 0 ] },   // Max_seq_length set to 0 for now
         [ [], [], 'roh.st' ]
     )

@@ -27,7 +27,7 @@ On merge to `dev` and `main` branch, automated continuous integration tests run 
 
 ## Pipeline summary
 
-The pipeline takes VCF, gVCF, BCF, or gBCF data from a CSV samplesheet and analyses variant composition.
+The pipeline takes VCF, gVCF, BCF, or gBCF data from a CSV samplesheet and analyses variant composition. Optional external allele-frequency files can also be provided for ROH.
 
 <img src="docs/images/variant-composition.png">
 
@@ -44,7 +44,8 @@ Steps involved:
 6. Allele frequency
 7. VCF stats and plot
 
-- Generate an interactive ROH visualisation
+- Generate an interactive ROH visualisation (including support for multi-sample VCFs)
+- Support multiple ROH allele-frequency strategies: external AF files, VCF INFO tag (`--af_tag`), and on-the-fly AF estimation for multi-sample VCFs
 - Summarise workflow outputs with [`MultiQC`](http://multiqc.info/)
 
 See [docs/usage.md](docs/usage.md) for detailed input and parameter documentation and [docs/output.md](docs/output.md) for the exact published outputs.

@@ -16,19 +16,20 @@ You will need to create a samplesheet with information about the samples you wou
 
 ### Full samplesheet
 
-A final samplesheet file can contain any mix of `vcf`, `gvcf`, `bcf`, and `gbcf` datatypes.
+A final samplesheet file can contain any mix of `vcf`, `gvcf`, `bcf`, and `gbcf` variant datatypes, plus optional `af` rows.
 
 ```csv title="samplesheet.csv"
 sample,datatype,datafile
 sample1,vcf,file1.vcf.gz
 sample1,gvcf,file1.g.vcf.gz
+sample1,af,file1.vcf.af
 ```
 
 | Column     | Description                                                                                                                                                                           |
 | ---------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `sample`   | Custom sample name. This entry will be identical for multiple sequencing libraries/runs from the same sample. Spaces in sample names are automatically converted to underscores (`_`) |
-| `datatype` | Variant datatype: `vcf`, `gvcf`, `bcf`, or `gbcf`                                                                                                                                     |
-| `datafile` | Path to the variant file. Accepted extensions are `.vcf`, `.vcf.gz`, `.gvcf`, `.gvcf.gz`, and `.bcf` (`gbcf` inputs are supplied as `.bcf` files)                                     |
+| `datatype` | Data type: `vcf`, `gvcf`, `bcf`, or `gbcf` for variants,; `af` for allele frequencies (ROH analysis).                                                                                 |
+| `datafile` | Path to the data file. Accepted extensions are `.vcf`, `.vcf.gz`, `.gvcf`, `.gvcf.gz`, `.bcf` (including `g.vcf*` and `.g.bcf`), and `.af`.                                           |
 
 An [example samplesheet](../assets/samplesheet.csv) has been provided with the pipeline.
 
@@ -51,15 +52,34 @@ otherwise the pipeline's own parameter validation will consider it a sanger-tol/
 Additional analysis parameters:
 
 - `--snp_density_window` sets the SNP density window size in base pairs (default: `1000`).
-- `--roh_threshold` sets the default allele-frequency threshold passed to `bcftools roh` as `--AF-dflt` (default: `0.4`).
+- `--af_tag` sets the VCF INFO tag to read allele frequencies from when running ROH.
+- `--af_default_value` sets the fallback value passed to `bcftools roh` as `--AF-dflt` (default: `0.4`).
 - `--include_positions` provides a positions file (tab-separated chromosome and position per line) used with VCFtools `--positions`.
 - `--exclude_positions` provides a positions file used with VCFtools `--exclude-positions`.
 - `--include_positions` and `--exclude_positions` are mutually exclusive.
+
+### ROH allele-frequency input modes
+
+ROH supports three allele-frequency modes, with this precedence:
+
+1. External AF file from the samplesheet (`datatype=af`)
+2. INFO-tag frequencies via `--af_tag`
+3. If neither of the above is provided:
+
+- multi-sample VCF/gVCF/BCF/gBCF: estimate AF directly from the input (`bcftools roh --estimate-AF -`)
+- single-sample input: use `--af_default_value` as the fallback AF
+
+If you provide external AF files in the samplesheet:
+
+- Each `af` row should point to a `.af` file.
+- AF files are matched to variant files by the pipeline record ID (`datafile.baseName`), so file naming should be consistent between variant and AF inputs.
+- VCFs without a matching AF file are still processed using the fallback logic above.
 
 Important behavior by datatype:
 
 - The heterozygosity step runs only for `vcf` and `bcf` entries in the samplesheet.
 - Other analyses run for all supported datatypes.
+- Multi-sample VCF inputs are supported in ROH and result in per-sample ROH split outputs.
 
 Filtering and parameter options can be found in VCFtools [manual](https://vcftools.github.io/man_latest.html#SITE%20FILTERING%20OPTIONS) and BCFtools [manual](https://samtools.github.io/bcftools/bcftools.html). Multiple arguments may be provided as a single quoted string.
 
