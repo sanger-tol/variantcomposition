@@ -1,4 +1,9 @@
-# sanger-tol/variantcomposition
+<h1>
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="docs/images/sanger-tol-variantcomposition_logo_dark.svg">
+    <img alt="sanger-tol/variantcomposition" src="docs/images/sanger-tol-variantcomposition_logo_light.svg">
+  </picture>
+</h1>
 
 [![Open in GitHub Codespaces](https://img.shields.io/badge/Open_In_GitHub_Codespaces-black?labelColor=grey&logo=github)](https://github.com/codespaces/new/sanger-tol/variantcomposition)
 [![GitHub Actions CI Status](https://github.com/sanger-tol/variantcomposition/actions/workflows/nf-test.yml/badge.svg)](https://github.com/sanger-tol/variantcomposition/actions/workflows/nf-test.yml)
@@ -20,6 +25,11 @@ _GSoC 2025 Project_
 ## Introduction
 
 **sanger-tol/variantcomposition** is a bioinformatics pipeline that takes variant-calling output (VCF, gVCF, BCF, gBCF files) and performs basic variant composition analysis.
+
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="docs/images/sanger-tol-variantcomposition_metro_map_dark.svg">
+  <img alt="sanger-tol/variantcomposition" src="docs/images/sanger-tol-variantcomposition_metro_map_light.svg">
+</picture>
 
 The pipeline is built using [Nextflow](https://www.nextflow.io), a workflow tool to run tasks across multiple compute infrastructures in a very portable manner. It uses Docker/Singularity containers making installation trivial and results highly reproducible. The [Nextflow DSL2](https://www.nextflow.io/docs/latest/dsl2.html) implementation of this pipeline uses one container per process which makes it much easier to maintain and update software dependencies. Where possible, these processes have been submitted to and installed from [nf-core/modules](https://github.com/nf-core/modules) in order to make them available to all nf-core pipelines, and to everyone within the Nextflow community!
 
