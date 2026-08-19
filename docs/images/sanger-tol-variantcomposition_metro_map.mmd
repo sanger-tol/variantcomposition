@@ -1,0 +1,113 @@
+%%metro title: Variant Composition pipeline
+%%metro style: dark
+%%metro line_order: span
+%%metro line: vcf | VCF/BCF files| #2db572
+%%metro line: gvcf | gVCF/gBCF files | #ff9800
+%%metro line: af | Population allele frequencies | #00bcd4
+%%%%metro line: gvcf | gVCF/gBCF files | #00bcd4
+%%%%metro line: af_roh_reporting | Af Roh - Reporting | #ff9800
+%%%%metro line: features_reporting | Features - Reporting | #9b59b6
+%%%%metro line: variantcomposition_af_roh | Variantcomposition - Af Roh | #f5c542
+%%%%metro line: variantcomposition_bcftools_stats_plot | Variantcomposition - bcftools Stats Plot | #e63946
+%%%%metro line: variantcomposition_reporting | Variantcomposition - Reporting | #0570b0
+%%metro file: input | VCF
+%%metro file: input_g | gVCF
+%%metro file: input_af | TSV
+%%metro file: report_out | HTML
+%%metro file: stats_txt | TXT
+%%metro file: stats_pdf | PDF
+%%metro file: stats_tar | TAR
+%%metro files: feat_tsv | TSV
+%%metro files: roh_tsv | TSV
+%%metro file: roh_html | HTML
+
+graph LR
+    subgraph preprocessing [Pre-processing]
+        tabix([Tabix])
+        bgziptabix_af([bgzip+tabix])
+        input -->|vcf| tabix
+        input_g -->|gvcf| tabix
+        input_af -->|af| bgziptabix_af
+    end
+
+    subgraph features [VCFtools analyses]
+        vcftools_allele_frequency([Allele Frequency])
+        vcftools_site_pi([Site-wise Polymorphism])
+        vcftools_snp_density([SNP Density])
+        bgziptabix([bgzip+tabix])
+        vcftools_indel_length([Indel Length distribution])
+        vcftools_het([Heterozygosity])
+
+        vcftools_allele_frequency -->|vcf| bgziptabix
+        vcftools_het -->|vcf| feat_tsv
+        vcftools_indel_length -->|vcf| feat_tsv
+        vcftools_site_pi -->|vcf| bgziptabix
+        vcftools_snp_density -->|vcf| bgziptabix
+        bgziptabix -->|vcf| feat_tsv
+        vcftools_allele_frequency -->|gvcf| bgziptabix
+        vcftools_indel_length -->|gvcf| feat_tsv
+        vcftools_site_pi -->|gvcf| bgziptabix
+        vcftools_snp_density -->|gvcf| bgziptabix
+        bgziptabix -->|gvcf| feat_tsv
+    end
+
+    subgraph af_roh [Run of homozygosity analysis]
+        bcftools_query([Count #samples])
+        bcftools_roh([bcftools roh])
+        bcftools_rohviz([bcftools roh-viz])
+        gawk_split([GAWK split])
+        bgziptabix_rg([bgzip+tabix RG])
+        bgziptabix_st([bgzip+tabix ST])
+
+        bcftools_query -->|vcf| bcftools_roh
+        bcftools_roh -->|vcf| bcftools_rohviz
+        bcftools_roh -->|vcf| gawk_split
+        gawk_split -->|vcf| bgziptabix_rg
+        gawk_split -->|vcf| bgziptabix_st
+        bcftools_rohviz -->|vcf| roh_html
+        bgziptabix_rg -->|vcf| roh_tsv
+        bgziptabix_st -->|vcf| roh_tsv
+        bcftools_query -->|gvcf| bcftools_roh
+        bcftools_roh -->|gvcf| bcftools_rohviz
+        bcftools_roh -->|gvcf| gawk_split
+        gawk_split -->|gvcf| bgziptabix_rg
+        gawk_split -->|gvcf| bgziptabix_st
+        bcftools_rohviz -->|gvcf| roh_html
+        bgziptabix_rg -->|gvcf| roh_tsv
+        bgziptabix_st -->|gvcf| roh_tsv
+    end
+
+    subgraph bcftools_stats_plot [Stats and plots]
+        bcftools_stats([bcftools stats])
+        plotvcfstats([plot-vcfstats])
+        multiqc([MultiQC])
+
+        bcftools_stats -->|vcf| stats_txt
+        bcftools_stats -->|vcf| plotvcfstats
+        plotvcfstats -->|vcf| stats_pdf
+        plotvcfstats -->|vcf| stats_tar
+        bcftools_stats -->|vcf| multiqc
+        multiqc -->|vcf| report_out
+        bcftools_stats -->|gvcf| stats_txt
+        bcftools_stats -->|gvcf| plotvcfstats
+        plotvcfstats -->|gvcf| stats_pdf
+        plotvcfstats -->|gvcf| stats_tar
+        bcftools_stats -->|gvcf| multiqc
+        multiqc -->|gvcf| report_out
+    end
+
+    %% Inter-section edges
+    tabix -->|vcf| vcftools_allele_frequency
+    tabix -->|vcf| vcftools_site_pi
+    tabix -->|vcf| vcftools_het
+    tabix -->|vcf| vcftools_indel_length
+    tabix -->|vcf| vcftools_snp_density
+    tabix -->|vcf| bcftools_query
+    tabix -->|vcf| bcftools_stats
+    tabix -->|gvcf| vcftools_allele_frequency
+    tabix -->|gvcf| vcftools_site_pi
+    tabix -->|gvcf| vcftools_indel_length
+    tabix -->|gvcf| vcftools_snp_density
+    tabix -->|gvcf| bcftools_query
+    tabix -->|gvcf| bcftools_stats
+    bgziptabix_af -->|af| bcftools_roh
