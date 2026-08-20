@@ -1,7 +1,7 @@
 {
     "-profile test": {
         "content": [
-            78,
+            74,
             {
                 "BCFTOOLS_QUERY": {
                     "bcftools": 1.22
@@ -50,9 +50,6 @@
                 },
                 "TABIX": {
                     "tabix": 1.21
-                },
-                "TAR": {
-                    "tar": 1.34
                 },
                 "VCFTOOLS_ALLELE_FREQUENCY": {
                     "vcftools": "0.1.16"
@@ -176,19 +173,19 @@
                 "variant_analysis/pacbio/SAMEA7521030/ERR10224927_03/composition/GCA_947369205.1_OX376310.1_CANBKR010000003.1.pacbio.icCanRufa1b_deepvariant.snpden.gz.gzi",
                 "variant_analysis/pacbio/SAMEA7521030/ERR10224927_03/composition/GCA_947369205.1_OX376310.1_CANBKR010000003.1.pacbio.icCanRufa1b_deepvariant.snpden.gz.tbi",
                 "variant_analysis/pacbio/SAMEA7521030/ERR10224927_03/qc",
-                "variant_analysis/pacbio/SAMEA7521030/ERR10224927_03/qc/GCA_947369205.1_OX376310.1_CANBKR010000003.1.pacbio.icCanRufa1_deepvariant.g.vcf.plot-vcfstats.pdf",
-                "variant_analysis/pacbio/SAMEA7521030/ERR10224927_03/qc/GCA_947369205.1_OX376310.1_CANBKR010000003.1.pacbio.icCanRufa1_deepvariant.vcf.plot-vcfstats.pdf",
-                "variant_analysis/pacbio/SAMEA7521030/ERR10224927_03/qc/GCA_947369205.1_OX376310.1_CANBKR010000003.1.pacbio.icCanRufa1b_deepvariant.g.plot-vcfstats.pdf",
-                "variant_analysis/pacbio/SAMEA7521030/ERR10224927_03/qc/GCA_947369205.1_OX376310.1_CANBKR010000003.1.pacbio.icCanRufa1b_deepvariant.plot-vcfstats.pdf",
+                "variant_analysis/pacbio/SAMEA7521030/ERR10224927_03/qc/GCA_947369205.1_OX376310.1_CANBKR010000003.1.pacbio.icCanRufa1_deepvariant.g.vcf.plot-vcfstats.indels.pdf",
+                "variant_analysis/pacbio/SAMEA7521030/ERR10224927_03/qc/GCA_947369205.1_OX376310.1_CANBKR010000003.1.pacbio.icCanRufa1_deepvariant.g.vcf.plot-vcfstats.substitutions.pdf",
+                "variant_analysis/pacbio/SAMEA7521030/ERR10224927_03/qc/GCA_947369205.1_OX376310.1_CANBKR010000003.1.pacbio.icCanRufa1_deepvariant.vcf.plot-vcfstats.indels.pdf",
+                "variant_analysis/pacbio/SAMEA7521030/ERR10224927_03/qc/GCA_947369205.1_OX376310.1_CANBKR010000003.1.pacbio.icCanRufa1_deepvariant.vcf.plot-vcfstats.substitutions.pdf",
+                "variant_analysis/pacbio/SAMEA7521030/ERR10224927_03/qc/GCA_947369205.1_OX376310.1_CANBKR010000003.1.pacbio.icCanRufa1b_deepvariant.g.plot-vcfstats.indels.pdf",
+                "variant_analysis/pacbio/SAMEA7521030/ERR10224927_03/qc/GCA_947369205.1_OX376310.1_CANBKR010000003.1.pacbio.icCanRufa1b_deepvariant.g.plot-vcfstats.substitutions.pdf",
+                "variant_analysis/pacbio/SAMEA7521030/ERR10224927_03/qc/GCA_947369205.1_OX376310.1_CANBKR010000003.1.pacbio.icCanRufa1b_deepvariant.plot-vcfstats.indels.pdf",
+                "variant_analysis/pacbio/SAMEA7521030/ERR10224927_03/qc/GCA_947369205.1_OX376310.1_CANBKR010000003.1.pacbio.icCanRufa1b_deepvariant.plot-vcfstats.substitutions.pdf",
                 "variant_analysis/pacbio/SAMEA7521030/ERR10224927_03/stats",
                 "variant_analysis/pacbio/SAMEA7521030/ERR10224927_03/stats/GCA_947369205.1_OX376310.1_CANBKR010000003.1.pacbio.icCanRufa1_deepvariant.g.vcf.bcftools_stats.txt.gz",
-                "variant_analysis/pacbio/SAMEA7521030/ERR10224927_03/stats/GCA_947369205.1_OX376310.1_CANBKR010000003.1.pacbio.icCanRufa1_deepvariant.g.vcf.plot-vcfstats.tar.gz",
                 "variant_analysis/pacbio/SAMEA7521030/ERR10224927_03/stats/GCA_947369205.1_OX376310.1_CANBKR010000003.1.pacbio.icCanRufa1_deepvariant.vcf.bcftools_stats.txt.gz",
-                "variant_analysis/pacbio/SAMEA7521030/ERR10224927_03/stats/GCA_947369205.1_OX376310.1_CANBKR010000003.1.pacbio.icCanRufa1_deepvariant.vcf.plot-vcfstats.tar.gz",
                 "variant_analysis/pacbio/SAMEA7521030/ERR10224927_03/stats/GCA_947369205.1_OX376310.1_CANBKR010000003.1.pacbio.icCanRufa1b_deepvariant.bcftools_stats.txt.gz",
-                "variant_analysis/pacbio/SAMEA7521030/ERR10224927_03/stats/GCA_947369205.1_OX376310.1_CANBKR010000003.1.pacbio.icCanRufa1b_deepvariant.g.bcftools_stats.txt.gz",
-                "variant_analysis/pacbio/SAMEA7521030/ERR10224927_03/stats/GCA_947369205.1_OX376310.1_CANBKR010000003.1.pacbio.icCanRufa1b_deepvariant.g.plot-vcfstats.tar.gz",
-                "variant_analysis/pacbio/SAMEA7521030/ERR10224927_03/stats/GCA_947369205.1_OX376310.1_CANBKR010000003.1.pacbio.icCanRufa1b_deepvariant.plot-vcfstats.tar.gz"
+                "variant_analysis/pacbio/SAMEA7521030/ERR10224927_03/stats/GCA_947369205.1_OX376310.1_CANBKR010000003.1.pacbio.icCanRufa1b_deepvariant.g.bcftools_stats.txt.gz"
             ],
             [
                 "GCA_947369205.1_OX376310.1_CANBKR010000003.1.pacbio.icCanRufa1_deepvariant.g.vcf.gz.tbi:md5,5a2bc05cea8838489bf6a3e48f61743e",
@@ -286,7 +283,7 @@
                 "GCA_947369205.1_OX376310.1_CANBKR010000003.1.pacbio.icCanRufa1b_deepvariant.g.bcftools_stats.txt.gz:md5,335e54af442efb6bb7c59814bf3173a9"
             ]
         ],
-        "timestamp": "2026-08-14T23:28:05.732133466",
+        "timestamp": "2026-08-20T18:17:10.683095548",
         "meta": {
             "nf-test": "0.9.5",
             "nextflow": "26.04.0"

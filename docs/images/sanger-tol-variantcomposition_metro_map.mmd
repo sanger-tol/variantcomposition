@@ -15,8 +15,7 @@
 %%metro file: input_af | TSV
 %%metro file: report_out | HTML
 %%metro file: stats_txt | TXT
-%%metro file: stats_pdf | PDF
-%%metro file: stats_tar | TAR
+%%metro files: stats_pdf | PDF
 %%metro files: feat_tsv | TSV
 %%metro files: roh_tsv | TSV
 %%metro file: roh_html | HTML
@@ -85,13 +84,11 @@ graph LR
         bcftools_stats -->|vcf| stats_txt
         bcftools_stats -->|vcf| plotvcfstats
         plotvcfstats -->|vcf| stats_pdf
-        plotvcfstats -->|vcf| stats_tar
         bcftools_stats -->|vcf| multiqc
         multiqc -->|vcf| report_out
         bcftools_stats -->|gvcf| stats_txt
         bcftools_stats -->|gvcf| plotvcfstats
         plotvcfstats -->|gvcf| stats_pdf
-        plotvcfstats -->|gvcf| stats_tar
         bcftools_stats -->|gvcf| multiqc
         multiqc -->|gvcf| report_out
     end
