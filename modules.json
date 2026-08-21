@@ -7,8 +7,9 @@
                 "nf-core": {
                     "bcftools/plotvcfstats": {
                         "branch": "master",
-                        "git_sha": "6d46786420b4d7bc88eba026eb389c0c5535d120",
-                        "installed_by": ["modules"]
+                        "git_sha": "40292e3f585e1e2612c6e475a8ff02954b8d3ed4",
+                        "installed_by": ["modules"],
+                        "patch": "modules/nf-core/bcftools/plotvcfstats/bcftools-plotvcfstats.diff"
                     },
                     "bcftools/query": {
                         "branch": "master",
@@ -53,11 +54,6 @@
                     "tabix/tabix": {
                         "branch": "master",
                         "git_sha": "f2cfcf9d3f6a2d123e6c44aefa788aa232204a7a",
-                        "installed_by": ["modules"]
-                    },
-                    "tar": {
-                        "branch": "master",
-                        "git_sha": "5c9f8d5b7671237c906abadc9ff732b301ca15ca",
                         "installed_by": ["modules"]
                     },
                     "vcftools": {

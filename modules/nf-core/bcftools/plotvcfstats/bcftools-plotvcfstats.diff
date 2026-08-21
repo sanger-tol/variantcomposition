@@ -1,0 +1,19 @@
+Changes in component 'nf-core/bcftools/plotvcfstats'
+'modules/nf-core/bcftools/plotvcfstats/meta.yml' is unchanged
+Changes in 'bcftools/plotvcfstats/main.nf':
+--- modules/nf-core/bcftools/plotvcfstats/main.nf
++++ modules/nf-core/bcftools/plotvcfstats/main.nf
+@@ -11,7 +11,6 @@
+     tuple val(meta), path(stats)
+ 
+     output:
+-    tuple val(meta), path("${prefix}_plots"),             emit: plot_dir
+     tuple val(meta), path("${prefix}.plot-vcfstats.pdf"), optional:true, emit: plot_pdf
+     tuple val(meta), path("${prefix}_plots/*.pdf"),       optional:true, emit: images_pdf
+     tuple val(meta), path("${prefix}_plots/*.png"),       optional:true, emit: images_png
+
+'modules/nf-core/bcftools/plotvcfstats/environment.yml' is unchanged
+'modules/nf-core/bcftools/plotvcfstats/tests/main.nf.test' is unchanged
+'modules/nf-core/bcftools/plotvcfstats/tests/main.nf.test.snap' is unchanged
+'modules/nf-core/bcftools/plotvcfstats/tests/individual_pdf.config' is unchanged
+************************************************************
