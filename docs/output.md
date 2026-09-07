@@ -48,7 +48,8 @@ Depending on sequence length and input type, one or both index types may be prod
 <details markdown="1">
 <summary>Output files</summary>
 
-- Single nucleotide polymorphisms (SNP) density: `<filename>.snpden.gz` (indexed).
+- Single nucleotide polymorphisms (SNP) density: `<filename>.<snp_density_window>.snpden.gz` (indexed).
+  The `<snp_density_window>` is formatted as `<N>k` when the window size for coverage calculation (`params.snp_density_window`) is divisible by 1000 (for example `1k`) and `<N>bp` otherwise (for example `1500bp`).
 - Insertion or deletion (InDel) sizes histogram: `<filename>.indel.hist`.
 - Per-site (per-base) nucleotide diversity: `<filename>.pi.gz` (indexed).
 - Heterozygosity: `<filename>.het`.
