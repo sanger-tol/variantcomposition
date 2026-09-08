@@ -109,7 +109,7 @@ workflow PIPELINE_INITIALISATION {
     def ch_samplesheet = channel
         .fromList(samplesheetToList(input, "${projectDir}/assets/schema_input.json"))
         .map { meta, datafile ->
-            def new_meta = meta + [id: datafile.baseName]
+            def new_meta = meta + [id: datafile.name.replaceAll(/(\.g)?(\.[vb]cf)(\.gz)?$/, "").replaceAll(/\.af$/, "") ]
             return [new_meta, datafile]
         }
 
