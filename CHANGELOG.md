@@ -14,6 +14,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Multiple options to define allele frequencies when computing ROH
 - Support multi-sample VCF file
 - Can use pre-existing `Tabix` index of the input VCF files
+- Wrote documentation and a pipeline diagram
+- Updated the underlying nf-core template to v4.1.0 and bumped up the nf-schema plugin to ensure
+  seamless compatibility with Nextflow 26.04
 
 ### Parameters
 
