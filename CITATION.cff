@@ -29,12 +29,12 @@ authors:
     orcid: https://orcid.org/0000-0001-7029-0785
     website: https://github.com/yz533cb
 cff-version: 1.2.0
-date-released: "2026-02-02"
+date-released: "2026-09-09"
 license: MIT
 message: If you use this software, please cite it using the metadata from this file
   and all references from CITATIONS.md.
 repository-code: https://github.com/sanger-tol/variantcomposition
-title: sanger-tol/variantcomposition v0.2.0 - Telperion
+title: sanger-tol/variantcomposition v1.0.0 - Telperion
 type: software
 url: https://pipelines.tol.sanger.ac.uk/variantcomposition
-version: 0.2.0
+version: 1.0.0

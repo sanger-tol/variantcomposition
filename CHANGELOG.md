@@ -3,7 +3,7 @@
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [[0.2.0](https://github.com/sanger-tol/variantcomposition/releases/tag/0.2.0)] - Telperion - [2025-xx-xx]
+## [[1.0.0](https://github.com/sanger-tol/variantcomposition/releases/tag/1.0.0)] - Telperion - [2026-09-09]
 
 ### Enhancements & fixes
 
@@ -14,6 +14,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Multiple options to define allele frequencies when computing ROH
 - Support multi-sample VCF file
 - Can use pre-existing `Tabix` index of the input VCF files
+- Wrote documentation and a pipeline diagram
+- Updated the underlying nf-core template to v4.1.0 and bumped up the nf-schema plugin to ensure
+  seamless compatibility with Nextflow 26.04
 
 ### Parameters
 
