@@ -67,7 +67,7 @@
                     "vcftools": "0.1.16"
                 },
                 "Workflow": {
-                    "sanger-tol/variantcomposition": "v0.2.0"
+                    "sanger-tol/variantcomposition": "v1.0.0"
                 }
             },
             [
