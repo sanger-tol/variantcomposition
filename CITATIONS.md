@@ -10,9 +10,21 @@
 
 ## Pipeline tools
 
-- [SAMtools](https://www.htslib.org)
+- [BCFtools, SAMtools, and HTSlib](https://www.htslib.org)
 
   > Danecek, Petr, et al. “Twelve Years of SAMtools and BCFtools.” GigaScience, vol. 10, no. 2, Jan. 2021, https://doi.org/10.1093/gigascience/giab008.
+
+- [GNU Awk (gawk)](https://www.gnu.org/software/gawk/)
+
+  > Free Software Foundation. GNU Awk User's Guide. https://www.gnu.org/software/gawk/manual/
+
+- [MultiQC](https://pubmed.ncbi.nlm.nih.gov/27312411/)
+
+> Ewels P, Magnusson M, Lundin S, Käller M. MultiQC: summarize analysis results for multiple tools and samples in a single report. Bioinformatics. 2016 Oct 1;32(19):3047-8. doi: 10.1093/bioinformatics/btw354. Epub 2016 Jun 16. PubMed PMID: 27312411; PubMed Central PMCID: PMC5039924.
+
+- [pigz](https://zlib.net/pigz/)
+
+  > Adler M. pigz: a parallel implementation of gzip for modern multi-processor, multi-core machines. Computer software. https://zlib.net/pigz/
 
 - [VCFtools](https://pubmed.ncbi.nlm.nih.gov/21653522/)
 

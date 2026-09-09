@@ -36,6 +36,11 @@
                     "fa_icon": "fas fa-envelope",
                     "help_text": "Set this parameter to your e-mail address to get a summary e-mail with details of the run sent to you when the workflow exits. If set in your user config file (`~/.nextflow/config`) then you don't need to specify this on the command line for every run.",
                     "pattern": "^([a-zA-Z0-9_\\-\\.]+)@([a-zA-Z0-9_\\-\\.]+)\\.([a-zA-Z]{2,5})$"
+                },
+                "multiqc_title": {
+                    "type": "string",
+                    "description": "MultiQC report title. Printed as page header, used for filename if not otherwise specified.",
+                    "fa_icon": "fas fa-file-signature"
                 }
             }
         },
@@ -45,6 +50,18 @@
             "description": "Parameters for analyzing and filtering genomic variants.",
             "default": "",
             "properties": {
+                "vcftools_filter": {
+                    "type": "string",
+                    "pattern": "(^$)|(^ --.*$)",
+                    "description": "VCFtools site/genotype filtering arguments applied to all VCFtools analyses.",
+                    "fa_icon": "fas fa-scroll"
+                },
+                "site_pi_filter": {
+                    "type": "string",
+                    "pattern": "(^$)|(^ --.*$)",
+                    "description": "Command-line parameters to pass to VCFtools per-base nucleotide diversity function.",
+                    "fa_icon": "fas fa-scroll"
+                },
                 "include_positions": {
                     "type": "string",
                     "description": "Path to a file with a set of sites on the basis of a list of positions to include. Each line of the input file should contain a (tab-separated) chromosome and position.",
@@ -57,17 +74,54 @@
                     "format": "file-path",
                     "exists": true
                 },
+                "het_filter": {
+                    "type": "string",
+                    "pattern": "(^$)|(^ --.*$)",
+                    "description": "Command-line parameters to pass to VCFtools heterozygosity function.",
+                    "fa_icon": "fas fa-scroll"
+                },
+                "snp_density_filter": {
+                    "type": "string",
+                    "pattern": "(^$)|(^ --.*$)",
+                    "description": "Command-line parameters to pass to VCFtools SNP density function.",
+                    "fa_icon": "fas fa-scroll"
+                },
                 "snp_density_window": {
                     "type": "integer",
                     "default": 1000,
                     "description": "The window size (in base pairs) used to calculate SNP density across the genome.",
                     "help_text": "Defines the size of genomic windows for calculating SNP density. Smaller windows give finer resolution but more noise."
                 },
-                "roh_threshold": {
+                "af_filter": {
+                    "type": "string",
+                    "pattern": "(^$)|(^ --.*$)",
+                    "description": "Command-line parameters to pass to VCFtools allele frequency function.",
+                    "fa_icon": "fas fa-scroll"
+                },
+                "indel_len_filter": {
+                    "type": "string",
+                    "pattern": "(^$)|(^ --.*$)",
+                    "description": "Command-line parameters to pass to VCFtools InDel size distribution function.",
+                    "fa_icon": "fas fa-scroll"
+                },
+                "roh_filter": {
+                    "type": "string",
+                    "pattern": "(^$)|(^ -.*$)",
+                    "description": "Command-line parameters to pass to BCFtools RoH function.",
+                    "fa_icon": "fas fa-scroll"
+                },
+                "af_tag": {
+                    "type": "string",
+                    "pattern": "^\\S*$",
+                    "description": "Name of the INFO tag in the input VCF that contains allele frequencies.",
+                    "help_text": "Used when identifying runs of homozygosity (ROH).",
+                    "fa_icon": "fas fa-scroll"
+                },
+                "af_default_value": {
                     "type": "number",
                     "default": 0.4,
-                    "description": "Allele frequency threshold for identifying runs of homozygosity (ROH). Sites with unknown or lower allele frequency will be skipped.",
-                    "help_text": "Used to filter variants when identifying runs of homozygosity. Higher values are more stringent."
+                    "description": "Default allele frequency when no value could be found in the allele-frequency file or in the VCF file itself.",
+                    "help_text": "Used when identifying runs of homozygosity (ROH)."
                 }
             }
         },
@@ -155,18 +209,37 @@
                     "fa_icon": "fas fa-remove-format",
                     "hidden": true
                 },
+                "max_multiqc_email_size": {
+                    "type": "string",
+                    "description": "File size limit when attaching MultiQC reports to summary emails.",
+                    "pattern": "^\\d+(\\.\\d+)?\\.?\\s*(K|M|G|T)?B$",
+                    "default": "25.MB",
+                    "fa_icon": "fas fa-file-upload",
+                    "hidden": true
+                },
                 "monochrome_logs": {
                     "type": "boolean",
                     "description": "Do not use coloured log outputs.",
                     "fa_icon": "fas fa-palette",
                     "hidden": true
                 },
-                "hook_url": {
+                "multiqc_config": {
                     "type": "string",
-                    "description": "Incoming hook URL for messaging service",
-                    "fa_icon": "fas fa-people-group",
-                    "help_text": "Incoming hook URL for messaging service. Currently, MS Teams and Slack are supported.",
+                    "format": "file-path",
+                    "description": "Custom config file to supply to MultiQC.",
+                    "fa_icon": "fas fa-cog",
                     "hidden": true
+                },
+                "multiqc_logo": {
+                    "type": "string",
+                    "description": "Custom logo file to supply to MultiQC. File name must also be set in the MultiQC config file",
+                    "fa_icon": "fas fa-image",
+                    "hidden": true
+                },
+                "multiqc_methods_description": {
+                    "type": "string",
+                    "description": "Custom MultiQC yaml file containing HTML including a methods description.",
+                    "fa_icon": "fas fa-cog"
                 },
                 "validate_params": {
                     "type": "boolean",
@@ -187,6 +260,18 @@
                     "fa_icon": "far calendar",
                     "description": "Suffix to add to the trace report filename. Default is the date and time in the format yyyy-MM-dd_HH-mm-ss.",
                     "hidden": true
+                },
+                "help": {
+                    "type": ["boolean", "string"],
+                    "description": "Display the help message."
+                },
+                "help_full": {
+                    "type": "boolean",
+                    "description": "Display the full detailed help message."
+                },
+                "show_hidden": {
+                    "type": "boolean",
+                    "description": "Display hidden parameters in the help message (only works when --help or --help_full are provided)."
                 }
             }
         }

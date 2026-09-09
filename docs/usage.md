@@ -4,7 +4,7 @@
 
 ## Introduction
 
-The pipeline takes VCF and gVCF files from a samplesheet in CSV format, and analyse variant compositions.
+The pipeline takes VCF, gVCF, BCF, and gBCF, files from a samplesheet in CSV format and analyses variant composition.
 
 ## Samplesheet input
 
@@ -14,40 +14,82 @@ You will need to create a samplesheet with information about the samples you wou
 --input '[path to samplesheet file]'
 ```
 
-<!-- Place saved for future use - e.g. multiple specimen in the same species
-
-### Multiple runs of the same sample
-
-The `sample` identifiers have to be the same when you have re-sequenced the same sample more than once e.g. to increase sequencing depth. The pipeline will concatenate the raw reads before performing any downstream analysis. Below is an example for the same sample sequenced across 3 lanes:
-
-```csv title="samplesheet.csv"
-sample,fastq_1,fastq_2
-CONTROL_REP1,AEG588A1_S1_L002_R1_001.fastq.gz,AEG588A1_S1_L002_R2_001.fastq.gz
-CONTROL_REP1,AEG588A1_S1_L003_R1_001.fastq.gz,AEG588A1_S1_L003_R2_001.fastq.gz
-CONTROL_REP1,AEG588A1_S1_L004_R1_001.fastq.gz,AEG588A1_S1_L004_R2_001.fastq.gz
-``` -->
-
 ### Full samplesheet
 
-<!-- The pipeline will auto-detect whether a sample is single- or paired-end using the information provided in the samplesheet. The samplesheet can have as many columns as you desire, however, there is a strict requirement for the first 3 columns to match those defined in the table below. -->
-
-A final samplesheet file consisting of both VCF and gVCF data may look something like the one below.
-
-<!-- This is for 6 samples, where `TREATMENT_REP3` has been sequenced twice. -->
+A final samplesheet file can contain any mix of `vcf`, `gvcf`, `bcf`, and `gbcf` variant datatypes, plus optional `af` rows.
 
 ```csv title="samplesheet.csv"
 sample,datatype,datafile
 sample1,vcf,file1.vcf.gz
-sample1,vcf,file1.g.vcf.gz
+sample1,gvcf,file1.g.vcf.gz
+sample1,af,file1.vcf.af
 ```
 
 | Column     | Description                                                                                                                                                                           |
 | ---------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `sample`   | Custom sample name. This entry will be identical for multiple sequencing libraries/runs from the same sample. Spaces in sample names are automatically converted to underscores (`_`) |
-| `datatype` | VCF datatype: `vcf` or `gvcf`                                                                                                                                                         |
-| `datafile` | The location for VCF files                                                                                                                                                            |
+| `datatype` | Data type: `vcf`, `gvcf`, `bcf`, or `gbcf` for variants,; `af` for allele frequencies (ROH analysis).                                                                                 |
+| `datafile` | Path to the data file. Accepted extensions are `.vcf`, `.vcf.gz`, `.gvcf`, `.gvcf.gz`, `.bcf` (including `g.vcf*` and `.g.bcf`), and `.af`.                                           |
 
 An [example samplesheet](../assets/samplesheet.csv) has been provided with the pipeline.
+
+## Parameters and filters for variant analyses
+
+Parameters and filters can be passed directly to VCFtools or BCFtools.
+
+- To all the VCFtools analyse via the `--vcftools_filter` option
+- Additionally:
+  - To VCFtools per-base nucleotide diversity via the `--site_pi_filter` option
+  - To VCFtools heterozygosity via the `--het_filter` option
+  - To VCFtools SNP density via the `--snp_density_filter` option
+  - To VCFtools allele frequency via the `--af_filter` option
+  - To VCFtools InDel size distribution via the `--indel_len_filter` option
+  - To BCFtools RoH via the `--roh_filter` option
+
+Note that you will need to add a leading whitespace in front of `--`,
+otherwise the pipeline's own parameter validation will consider it a sanger-tol/variantcomposition option.
+
+Additional analysis parameters:
+
+- `--snp_density_window` sets the SNP density window size in base pairs (default: `1000`).
+- `--af_tag` sets the VCF INFO tag to read allele frequencies from when running ROH.
+- `--af_default_value` sets the fallback value passed to `bcftools roh` as `--AF-dflt` (default: `0.4`).
+- `--include_positions` provides a positions file (tab-separated chromosome and position per line) used with VCFtools `--positions`.
+- `--exclude_positions` provides a positions file used with VCFtools `--exclude-positions`.
+- `--include_positions` and `--exclude_positions` are mutually exclusive.
+
+### ROH allele-frequency input modes
+
+ROH supports three allele-frequency modes, with this precedence:
+
+1. External AF file from the samplesheet (`datatype=af`)
+2. INFO-tag frequencies via `--af_tag`
+3. If neither of the above is provided:
+
+- multi-sample VCF/gVCF/BCF/gBCF: estimate AF directly from the input (`bcftools roh --estimate-AF -`)
+- single-sample input: use `--af_default_value` as the fallback AF
+
+If you provide external AF files in the samplesheet:
+
+- Each `af` row should point to a `.af` file.
+- AF files are matched to variant files by the pipeline record ID (`datafile.baseName`), so file naming should be consistent between variant and AF inputs.
+- VCFs without a matching AF file are still processed using the fallback logic above.
+
+Important behavior by datatype:
+
+- The heterozygosity step runs only for `vcf` and `bcf` entries in the samplesheet.
+- Other analyses run for all supported datatypes.
+- Multi-sample VCF inputs are supported in ROH and result in per-sample ROH split outputs.
+
+Filtering and parameter options can be found in VCFtools [manual](https://vcftools.github.io/man_latest.html#SITE%20FILTERING%20OPTIONS) and BCFtools [manual](https://samtools.github.io/bcftools/bcftools.html). Multiple arguments may be provided as a single quoted string.
+
+```
+nextflow run ... --site_pi_filter " --chr chromosome1"
+```
+
+```
+nextflow run ... --vcftools_filter " --minQ 20 --max-missing 0.8"
+```
 
 ## Running the pipeline
 
@@ -73,7 +115,7 @@ If you wish to repeatedly use the same parameters for multiple runs, rather than
 Pipeline settings can be provided in a `yaml` or `json` file via `-params-file <file>`.
 
 > [!WARNING]
-> Do not use `-c <file>` to specify parameters as this will result in errors. Custom config files specified with `-c` must only be used for [tuning process resource specifications](https://nf-co.re/docs/usage/configuration#tuning-workflow-resources), other infrastructural tweaks (such as output directories), or module arguments (args).
+> Do not use `-c <file>` to specify parameters as this will result in errors. Custom config files specified with `-c` must only be used for [tuning process resource specifications](https://nf-co.re/docs/running/run-pipelines#configuring-pipelines), other infrastructural tweaks (such as output directories), or module arguments (args).
 
 The above pipeline run specified with a params file in yaml format:
 
@@ -105,7 +147,7 @@ It is a good idea to specify the pipeline version when running the pipeline on y
 
 First, go to the [sanger-tol/variantcomposition releases page](https://github.com/sanger-tol/variantcomposition/releases) and find the latest pipeline version - numeric only (eg. `1.3.1`). Then specify this when running the pipeline with `-r` (one hyphen) - eg. `-r 1.3.1`. Of course, you can switch to another version by changing the number after the `-r` flag.
 
-This version number will be logged in reports when you run the pipeline, so that you'll know what you used when you look back in the future.
+This version number will be logged in reports when you run the pipeline, so that you'll know what you used when you look back in the future. For example, at the bottom of the MultiQC reports.
 
 To further assist in reproducibility, you can use share and reuse [parameter files](#running-the-pipeline) to repeat pipeline runs with the same settings without having to write out a command with every single parameter.
 
@@ -145,11 +187,11 @@ If `-profile` is not specified, the pipeline will run locally and expect all sof
 - `shifter`
   - A generic configuration profile to be used with [Shifter](https://nersc.gitlab.io/development/shifter/how-to-use/)
 - `charliecloud`
-  - A generic configuration profile to be used with [Charliecloud](https://hpc.github.io/charliecloud/)
+  - A generic configuration profile to be used with [Charliecloud](https://charliecloud.io/)
 - `apptainer`
   - A generic configuration profile to be used with [Apptainer](https://apptainer.org/)
 - `wave`
-  - A generic configuration profile to enable [Wave](https://seqera.io/wave/) containers. Use together with one of the above (requires Nextflow ` 24.03.0-edge` or later).
+  - A generic configuration profile to enable [Wave](https://seqera.io/wave/) containers. Use together with one of the above (requires Nextflow `24.03.0-edge` or later).
 - `conda`
   - A generic configuration profile to be used with [Conda](https://conda.io/docs/). Please only use Conda as a last resort i.e. when it's not possible to run the pipeline with Docker, Singularity, Podman, Shifter, Charliecloud, or Apptainer.
 
@@ -169,19 +211,19 @@ Specify the path to a specific config file (this is a core Nextflow command). Se
 
 Whilst the default requirements set within the pipeline will hopefully work for most people and with most input data, you may find that you want to customise the compute resources that the pipeline requests. Each step in the pipeline has a default set of requirements for number of CPUs, memory and time. For most of the pipeline steps, if the job exits with any of the error codes specified [here](https://github.com/nf-core/rnaseq/blob/4c27ef5610c87db00c3c5a3eed10b1d161abf575/conf/base.config#L18) it will automatically be resubmitted with higher resources request (2 x original, then 3 x original). If it still fails after the third attempt then the pipeline execution is stopped.
 
-To change the resource requests, please see the [max resources](https://nf-co.re/docs/usage/configuration#max-resources) and [tuning workflow resources](https://nf-co.re/docs/usage/configuration#tuning-workflow-resources) section of the nf-core website.
+To change the resource requests, please see the [max resources](https://nf-co.re/docs/running/configuration/nextflow-for-your-system#set-max-resources) and [customise process resources](https://nf-co.re/docs/running/configuration/nextflow-for-your-system#customize-process-resources) section of the nf-core website.
 
 ### Custom Containers
 
 In some cases, you may wish to change the container or conda environment used by a pipeline steps for a particular tool. By default, nf-core pipelines use containers and software from the [biocontainers](https://biocontainers.pro/) or [bioconda](https://bioconda.github.io/) projects. However, in some cases the pipeline specified version maybe out of date.
 
-To use a different container from the default container or conda environment specified in a pipeline, please see the [updating tool versions](https://nf-co.re/docs/usage/configuration#updating-tool-versions) section of the nf-core website.
+To use a different container from the default container or conda environment specified in a pipeline, please see the [updating tool versions](https://nf-co.re/docs/running/configuration/nextflow-for-your-system#update-tool-versions) section of the nf-core website.
 
 ### Custom Tool Arguments
 
 A pipeline might not always support every possible argument or option of a particular tool used in pipeline. Fortunately, nf-core pipelines provide some freedom to users to insert additional parameters that the pipeline does not include by default.
 
-To learn how to provide additional arguments to a particular tool of the pipeline, please see the [customising tool arguments](https://nf-co.re/docs/usage/configuration#customising-tool-arguments) section of the nf-core website.
+To learn how to provide additional arguments to a particular tool of the pipeline, please see the [customising tool arguments](https://nf-co.re/docs/running/configuration/nextflow-for-your-system#modifying-tool-arguments) section of the nf-core website.
 
 ### nf-core/configs
 

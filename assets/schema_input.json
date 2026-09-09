@@ -1,6 +1,6 @@
 {
     "$schema": "https://json-schema.org/draft/2020-12/schema",
-    "$id": "https://raw.githubusercontent.com/sanger-tol/variantcomposition/master/assets/schema_input.json",
+    "$id": "https://raw.githubusercontent.com/sanger-tol/variantcomposition/main/assets/schema_input.json",
     "title": "sanger-tol/variantcomposition pipeline - params.input schema",
     "description": "Schema for the file provided with params.input",
     "type": "array",
@@ -9,22 +9,23 @@
         "properties": {
             "sample": {
                 "type": "string",
-                "pattern": "^\\S+$",
-                "errorMessage": "Sample name must be provided and cannot contain spaces",
+                "pattern": "^[a-zA-Z][^\\s/]*(?:/[a-zA-Z][^\\s/]*)*$",
+                "errorMessage": "Sample name must be provided, cannot contain spaces, and uses '/' to separate the levels of the output directory hierarchy (e.g. 'specimen', 'specimen/run' or 'pacbio/specimen/run')",
                 "meta": ["sample"]
             },
             "datatype": {
                 "type": "string",
                 "pattern": "^\\S+$",
-                "errorMessage": "Data type, and must be one of: 'VCF' or 'gVCF'",
+                "errorMessage": "Data type, and must be one of: 'vcf', 'gvcf', 'bcf', 'gbcf', 'af'",
+                "enum": ["vcf", "gvcf", "bcf", "gbcf", "af"],
                 "meta": ["datatype"]
             },
             "datafile": {
                 "type": "string",
                 "format": "file-path",
                 "exists": true,
-                "pattern": "^\\S+\\.(vcf|vcf.gz|g.vcf|g.vcf.gz)$",
-                "errorMessage": "Data file cannot contain spaces and must be VCF/gVCF"
+                "pattern": "^\\S+\\.(af|bcf|vcf|vcf.gz|gvcf|gvcf.gz)$",
+                "errorMessage": "Data file cannot contain spaces and must be VCF/gVCF/BCF/gBCF"
             }
         },
         "required": ["sample", "datatype", "datafile"]

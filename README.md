@@ -1,14 +1,18 @@
-# sanger-tol/variantcomposition
+<h1>
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="docs/images/sanger-tol-variantcomposition_logo_dark.svg">
+    <img alt="sanger-tol/variantcomposition" src="docs/images/sanger-tol-variantcomposition_logo_light.svg">
+  </picture>
+</h1>
 
-[![GitHub Actions CI Status](https://github.com/sanger-tol/variantcomposition/actions/workflows/ci.yml/badge.svg)](https://github.com/sanger-tol/variantcomposition/actions/workflows/ci.yml)
+[![Open in GitHub Codespaces](https://img.shields.io/badge/Open_In_GitHub_Codespaces-black?labelColor=grey&logo=github)](https://github.com/codespaces/new/sanger-tol/variantcomposition)
+[![GitHub Actions CI Status](https://github.com/sanger-tol/variantcomposition/actions/workflows/nf-test.yml/badge.svg)](https://github.com/sanger-tol/variantcomposition/actions/workflows/nf-test.yml)
 [![GitHub Actions Linting Status](https://github.com/sanger-tol/variantcomposition/actions/workflows/linting.yml/badge.svg)](https://github.com/sanger-tol/variantcomposition/actions/workflows/linting.yml)
-
-[![Cite with Zenodo](http://img.shields.io/badge/DOI-10.5281/zenodo.XXXXXXX-1073c8?labelColor=000000)](https://doi.org/10.5281/zenodo.7890527)
+[![Cite with Zenodo](http://img.shields.io/badge/DOI-10.5281/zenodo.17055615-1073c8?labelColor=000000)](https://doi.org/10.5281/zenodo.7890527)
 [![nf-test](https://img.shields.io/badge/unit_tests-nf--test-337ab7.svg)](https://www.nf-test.com)
 
-[![Nextflow](https://img.shields.io/badge/version-%E2%89%A524.04.2-green?style=flat&logo=nextflow&logoColor=white&color=%230DC09D&link=https%3A%2F%2Fnextflow.io)](https://www.nextflow.io/)
-[![nf-core template version](https://img.shields.io/badge/nf--core_template-3.3.1-green?style=flat&logo=nfcore&logoColor=white&color=%2324B064&link=https%3A%2F%2Fnf-co.re)](https://github.com/nf-core/tools/releases/tag/3.3.1)
-
+[![Nextflow](https://img.shields.io/badge/version-%E2%89%A525.10.4-green?style=flat&logo=nextflow&logoColor=white&color=%230DC09D&link=https%3A%2F%2Fnextflow.io)](https://www.nextflow.io/)
+[![nf-core template version](https://img.shields.io/badge/nf--core_template-4.1.0-green?style=flat&logo=nfcore&logoColor=white&color=%2324B064&link=https%3A%2F%2Fnf-co.re)](https://github.com/nf-core/tools/releases/tag/4.1.0)
 [![run with conda](http://img.shields.io/badge/run%20with-conda-3EB049?labelColor=000000&logo=anaconda)](https://docs.conda.io/en/latest/)
 [![run with docker](https://img.shields.io/badge/run%20with-docker-0db7ed?labelColor=000000&logo=docker)](https://www.docker.com/)
 [![run with singularity](https://img.shields.io/badge/run%20with-singularity-1d355c.svg?labelColor=000000)](https://sylabs.io/docs/)
@@ -18,13 +22,14 @@
 
 _GSoC 2025 Project_
 
-<img src="https://github.com/user-attachments/assets/1802c4de-aa63-4b6d-8b0c-346b45145ded" height="100"/>
-
-_Under construction_
-
 ## Introduction
 
-**sanger-tol/variantcomposition** is a bioinformatics pipeline that takes the output of variant-calling (VCF and gVCF) as input, and perform basic variant component analysis.
+**sanger-tol/variantcomposition** is a bioinformatics pipeline that takes variant-calling output (VCF, gVCF, BCF, gBCF files) and performs basic variant composition analysis.
+
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="docs/images/sanger-tol-variantcomposition_metro_map_dark.svg">
+  <img alt="sanger-tol/variantcomposition" src="docs/images/sanger-tol-variantcomposition_metro_map_light.svg">
+</picture>
 
 The pipeline is built using [Nextflow](https://www.nextflow.io), a workflow tool to run tasks across multiple compute infrastructures in a very portable manner. It uses Docker/Singularity containers making installation trivial and results highly reproducible. The [Nextflow DSL2](https://www.nextflow.io/docs/latest/dsl2.html) implementation of this pipeline uses one container per process which makes it much easier to maintain and update software dependencies. Where possible, these processes have been submitted to and installed from [nf-core/modules](https://github.com/nf-core/modules) in order to make them available to all nf-core pipelines, and to everyone within the Nextflow community!
 
@@ -32,14 +37,14 @@ On merge to `dev` and `main` branch, automated continuous integration tests run 
 
 ## Pipeline summary
 
-The pipeline takes VCF and gVCF files from a samplesheet in CSV format, and analyse variant compositions.
+The pipeline takes VCF, gVCF, BCF, or gBCF data from a CSV samplesheet and analyses variant composition. Optional external allele-frequency files can also be provided for ROH.
 
-<img src="docs/images/variant_composition.png">
+<img src="docs/images/variant-composition.png">
 
 Steps involved:
 
-- Index the VCF/gVCF files
-- Process VCF/gVCF files to analyse:
+- Index the input variant files with Tabix if needed
+- Process variant files to analyse:
 
 1. Single nucleotide polymorphisms (SNP) density
 2. Insertion or deletion (InDel) sizes
@@ -47,11 +52,18 @@ Steps involved:
 4. Runs of homozygosity (ROH)
 5. Heterozygosity
 6. Allele frequency
+7. VCF stats and plot
+
+- Generate an interactive ROH visualisation (including support for multi-sample VCFs)
+- Support multiple ROH allele-frequency strategies: external AF files, VCF INFO tag (`--af_tag`), and on-the-fly AF estimation for multi-sample VCFs
+- Summarise workflow outputs with [`MultiQC`](http://multiqc.info/)
+
+See [docs/usage.md](docs/usage.md) for detailed input and parameter documentation and [docs/output.md](docs/output.md) for the exact published outputs.
 
 ## Usage
 
 > [!NOTE]
-> If you are new to Nextflow and nf-core, please refer to [this page](https://nf-co.re/docs/usage/installation) on how to set-up Nextflow. Make sure to [test your setup](https://nf-co.re/docs/usage/introduction#how-to-run-a-pipeline) with `-profile test` before running the workflow on actual data.
+> If you are new to Nextflow and nf-core, please refer to [this page](https://nf-co.re/docs/get_started/environment_setup/overview) on how to set-up Nextflow. Make sure to [test your setup](https://nf-co.re/docs/get_started/run-your-first-pipeline) with `-profile test` before running the workflow on actual data.
 
 1. Install [`Nextflow`](https://www.nextflow.io/docs/latest/getstarted.html#installation) (`>=24.04.2`)
 
@@ -78,7 +90,7 @@ Steps involved:
    ```
 
 > [!WARNING]
-> Please provide pipeline parameters via the CLI or Nextflow `-params-file` option. Custom config files including those provided by the `-c` Nextflow option can be used to provide any configuration _**except for parameters**_; see [docs](https://nf-co.re/docs/usage/getting_started/configuration#custom-configuration-files).
+> Please provide pipeline parameters via the CLI or Nextflow `-params-file` option. Custom config files including those provided by the `-c` Nextflow option can be used to provide any configuration _**except for parameters**_; see [docs](https://nf-co.re/docs/running/run-pipelines#using-parameter-files).
 
 ## Credits
 
@@ -86,18 +98,15 @@ sanger-tol/variantcomposition was originally written by Yunjia Zhang.
 
 We thank the following people for their extensive assistance in the development of this pipeline:
 
-<!-- TODO nf-core: If applicable, make list of people who have also contributed -->
+- [Matthieu Muffato](https://github.com/muffato) for the pipeline design, code review and Nextflow technical supports.
 
 ## Contributions and Support
 
-If you would like to contribute to this pipeline, please see the [contributing guidelines](.github/CONTRIBUTING.md).
+If you would like to contribute to this pipeline, please see the [contributing guidelines](docs/CONTRIBUTING.md).
 
 ## Citations
 
-<!-- TODO nf-core: Add citation for pipeline after first release. Uncomment lines below and update Zenodo doi and badge at the top of this file. -->
-<!-- If you use sanger-tol/variantcomposition for your analysis, please cite it using the following doi: [10.5281/zenodo.XXXXXX](https://doi.org/10.5281/zenodo.XXXXXX) -->
-
-<!-- TODO nf-core: Add bibliography of tools and data used in your pipeline -->
+If you use sanger-tol/variantcomposition for your analysis, please cite it using the following doi: [10.5281/zenodo.17055615](https://doi.org/10.5281/zenodo.17055615)
 
 An extensive list of references for the tools used by the pipeline can be found in the [`CITATIONS.md`](CITATIONS.md) file.
 
