@@ -39,8 +39,6 @@ On merge to `dev` and `main` branch, automated continuous integration tests run 
 
 The pipeline takes VCF, gVCF, BCF, or gBCF data from a CSV samplesheet and analyses variant composition. Optional external allele-frequency files can also be provided for ROH.
 
-<img src="docs/images/variant-composition.png">
-
 Steps involved:
 
 - Index the input variant files with Tabix if needed
