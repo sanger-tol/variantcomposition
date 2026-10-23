@@ -1,0 +1,267 @@
+{
+    "variantcomposition - af-roh with af_file": {
+        "content": [
+            null,
+            [
+                [
+                    {
+                        "id": "test",
+                        "multi_sample": false
+                    },
+                    "test.roh.rg.gz:md5,510e1b308245eb924a458a3e29edb737",
+                    "test.roh.rg.gz.gzi:md5,7dea362b3fac8e00956a4952a3d4f474"
+                ]
+            ],
+            [
+                [
+                    {
+                        "id": "test",
+                        "multi_sample": false
+                    },
+                    "test.roh.rg.gz.tbi:md5,e097f35d4b99fe77566986ad787c0b24"
+                ]
+            ],
+            [
+                [
+                    {
+                        "id": "test",
+                        "multi_sample": false
+                    },
+                    "test.roh.st.gz:md5,b9d296ac5cf51b46f7a16425c531a66f",
+                    "test.roh.st.gz.gzi:md5,7dea362b3fac8e00956a4952a3d4f474"
+                ]
+            ],
+            [
+                [
+                    {
+                        "id": "test",
+                        "multi_sample": false
+                    },
+                    "test.roh.st.gz.tbi:md5,26f510e533a20623782eceaca05330f1"
+                ]
+            ],
+            "test.roh-viz.html",
+            403,
+            {
+                "versions": [
+                    "versions.yml:md5,fcf9aa9e867aebbc2cd83a7b7aea0bf4"
+                ]
+            }
+        ],
+        "timestamp": "2026-07-26T12:31:26.362226643",
+        "meta": {
+            "nf-test": "0.9.5",
+            "nextflow": "25.10.4"
+        }
+    },
+    "variantcomposition - af-roh": {
+        "content": [
+            null,
+            [
+                [
+                    {
+                        "id": "test",
+                        "multi_sample": false
+                    },
+                    "test.roh.rg.gz:md5,a223938d1a9f782030554f9889fde054",
+                    "test.roh.rg.gz.gzi:md5,7dea362b3fac8e00956a4952a3d4f474"
+                ]
+            ],
+            [
+                [
+                    {
+                        "id": "test",
+                        "multi_sample": false
+                    },
+                    "test.roh.rg.gz.tbi:md5,e097f35d4b99fe77566986ad787c0b24"
+                ]
+            ],
+            [
+                [
+                    {
+                        "id": "test",
+                        "multi_sample": false
+                    },
+                    "test.roh.st.gz:md5,86e5fed9d79ccea18056079cf97e754a",
+                    "test.roh.st.gz.gzi:md5,63bbfee723bc9aa15d6d89df12a7e8d5"
+                ]
+            ],
+            [
+                [
+                    {
+                        "id": "test",
+                        "multi_sample": false
+                    },
+                    "test.roh.st.gz.tbi:md5,5587454c0c189ed4ff640ef95efd6e18"
+                ]
+            ],
+            "test.roh-viz.html",
+            403,
+            {
+                "versions": [
+                    "versions.yml:md5,fcf9aa9e867aebbc2cd83a7b7aea0bf4"
+                ]
+            }
+        ],
+        "timestamp": "2026-07-25T17:47:38.758580008",
+        "meta": {
+            "nf-test": "0.9.5",
+            "nextflow": "25.10.4"
+        }
+    },
+    "variantcomposition - af-roh with embedded af": {
+        "content": [
+            null,
+            [
+                [
+                    {
+                        "id": "test",
+                        "multi_sample": false
+                    },
+                    "test.roh.rg.gz:md5,70abea4ce6bfe579b6e482d5c9edaef6",
+                    "test.roh.rg.gz.gzi:md5,7dea362b3fac8e00956a4952a3d4f474"
+                ]
+            ],
+            [
+                [
+                    {
+                        "id": "test",
+                        "multi_sample": false
+                    },
+                    "test.roh.rg.gz.tbi:md5,e097f35d4b99fe77566986ad787c0b24"
+                ]
+            ],
+            [
+                [
+                    {
+                        "id": "test",
+                        "multi_sample": false
+                    },
+                    "test.roh.st.gz:md5,04177f92e04790055d8bd11ce1172ddd",
+                    "test.roh.st.gz.gzi:md5,7dea362b3fac8e00956a4952a3d4f474"
+                ]
+            ],
+            [
+                [
+                    {
+                        "id": "test",
+                        "multi_sample": false
+                    },
+                    "test.roh.st.gz.tbi:md5,26f510e533a20623782eceaca05330f1"
+                ]
+            ],
+            "test.roh-viz.html",
+            403,
+            {
+                "versions": [
+                    "versions.yml:md5,fcf9aa9e867aebbc2cd83a7b7aea0bf4"
+                ]
+            }
+        ],
+        "timestamp": "2026-07-26T20:44:44.700574352",
+        "meta": {
+            "nf-test": "0.9.5",
+            "nextflow": "25.10.4"
+        }
+    },
+    "variantcomposition - af-roh - multi-sample": {
+        "content": [
+            null,
+            [
+                [
+                    {
+                        "id": "test.DN926375G-B1",
+                        "multi_sample": true
+                    },
+                    "test.DN926375G-B1.roh.rg.gz:md5,3899540db99ac77e1d75769025f0f59e",
+                    "test.DN926375G-B1.roh.rg.gz.gzi:md5,6b78435e46eebd2272f55150e3e98adf"
+                ],
+                [
+                    {
+                        "id": "test.TOL_ASG14317113",
+                        "multi_sample": true
+                    },
+                    "test.TOL_ASG14317113.roh.rg.gz:md5,d21a33834d48fcae0b33b75880adf7b6",
+                    "test.TOL_ASG14317113.roh.rg.gz.gzi:md5,6b78435e46eebd2272f55150e3e98adf"
+                ]
+            ],
+            [
+                [
+                    {
+                        "id": "test.DN926375G-B1",
+                        "multi_sample": true
+                    },
+                    "test.DN926375G-B1.roh.rg.gz.tbi:md5,7424d6216fe5ccb1672342f616db3252"
+                ],
+                [
+                    {
+                        "id": "test.TOL_ASG14317113",
+                        "multi_sample": true
+                    },
+                    "test.TOL_ASG14317113.roh.rg.gz.tbi:md5,c4dd1a21d715b04413ac38aa3e8543b3"
+                ]
+            ],
+            [
+                [
+                    {
+                        "id": "test.DN926375G-B1",
+                        "multi_sample": true
+                    },
+                    "test.DN926375G-B1.roh.st.gz:md5,9e2f276b8d62c169118a2964443ddba8",
+                    "test.DN926375G-B1.roh.st.gz.gzi:md5,c82b45981bac5beb3d61a5dec5ec1cca"
+                ],
+                [
+                    {
+                        "id": "test.TOL_ASG13950102",
+                        "multi_sample": true
+                    },
+                    "test.TOL_ASG13950102.roh.st.gz:md5,4ff0ca6f8f35b1c16e12b6f9beeb2072",
+                    "test.TOL_ASG13950102.roh.st.gz.gzi:md5,c82b45981bac5beb3d61a5dec5ec1cca"
+                ],
+                [
+                    {
+                        "id": "test.TOL_ASG14317113",
+                        "multi_sample": true
+                    },
+                    "test.TOL_ASG14317113.roh.st.gz:md5,9bc6b8fe9241b5737c54063ed324bcc7",
+                    "test.TOL_ASG14317113.roh.st.gz.gzi:md5,c82b45981bac5beb3d61a5dec5ec1cca"
+                ]
+            ],
+            [
+                [
+                    {
+                        "id": "test.DN926375G-B1",
+                        "multi_sample": true
+                    },
+                    "test.DN926375G-B1.roh.st.gz.tbi:md5,806c00dd8ee51ff505c543bba1f3cc12"
+                ],
+                [
+                    {
+                        "id": "test.TOL_ASG13950102",
+                        "multi_sample": true
+                    },
+                    "test.TOL_ASG13950102.roh.st.gz.tbi:md5,56ce293b7778513c6c619e62798f2edd"
+                ],
+                [
+                    {
+                        "id": "test.TOL_ASG14317113",
+                        "multi_sample": true
+                    },
+                    "test.TOL_ASG14317113.roh.st.gz.tbi:md5,b056aee21c55240d5a698dd3997f203d"
+                ]
+            ],
+            "test.roh-viz.html",
+            403,
+            {
+                "versions": [
+                    "versions.yml:md5,fcf9aa9e867aebbc2cd83a7b7aea0bf4"
+                ]
+            }
+        ],
+        "timestamp": "2026-07-26T21:22:48.850783413",
+        "meta": {
+            "nf-test": "0.9.5",
+            "nextflow": "25.10.4"
+        }
+    }
+}

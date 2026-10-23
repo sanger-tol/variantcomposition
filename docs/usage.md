@@ -4,7 +4,7 @@
 
 ## Introduction
 
-<!-- TODO nf-core: Add documentation about anything specific to running your pipeline. For general topics, please point to (and add to) the main nf-core website. -->
+The pipeline takes VCF, gVCF, BCF, and gBCF, files from a samplesheet in CSV format and analyses variant composition.
 
 ## Samplesheet input
 
@@ -14,41 +14,82 @@ You will need to create a samplesheet with information about the samples you wou
 --input '[path to samplesheet file]'
 ```
 
-### Multiple runs of the same sample
-
-The `sample` identifiers have to be the same when you have re-sequenced the same sample more than once e.g. to increase sequencing depth. The pipeline will concatenate the raw reads before performing any downstream analysis. Below is an example for the same sample sequenced across 3 lanes:
-
-```csv title="samplesheet.csv"
-sample,fastq_1,fastq_2
-CONTROL_REP1,AEG588A1_S1_L002_R1_001.fastq.gz,AEG588A1_S1_L002_R2_001.fastq.gz
-CONTROL_REP1,AEG588A1_S1_L003_R1_001.fastq.gz,AEG588A1_S1_L003_R2_001.fastq.gz
-CONTROL_REP1,AEG588A1_S1_L004_R1_001.fastq.gz,AEG588A1_S1_L004_R2_001.fastq.gz
-```
-
 ### Full samplesheet
 
-The pipeline will auto-detect whether a sample is single- or paired-end using the information provided in the samplesheet. The samplesheet can have as many columns as you desire, however, there is a strict requirement for the first 3 columns to match those defined in the table below.
-
-A final samplesheet file consisting of both single- and paired-end data may look something like the one below. This is for 6 samples, where `TREATMENT_REP3` has been sequenced twice.
+A final samplesheet file can contain any mix of `vcf`, `gvcf`, `bcf`, and `gbcf` variant datatypes, plus optional `af` rows.
 
 ```csv title="samplesheet.csv"
-sample,fastq_1,fastq_2
-CONTROL_REP1,AEG588A1_S1_L002_R1_001.fastq.gz,AEG588A1_S1_L002_R2_001.fastq.gz
-CONTROL_REP2,AEG588A2_S2_L002_R1_001.fastq.gz,AEG588A2_S2_L002_R2_001.fastq.gz
-CONTROL_REP3,AEG588A3_S3_L002_R1_001.fastq.gz,AEG588A3_S3_L002_R2_001.fastq.gz
-TREATMENT_REP1,AEG588A4_S4_L003_R1_001.fastq.gz,
-TREATMENT_REP2,AEG588A5_S5_L003_R1_001.fastq.gz,
-TREATMENT_REP3,AEG588A6_S6_L003_R1_001.fastq.gz,
-TREATMENT_REP3,AEG588A6_S6_L004_R1_001.fastq.gz,
+sample,datatype,datafile
+sample1,vcf,file1.vcf.gz
+sample1,gvcf,file1.g.vcf.gz
+sample1,af,file1.vcf.af
 ```
 
-| Column    | Description                                                                                                                                                                            |
-| --------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `sample`  | Custom sample name. This entry will be identical for multiple sequencing libraries/runs from the same sample. Spaces in sample names are automatically converted to underscores (`_`). |
-| `fastq_1` | Full path to FastQ file for Illumina short reads 1. File has to be gzipped and have the extension ".fastq.gz" or ".fq.gz".                                                             |
-| `fastq_2` | Full path to FastQ file for Illumina short reads 2. File has to be gzipped and have the extension ".fastq.gz" or ".fq.gz".                                                             |
+| Column     | Description                                                                                                                                                                           |
+| ---------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `sample`   | Custom sample name. This entry will be identical for multiple sequencing libraries/runs from the same sample. Spaces in sample names are automatically converted to underscores (`_`) |
+| `datatype` | Data type: `vcf`, `gvcf`, `bcf`, or `gbcf` for variants,; `af` for allele frequencies (ROH analysis).                                                                                 |
+| `datafile` | Path to the data file. Accepted extensions are `.vcf`, `.vcf.gz`, `.gvcf`, `.gvcf.gz`, `.bcf` (including `g.vcf*` and `.g.bcf`), and `.af`.                                           |
 
 An [example samplesheet](../assets/samplesheet.csv) has been provided with the pipeline.
+
+## Parameters and filters for variant analyses
+
+Parameters and filters can be passed directly to VCFtools or BCFtools.
+
+- To all the VCFtools analyse via the `--vcftools_filter` option
+- Additionally:
+  - To VCFtools per-base nucleotide diversity via the `--site_pi_filter` option
+  - To VCFtools heterozygosity via the `--het_filter` option
+  - To VCFtools SNP density via the `--snp_density_filter` option
+  - To VCFtools allele frequency via the `--af_filter` option
+  - To VCFtools InDel size distribution via the `--indel_len_filter` option
+  - To BCFtools RoH via the `--roh_filter` option
+
+Note that you will need to add a leading whitespace in front of `--`,
+otherwise the pipeline's own parameter validation will consider it a sanger-tol/variantcomposition option.
+
+Additional analysis parameters:
+
+- `--snp_density_window` sets the SNP density window size in base pairs (default: `1000`).
+- `--af_tag` sets the VCF INFO tag to read allele frequencies from when running ROH.
+- `--af_default_value` sets the fallback value passed to `bcftools roh` as `--AF-dflt` (default: `0.4`).
+- `--include_positions` provides a positions file (tab-separated chromosome and position per line) used with VCFtools `--positions`.
+- `--exclude_positions` provides a positions file used with VCFtools `--exclude-positions`.
+- `--include_positions` and `--exclude_positions` are mutually exclusive.
+
+### ROH allele-frequency input modes
+
+ROH supports three allele-frequency modes, with this precedence:
+
+1. External AF file from the samplesheet (`datatype=af`)
+2. INFO-tag frequencies via `--af_tag`
+3. If neither of the above is provided:
+
+- multi-sample VCF/gVCF/BCF/gBCF: estimate AF directly from the input (`bcftools roh --estimate-AF -`)
+- single-sample input: use `--af_default_value` as the fallback AF
+
+If you provide external AF files in the samplesheet:
+
+- Each `af` row should point to a `.af` file.
+- AF files are matched to variant files by the pipeline record ID (`datafile.baseName`), so file naming should be consistent between variant and AF inputs.
+- VCFs without a matching AF file are still processed using the fallback logic above.
+
+Important behavior by datatype:
+
+- The heterozygosity step runs only for `vcf` and `bcf` entries in the samplesheet.
+- Other analyses run for all supported datatypes.
+- Multi-sample VCF inputs are supported in ROH and result in per-sample ROH split outputs.
+
+Filtering and parameter options can be found in VCFtools [manual](https://vcftools.github.io/man_latest.html#SITE%20FILTERING%20OPTIONS) and BCFtools [manual](https://samtools.github.io/bcftools/bcftools.html). Multiple arguments may be provided as a single quoted string.
+
+```
+nextflow run ... --site_pi_filter " --chr chromosome1"
+```
+
+```
+nextflow run ... --vcftools_filter " --minQ 20 --max-missing 0.8"
+```
 
 ## Running the pipeline
 
@@ -65,7 +106,7 @@ Note that the pipeline will create the following files in your working directory
 ```bash
 work                # Directory containing the nextflow working files
 <OUTDIR>            # Finished results in specified location (defined with --outdir)
-.nextflow_log       # Log file from Nextflow
+.nextflow.log       # Log file from Nextflow
 # Other nextflow hidden files, eg. history of pipeline runs and old logs.
 ```
 

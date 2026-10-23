@@ -1,0 +1,74 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/subworkflows/yaml-schema.json
+name: "af_roh"
+description: Detect runs of homozygosity (ROH) from VCF files and generate interactive visualisations
+keywords:
+  - roh
+  - allele frequency
+  - bcftools
+  - vcf
+components:
+  - bcftools/query
+  - bgziptabix
+  - bcftools/roh
+  - bcftools/rohviz
+  - splitroh
+input:
+  - vcfs_tbi:
+      type: file
+      description: |
+        The input channel containing VCF/gVCF files with their tabix index files.
+        Structure: [ val(meta), path(vcf), path(tbi) ]
+      pattern: "*.{vcf.gz,g.vcf.gz,vcf.gz.tbi,g.vcf.gz.tbi}"
+  - af_file:
+      type: file
+      description: |
+        The input channel containing an allele frequency file.
+        Structure: [ val(meta), path(af) ]
+      pattern: "*.af"
+output:
+  - compressed_roh_rg_index:
+      type: file
+      description: |
+        Per bgzip/tabixed roh file with RG output.
+        Structure: [ val(meta), path(*.gz), path(*.gzi) ]
+  - roh_rg_tbi:
+      type: file
+      description: |
+        Tabix index of bgzipped roh file with RG output.
+        Structure: [ val(meta), path(*.tbi) ]
+  - roh_rg_csi:
+      type: file
+      description: |
+        Tabix index of bgzipped roh file with RG output.
+        Structure: [ val(meta), path(*.csi) ]
+  - compressed_roh_st_index:
+      type: file
+      description: |
+        Per bgzip/tabixed roh file with ST output.
+        Structure: [ val(meta), path(*.gz), path(*.gzi) ]
+  - roh_st_tbi:
+      type: file
+      description: |
+        Tabix index of bgzipped roh file with ST output.
+        Structure: [ val(meta), path(*.tbi) ]
+  - roh_st_csi:
+      type: file
+      description: |
+        Tabix index of bgzipped roh file with ST output.
+        Structure: [ val(meta), path(*.csi) ]
+  - roh_viz:
+      type: file
+      description: |
+        Channel containing interactive HTML visualisation of ROH results.
+        Structure: [ val(meta), path(html) ]
+      pattern: "*.html"
+  - versions:
+      type: file
+      description: |
+        File containing software versions
+        Structure: [ path(versions.yml) ]
+      pattern: "versions.yml"
+authors:
+  - "@yz533cb"
+maintainers:
+  - "@yz533cb"

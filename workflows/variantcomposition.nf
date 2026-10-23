@@ -1,8 +1,24 @@
 /*
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    IMPORT MODULES / SUBWORKFLOWS / FUNCTIONS
+    IMPORT LOCAL MODULES/SUBWORKFLOWS
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 */
+
+//
+// SUBWORKFLOW: Consisting of a mix of local and nf-core/modules
+//
+
+include { TABIX_TABIX as TABIX } from '../modules/nf-core/tabix/tabix/main'
+include { FEATURES             } from '../subworkflows/local/features'
+include { AF_ROH               } from '../subworkflows/local/af_roh'
+include { BCFTOOLS_STATS_PLOT  } from '../subworkflows/local/bcftools_stats_plot'
+
+/*
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    IMPORT NF-CORE MODULES/SUBWORKFLOWS
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+*/
+
 include { MULTIQC                } from '../modules/nf-core/multiqc/main'
 include { paramsSummaryMap       } from 'plugin/nf-schema'
 include { paramsSummaryMultiqc   } from '../subworkflows/nf-core/utils_nfcore_pipeline'
@@ -23,11 +39,70 @@ workflow VARIANTCOMPOSITION {
     multiqc_logo
     multiqc_methods_description
     outdir
+    ch_positions            // channel: positions file to include or exclude
 
     main:
 
     def ch_versions = channel.empty()
     def ch_multiqc_files = channel.empty()
+
+    // Split out af files
+    def samplesheet_split = ch_samplesheet
+        .branch { meta, _data ->
+            af  : meta.datatype == "af"
+            vcf : true  // *all flavours* of VCF
+        }
+
+    def index_split = samplesheet_split.vcf
+        .branch { meta, data ->
+            tbi : data.resolveSibling(data.name + ".tbi").exists()
+                  return tuple(meta, data, data.resolveSibling(data.name + ".tbi"))
+            csi : data.resolveSibling(data.name + ".csi").exists()
+                  return tuple(meta, data, data.resolveSibling(data.name + ".csi"))
+            no  : true
+        }
+
+    // Index the input VCF
+    TABIX( index_split.no )
+    ch_index = TABIX.out.tbi.mix( TABIX.out.csi )
+    ch_versions = ch_versions.mix( TABIX.out.versions )
+
+    // Combine the VCF and TBI channels
+    def ch_vcfs_tbi = index_split.no
+        .join( ch_index )
+        .mix( index_split.tbi )
+        .mix( index_split.csi )
+
+
+    //
+    // SUBWORKFLOW: FEATURES
+    //
+
+    // Analyses in this sub-workflow don't need the VCF to be indexed
+    FEATURES (
+        samplesheet_split.vcf,
+        ch_positions
+    )
+    ch_versions = ch_versions.mix( FEATURES.out.versions )
+
+    //
+    // SUBWORKFLOW: RUN OF HOMOZYGOSITY
+    //
+
+    AF_ROH (
+        ch_vcfs_tbi,
+        samplesheet_split.af,
+    )
+    ch_versions = ch_versions.mix( AF_ROH.out.versions )
+
+    //
+    // SUBWORKFLOW: BCFTOOLS_STATS_PLOT
+    //
+
+    BCFTOOLS_STATS_PLOT (
+        ch_vcfs_tbi
+    )
+    ch_versions = ch_versions.mix( BCFTOOLS_STATS_PLOT.out.versions )
 
     //
     // Collate and save software versions
@@ -70,6 +145,11 @@ workflow VARIANTCOMPOSITION {
         : file("${projectDir}/assets/methods_description_template.yml", checkIfExists: true)
     def ch_methods_description = channel.value(methodsDescriptionText(ch_multiqc_custom_methods_description))
     ch_multiqc_files = ch_multiqc_files.mix(ch_methods_description.collectFile(name: 'methods_description_mqc.yaml', sort: true))
+
+    ch_multiqc_files = ch_multiqc_files.mix(
+        BCFTOOLS_STATS_PLOT.out.stats.map { _meta, file -> file }
+    )
+
     MULTIQC(
         ch_multiqc_files.flatten().collect().map { files ->
             [
@@ -84,7 +164,9 @@ workflow VARIANTCOMPOSITION {
             ]
         }
     )
-    emit:multiqc_report = MULTIQC.out.report.map { _meta, report -> [report] }.toList() // channel: /path/to/multiqc_report.html
+
+    emit:
+    multiqc_report = MULTIQC.out.report.map { _meta, report -> [report] }.toList() // channel: /path/to/multiqc_report.html
     versions       = ch_versions                 // channel: [ path(versions.yml) ]
 }
 
