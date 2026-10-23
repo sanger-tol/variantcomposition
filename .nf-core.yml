@@ -39,7 +39,7 @@ lint:
     - validation.help.afterText
     - validation.summary.beforeText
     - validation.summary.afterText
-nf_core_version: 4.1.0
+nf_core_version: 4.2.0
 repository_type: pipeline
 template:
   author: Yunjia Zhang
