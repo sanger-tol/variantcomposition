@@ -1,0 +1,49 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/subworkflows/yaml-schema.json
+name: "bcftools_stats_plot"
+description: Generate bcftools stats for VCF files, compress them, and plot them as PDFs
+keywords:
+  - stats
+  - plot
+  - qc
+  - bcftools
+  - vcf
+components:
+  - bcftools/stats
+  - bcftools/plotvcfstats
+  - pigz/compress
+input:
+  - vcfs_tbi:
+      type: file
+      description: |
+        The input channel containing VCF/gVCF/BCF files with their index files.
+        Structure: [ val(meta), path(vcf), path(tbi) ]
+      pattern: "*.{vcf.gz,g.vcf.gz,bcf,g.bcf,vcf.gz.tbi,g.vcf.gz.tbi,bcf.tbi,g.bcf.tbi}"
+output:
+  - stats:
+      type: file
+      description: |
+        BCFtools Stats text files.
+        Structure: [ val(meta), path(stats.txt) ]
+      pattern: "*stats.txt"
+  - compressed_stats:
+      type: file
+      description: |
+        Gzip-compressed BCFtools stats text files
+        Structure: [ val(meta), path(stats.txt.gz) ]
+      pattern: "*stats.txt.gz"
+  - plot_pdf:
+      type: file
+      description: |
+        PDF of individual plots produced by BCFtools plot-vcfstats
+        Structure: [ val(meta), [ path(pdf) ] ]
+      pattern: "*_plots/*.pdf"
+  - versions:
+      type: file
+      description: |
+        File containing software versions
+        Structure: [ path(versions.yml) ]
+      pattern: "versions.yml"
+authors:
+  - "@yz533cb"
+maintainers:
+  - "@yz533cb"
