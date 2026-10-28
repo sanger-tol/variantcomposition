@@ -1,0 +1,79 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/subworkflows/yaml-schema.json
+name: "features"
+description: Compute variant features (nucleotide diversity, SNP density, allele frequency, heterozygosity, InDel lengths) from VCF files with VCFtools
+keywords:
+  - nucleotide diversity
+  - snp density
+  - allele frequency
+  - heterozygosity
+  - indel
+  - vcftools
+  - vcf
+components:
+  - vcftools
+  - bgziptabix
+input:
+  - samplesheet:
+      type: file
+      description: |
+        The input channel containing VCF/BCF files.
+        Structure: [ val(meta), path(vcf) ]
+      pattern: "*.{vcf,vcf.gz,g.vcf,g.vcf.gz,bcf,g.bcf}"
+  - site_pi_positions:
+      type: file
+      description: |
+        Optional positions file to include or exclude when computing per-site nucleotide diversity.
+        Structure: path(positions)
+output:
+  - compressed_sites_pi_index:
+      type: file
+      description: |
+        Per bgzip/tabixed per-site nucleotide diversity file.
+        Structure: [ val(meta), path(*.gz), path(*.gzi) ]
+  - sites_pi_tbi:
+      type: file
+      description: |
+        Tabix index of bgzipped per-site nucleotide diversity file.
+        Structure: [ val(meta), path(*.tbi) ]
+  - compressed_snp_density_index:
+      type: file
+      description: |
+        Per bgzip/tabixed SNP density file.
+        Structure: [ val(meta), path(*.gz), path(*.gzi) ]
+  - snp_density_tbi:
+      type: file
+      description: |
+        Tabix index of bgzipped SNP density file.
+        Structure: [ val(meta), path(*.tbi) ]
+  - compressed_af_index:
+      type: file
+      description: |
+        Per bgzip/tabixed allele frequency file.
+        Structure: [ val(meta), path(*.gz), path(*.gzi) ]
+  - af_tbi:
+      type: file
+      description: |
+        Tabix index of bgzipped allele frequency file.
+        Structure: [ val(meta), path(*.tbi) ]
+  - heterozygosity:
+      type: file
+      description: |
+        Heterozygosity output from VCF/BCF inputs.
+        Structure: [ val(meta), path(het) ]
+      pattern: "*.het"
+  - indel_lengths:
+      type: file
+      description: |
+        InDel length distributions.
+        Structure: [ val(meta), path(indel.hist) ]
+      pattern: "*.indel.hist"
+  - versions:
+      type: file
+      description: |
+        File containing software versions
+        Structure: [ path(versions.yml) ]
+      pattern: "versions.yml"
+authors:
+  - "@yz533cb"
+maintainers:
+  - "@yz533cb"
