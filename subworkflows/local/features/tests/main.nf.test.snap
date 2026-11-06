@@ -1,0 +1,177 @@
+{
+    "variantcomposition - features": {
+        "content": [
+            {
+                "0": [
+                    [
+                        {
+                            "id": "test",
+                            "datatype": "vcf"
+                        },
+                        "test.pi.gz:md5,9c35407165ea33601a554eaa7005d26b",
+                        "test.pi.gz.gzi:md5,7dea362b3fac8e00956a4952a3d4f474"
+                    ]
+                ],
+                "1": [
+                    [
+                        {
+                            "id": "test",
+                            "datatype": "vcf"
+                        },
+                        "test.pi.gz.tbi:md5,d16324760872b1265693ade34954c2b3"
+                    ]
+                ],
+                "2": [
+                    [
+                        {
+                            "id": "test",
+                            "datatype": "vcf"
+                        },
+                        "test.1k.snpden.gz:md5,8b9a5eaba3e0965b04b2db2c7f0674ed",
+                        "test.1k.snpden.gz.gzi:md5,7dea362b3fac8e00956a4952a3d4f474"
+                    ]
+                ],
+                "3": [
+                    [
+                        {
+                            "id": "test",
+                            "datatype": "vcf"
+                        },
+                        "test.1k.snpden.gz.tbi:md5,d0621622c98eec32b13cfbc012b75f78"
+                    ]
+                ],
+                "4": [
+                    [
+                        {
+                            "id": "test",
+                            "datatype": "vcf"
+                        },
+                        "test.frq.gz:md5,c5998e8baabe8f52e88de7530840000e",
+                        "test.frq.gz.gzi:md5,7dea362b3fac8e00956a4952a3d4f474"
+                    ]
+                ],
+                "5": [
+                    [
+                        {
+                            "id": "test",
+                            "datatype": "vcf"
+                        },
+                        "test.frq.gz.tbi:md5,1cd9a36e11b86c9bde70b5e08160222f"
+                    ]
+                ],
+                "6": [
+                    [
+                        {
+                            "id": "test",
+                            "datatype": "vcf"
+                        },
+                        "test.het:md5,50f65e1312a20e3549d15ad324764998"
+                    ]
+                ],
+                "7": [
+                    [
+                        {
+                            "id": "test",
+                            "datatype": "vcf"
+                        },
+                        "test.indel.hist:md5,91658038280c1c92cefa00a3d7b3f357"
+                    ]
+                ],
+                "8": [
+                    "versions.yml:md5,427f69f75d4ed6130d45d97aa30e0246",
+                    "versions.yml:md5,6d9e6bdfc37d09bb64b852b6208166fd",
+                    "versions.yml:md5,90404a60268a47ff245f816966e17ec9",
+                    "versions.yml:md5,9b4fe63e0334f065d8cb2b7c9a3bb241",
+                    "versions.yml:md5,ffceab030a8b8d92a9a25d99e69aec98"
+                ],
+                "af_tbi": [
+                    [
+                        {
+                            "id": "test",
+                            "datatype": "vcf"
+                        },
+                        "test.frq.gz.tbi:md5,1cd9a36e11b86c9bde70b5e08160222f"
+                    ]
+                ],
+                "compressed_af_index": [
+                    [
+                        {
+                            "id": "test",
+                            "datatype": "vcf"
+                        },
+                        "test.frq.gz:md5,c5998e8baabe8f52e88de7530840000e",
+                        "test.frq.gz.gzi:md5,7dea362b3fac8e00956a4952a3d4f474"
+                    ]
+                ],
+                "compressed_sites_pi_index": [
+                    [
+                        {
+                            "id": "test",
+                            "datatype": "vcf"
+                        },
+                        "test.pi.gz:md5,9c35407165ea33601a554eaa7005d26b",
+                        "test.pi.gz.gzi:md5,7dea362b3fac8e00956a4952a3d4f474"
+                    ]
+                ],
+                "compressed_snp_density_index": [
+                    [
+                        {
+                            "id": "test",
+                            "datatype": "vcf"
+                        },
+                        "test.1k.snpden.gz:md5,8b9a5eaba3e0965b04b2db2c7f0674ed",
+                        "test.1k.snpden.gz.gzi:md5,7dea362b3fac8e00956a4952a3d4f474"
+                    ]
+                ],
+                "heterozygosity": [
+                    [
+                        {
+                            "id": "test",
+                            "datatype": "vcf"
+                        },
+                        "test.het:md5,50f65e1312a20e3549d15ad324764998"
+                    ]
+                ],
+                "indel_lengths": [
+                    [
+                        {
+                            "id": "test",
+                            "datatype": "vcf"
+                        },
+                        "test.indel.hist:md5,91658038280c1c92cefa00a3d7b3f357"
+                    ]
+                ],
+                "sites_pi_tbi": [
+                    [
+                        {
+                            "id": "test",
+                            "datatype": "vcf"
+                        },
+                        "test.pi.gz.tbi:md5,d16324760872b1265693ade34954c2b3"
+                    ]
+                ],
+                "snp_density_tbi": [
+                    [
+                        {
+                            "id": "test",
+                            "datatype": "vcf"
+                        },
+                        "test.1k.snpden.gz.tbi:md5,d0621622c98eec32b13cfbc012b75f78"
+                    ]
+                ],
+                "versions": [
+                    "versions.yml:md5,427f69f75d4ed6130d45d97aa30e0246",
+                    "versions.yml:md5,6d9e6bdfc37d09bb64b852b6208166fd",
+                    "versions.yml:md5,90404a60268a47ff245f816966e17ec9",
+                    "versions.yml:md5,9b4fe63e0334f065d8cb2b7c9a3bb241",
+                    "versions.yml:md5,ffceab030a8b8d92a9a25d99e69aec98"
+                ]
+            }
+        ],
+        "timestamp": "2026-11-06T14:18:48.293918",
+        "meta": {
+            "nf-test": "0.9.4",
+            "nextflow": "26.04.6"
+        }
+    }
+}
