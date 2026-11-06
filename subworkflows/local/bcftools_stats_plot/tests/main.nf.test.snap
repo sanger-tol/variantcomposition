@@ -1,0 +1,76 @@
+{
+    "variantcomposition - bcftools-stats-plot": {
+        "content": [
+            [
+                "# This file was produced by bcftools stats (1.22+htslib-1.22.1) and can be plotted using plot-vcfstats.",
+                "# The command line was:\tbcftools stats  GCA_947369205.1_OX376310.1_CANBKR010000003.1.pacbio.icCanRufa1_deepvariant.vcf.gz",
+                "#",
+                "# Definition of sets:",
+                "# ID\t[2]id\t[3]tab-separated file names",
+                "ID\t0\tGCA_947369205.1_OX376310.1_CANBKR010000003.1.pacbio.icCanRufa1_deepvariant.vcf.gz"
+            ],
+            [
+                [
+                    {
+                        "id": "test"
+                    },
+                    "test.bcftools_stats.txt.gz:md5,571cf718718e32cb82e1d9966f35f02e"
+                ]
+            ],
+            [
+                
+            ],
+            {
+                "versions": [
+                    "versions.yml:md5,7cc470cd9bbbd3a2f369407fd7e799f5"
+                ]
+            }
+        ],
+        "timestamp": "2026-11-06T13:30:55.600339",
+        "meta": {
+            "nf-test": "0.9.4",
+            "nextflow": "26.04.6"
+        }
+    },
+    "variantcomposition - bcftools-stats-plot - only individual pdf": {
+        "content": [
+            [
+                "# This file was produced by bcftools stats (1.22+htslib-1.22.1) and can be plotted using plot-vcfstats.",
+                "# The command line was:\tbcftools stats  GCA_947369205.1_OX376310.1_CANBKR010000003.1.pacbio.icCanRufa1_deepvariant.vcf.gz",
+                "#",
+                "# Definition of sets:",
+                "# ID\t[2]id\t[3]tab-separated file names",
+                "ID\t0\tGCA_947369205.1_OX376310.1_CANBKR010000003.1.pacbio.icCanRufa1_deepvariant.vcf.gz"
+            ],
+            [
+                [
+                    {
+                        "id": "test"
+                    },
+                    "test.bcftools_stats.txt.gz:md5,571cf718718e32cb82e1d9966f35f02e"
+                ]
+            ],
+            [
+                [
+                    {
+                        "id": "test"
+                    },
+                    [
+                        "indels.0.pdf",
+                        "substitutions.0.pdf"
+                    ]
+                ]
+            ],
+            {
+                "versions": [
+                    "versions.yml:md5,7cc470cd9bbbd3a2f369407fd7e799f5"
+                ]
+            }
+        ],
+        "timestamp": "2026-11-06T13:31:09.797483",
+        "meta": {
+            "nf-test": "0.9.4",
+            "nextflow": "26.04.6"
+        }
+    }
+}
