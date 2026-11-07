@@ -17,7 +17,7 @@ input:
       description: |
         The input channel containing VCF/gVCF/BCF files with their index files.
         Structure: [ val(meta), path(vcf), path(tbi) ]
-      pattern: "*.{vcf.gz,g.vcf.gz,bcf,g.bcf,vcf.gz.tbi,g.vcf.gz.tbi,bcf.tbi,g.bcf.tbi}"
+      pattern: "*[.g]?.{vcf.gz,bcf}[.csi|.tbi]?"
 output:
   - stats:
       type: file
