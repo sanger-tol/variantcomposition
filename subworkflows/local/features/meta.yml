@@ -18,6 +18,8 @@ input:
       description: |
         The input channel containing VCF/BCF files.
         Structure: [ val(meta), path(vcf) ]
+        The meta map must contain id and datatype (vcf, bcf, gvcf, or gbcf).
+        Heterozygosity is emitted only for datatype vcf or bcf.
       pattern: "*.{vcf,vcf.gz,g.vcf,g.vcf.gz,bcf,g.bcf}"
   - site_pi_positions:
       type: file
