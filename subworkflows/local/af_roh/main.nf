@@ -67,7 +67,7 @@ workflow AF_ROH {
 
     // VCF files with no matching AF file. Pad with [] to fit BCFTOOLS_ROH
     ch_vcfs_no_af_file = ch.no_af
-         .map { id, meta, vcfs, tbi, _null -> [id, meta, vcfs, tbi, [], []] }
+        .map { id, meta, vcfs, tbi, _null -> [id, meta, vcfs, tbi, [], []] }
 
     // All VCF inputs for BCFTOOLS_ROH
     def ch_vcfs_af_joined = ch.matched
