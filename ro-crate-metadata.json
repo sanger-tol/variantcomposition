@@ -164,10 +164,10 @@
             },
             "url": [
                 "https://github.com/sanger-tol/variantcomposition",
-                "https://pipelines.tol.sanger.ac.uk/variantcomposition/1.0.0/"
+                "https://pipelines.tol.sanger.ac.uk/variantcomposition/1.0.1/"
             ],
             "version": [
-                "1.0.0"
+                "1.0.1"
             ]
         },
         {

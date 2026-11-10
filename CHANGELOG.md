@@ -5,6 +5,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [[1.0.1](https://github.com/sanger-tol/variantcomposition/releases/tag/1.0.1)] - Telperion (patch 1) - [2026-11-11]
+
 ### Enhancements & fixes
 
 - Updated the underlying nf-core template to v4.2.0
