@@ -18,7 +18,7 @@ input:
       description: |
         The input channel containing VCF/gVCF files with their tabix index files.
         Structure: [ val(meta), path(vcf), path(tbi) ]
-      pattern: "*.{vcf.gz,g.vcf.gz,vcf.gz.tbi,g.vcf.gz.tbi}"
+      pattern: "*[.g]?.{vcf.gz,bcf}[.csi|.tbi]?"
   - af_file:
       type: file
       description: |
